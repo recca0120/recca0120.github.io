@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: recca0120 技術筆記
 subtitle:
 description:
 keywords:
-author: John Doe
-language:
-timezone:
+author: recca0120
+language: zh-TW
+timezone: Asia/Taipei
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: https://recca0120.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -80,3 +80,14 @@ theme: next
 deploy:
   type: git
   repo: git@github.com:recca0120/recca0120.github.io.git
+
+plugins: hexo-generate-feed
+
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+
+sitemap:
+  path: sitemap.xml
