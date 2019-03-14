@@ -91,3 +91,12 @@ search:
 
 sitemap:
   path: sitemap.xml
+
+neat_enable: true
+
+neat_html:
+  enable: true
+  exclude:
+
+admin:
+  deployCommand: './hexo-deploy.sh'
