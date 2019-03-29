@@ -15,7 +15,7 @@ timezone: Asia/Taipei
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://recca0120.github.io
 root: /
-permalink: :year/:month/:day/:title/
+permalink: :category/:urlname.html
 permalink_defaults:
 
 # Directory
@@ -56,6 +56,7 @@ index_generator:
 # Category & Tag
 default_category: uncategorized
 category_map:
+  综合: common
 tag_map:
 
 # Date / Time format
@@ -88,6 +89,10 @@ search:
   field: post
   format: html
   limit: 10000
+
+auto_category:
+ enable: true
+ depth:
 
 sitemap:
   path: sitemap.xml
