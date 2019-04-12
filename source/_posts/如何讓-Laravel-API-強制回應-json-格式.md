@@ -17,13 +17,13 @@ date: 2019-03-29 10:30:00
 
 ## 發生原因
 
-首先來聊聊為何會有這種情況發生，其實 Laravel 在接受 request 的時候，預設會判斷 request headers 是否有這三種 header
+首先來聊聊為何會有這種情況發生：當遇到 401(認證失敗)，422(輸入非法資料)時，Laravel 會有兩種不同的行為，第一種是把 Client 當成瀏覽器，並回應 redirect response，同時這也是預設的行為；而如果 request headers 有下面這三種 header：
 
 - Accepts: application/json
 - Accepts: application/javascript
 - X-Requested-With: XMLHttpRequest
 
-所以 header 沒有這三種 header，Laravel 就會把 Client 為當成是瀏覽器，來回應資料。所以當遇到 401(認證失敗)，422(輸入非法資料)，自然就會回應 redirect response
+若有這三種 header 時，Laravel 則會認為 Client 是在 call API，這時就會回傳 JSON response，這也是我們使用 postman 測試 API 會想看到的回應。
 
 ## 如何解決
 
