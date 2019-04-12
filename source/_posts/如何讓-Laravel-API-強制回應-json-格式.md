@@ -1,4 +1,3 @@
----
 title: 如何讓 Laravel API 強制回應 json 格式
 urlname: laravel-api-always-json-response
 comments: true
@@ -33,11 +32,22 @@ class ForceJson
      */
     public function handle($request, Closure $next)
     {
-        if ($request->acceptsHtml() || $request->acceptsAnyContentType()) {
-            $request->headers->set('accept', 'application/json');
+        if ($this->shouldChangeAccept($request)) {
+            $request->headers->set('Accept', 'application/json');
         }
 
         return $next($request);
+    }
+
+    private function shouldChangeAccept($request)
+    {
+        $accepts = $request->headers->get('Accept');
+
+        if (empty($accepts) === true) {
+            return true;
+        }
+
+        return preg_match('/\*\/\*|\*|text\/html/', $accepts) === 1;
     }
 }
 ```
