@@ -1,0 +1,9 @@
+options:
+  lineNumbers: true
+  spellcheck: true
+  askImageFilename: false
+  overwriteImages: false
+editor:
+  lineNumbers: true
+  inputStyle: contenteditable
+  spellcheck: true
