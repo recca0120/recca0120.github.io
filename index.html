@@ -166,6 +166,76 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/yyear/05/29/fix-adb-server-version-does-not-match-this-client-problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="recca0120">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="recca0120 技術筆記">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/yyear/05/29/fix-adb-server-version-does-not-match-this-client-problem/" class="post-title-link" itemprop="url">解決 adb server version (41) doesn't match this client (40)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2020-05-29 19:01:07" itemprop="dateCreated datePublished" datetime="2020-05-29T19:01:07+08:00">2020-05-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>更新完 android sdk 後執行 <code>adb devices</code> 後系統回傳 <code>adb server version (41) doesn&#39;t match this client (40)</code> 這樣的訊息<br>發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題<br>所以先執行 <code>brew cask uninstall android-platform-tools</code> 來移除 android-platform-tools 後，<br>再修改 ~/.bashrc 加入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;&quot;&#x2F;Users&#x2F;recca0120&#x2F;Library&#x2F;Android&#x2F;sdk&quot;</span><br><span class="line">export PATH&#x3D;&quot;$ANDROID_HOME&#x2F;platform-tools:$ANDROID_HOME&#x2F;tools:$ANDROID_HOME&#x2F;tools&#x2F;bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
+
+<p>再執行 <code>source ~/.bashrc</code> 就可以修復這個問題了</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
     <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/yyear/05/24/how-to-throw-a-validation-exception-manually-in-laravel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -295,16 +365,16 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分類</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">標籤</span>
       </div>
   </nav>
