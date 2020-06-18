@@ -15,7 +15,7 @@ timezone: Asia/Taipei
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://recca0120.github.io
 root: /
-permalink: yyear/:month/:day/:urlname/
+permalink: :year/:month/:day/:urlname/
 permalink_defaults:
 pretty_urls:
     trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
