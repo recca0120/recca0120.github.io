@@ -22,20 +22,20 @@
     var CONFIG = {"hostname":"recca0120.github.io","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做 12345678910use Illuminate\Validation\ValidationException;try &amp;#123;    &#x2F;&#x2F; call api&amp;#125; catch (Exception $e) &amp;#123;    throw ValidationE">
+  <meta name="description" content="更新完 android sdk 後執行 adb devices 後系統回傳 adb server version (41) doesn&#39;t match this client (40) 這樣的訊息發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題所以先執行 brew cask">
 <meta property="og:type" content="article">
-<meta property="og:title" content="在 Laravel 如何手動丟出 Validation Exception">
-<meta property="og:url" content="https://recca0120.github.io/yyear/05/24/how-to-throw-a-validation-exception-manually-in-laravel/index.html">
+<meta property="og:title" content="解決 adb server version (41) doesn&#39;t match this client (40)">
+<meta property="og:url" content="https://recca0120.github.io/year/05/29/fix-adb-server-version-does-not-match-this-client-problem/index.html">
 <meta property="og:site_name" content="recca0120 技術筆記">
-<meta property="og:description" content="呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做 12345678910use Illuminate\Validation\ValidationException;try &amp;#123;    &#x2F;&#x2F; call api&amp;#125; catch (Exception $e) &amp;#123;    throw ValidationE">
+<meta property="og:description" content="更新完 android sdk 後執行 adb devices 後系統回傳 adb server version (41) doesn&#39;t match this client (40) 這樣的訊息發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題所以先執行 brew cask">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:published_time" content="2020-05-24T04:51:54.000Z">
-<meta property="article:modified_time" content="2020-05-24T04:51:54.000Z">
+<meta property="article:published_time" content="2020-05-29T11:01:07.000Z">
+<meta property="article:modified_time" content="2020-05-29T11:01:07.000Z">
 <meta property="article:author" content="recca0120">
-<meta property="article:tag" content="laravel">
+<meta property="article:tag" content="android">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://recca0120.github.io/yyear/05/24/how-to-throw-a-validation-exception-manually-in-laravel/">
+<link rel="canonical" href="https://recca0120.github.io/year/05/29/fix-adb-server-version-does-not-match-this-client-problem/">
 
 
 <script id="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>在 Laravel 如何手動丟出 Validation Exception | recca0120 技術筆記</title>
+  <title>解決 adb server version (41) doesn't match this client (40) | recca0120 技術筆記</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4014760-5"></script>
     <script>
@@ -172,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/yyear/05/24/how-to-throw-a-validation-exception-manually-in-laravel/">
+    <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/year/05/29/fix-adb-server-version-does-not-match-this-client-problem/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -185,7 +185,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          在 Laravel 如何手動丟出 Validation Exception
+          解決 adb server version (41) doesn't match this client (40)
         </h1>
 
         <div class="post-meta">
@@ -195,7 +195,7 @@
               </span>
               <span class="post-meta-item-text">發表於</span>
 
-              <time title="創建時間：2020-05-24 12:51:54" itemprop="dateCreated datePublished" datetime="2020-05-24T12:51:54+08:00">2020-05-24</time>
+              <time title="創建時間：2020-05-29 19:01:07" itemprop="dateCreated datePublished" datetime="2020-05-29T19:01:07+08:00">2020-05-29</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -203,7 +203,7 @@
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/laravel/" itemprop="url" rel="index"><span itemprop="name">laravel</span></a>
+                  <a href="/categories/android/" itemprop="url" rel="index"><span itemprop="name">android</span></a>
                 </span>
             </span>
 
@@ -218,8 +218,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>更新完 android sdk 後執行 <code>adb devices</code> 後系統回傳 <code>adb server version (41) doesn&#39;t match this client (40)</code> 這樣的訊息<br>發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題<br>所以先執行 <code>brew cask uninstall android-platform-tools</code> 來移除 android-platform-tools 後，<br>再修改 ~/.bashrc 加入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;&quot;&#x2F;Users&#x2F;recca0120&#x2F;Library&#x2F;Android&#x2F;sdk&quot;</span><br><span class="line">export PATH&#x3D;&quot;$ANDROID_HOME&#x2F;platform-tools:$ANDROID_HOME&#x2F;tools:$ANDROID_HOME&#x2F;tools&#x2F;bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
+
+<p>再執行 <code>source ~/.bashrc</code> 就可以修復這個問題了</p>
+
     </div>
 
     
@@ -234,7 +237,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>文章連結：</strong>
-    <a href="https://recca0120.github.io/yyear/05/24/how-to-throw-a-validation-exception-manually-in-laravel/" title="在 Laravel 如何手動丟出 Validation Exception">https://recca0120.github.io/yyear/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</a>
+    <a href="https://recca0120.github.io/year/05/29/fix-adb-server-version-does-not-match-this-client-problem/" title="解決 adb server version (41) doesn&#39;t match this client (40)">https://recca0120.github.io/year/05/29/fix-adb-server-version-does-not-match-this-client-problem/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
@@ -245,7 +248,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/laravel/" rel="tag"># laravel</a>
+              <a href="/tags/android/" rel="tag"># android</a>
           </div>
 
         
@@ -253,10 +256,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/yyear/05/29/fix-adb-server-version-does-not-match-this-client-problem/" rel="next" title="解決 adb server version (41) doesn't match this client (40)">
-      解決 adb server version (41) doesn't match this client (40) <i class="fa fa-chevron-right"></i>
+    <a href="/year/05/24/how-to-throw-a-validation-exception-manually-in-laravel/" rel="prev" title="在 Laravel 如何手動丟出 Validation Exception">
+      <i class="fa fa-chevron-left"></i> 在 Laravel 如何手動丟出 Validation Exception
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/year/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/" rel="next" title="PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤">
+      PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
