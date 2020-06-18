@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://recca0120.github.io/yyear/06/18/laravel-eloquent-memory-leak/</loc>
+    
+    <lastmod>2020-06-18T06:00:42.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://recca0120.github.io/yyear/06/12/redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128/</loc>
     
     <lastmod>2020-06-12T06:01:07.000Z</lastmod>

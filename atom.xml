@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://recca0120.github.io/"/>
-  <updated>2020-06-12T06:01:07.000Z</updated>
+  <updated>2020-06-18T06:00:42.000Z</updated>
   <id>https://recca0120.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Laravel Eloquent Memory Leak</title>
+    <link href="https://recca0120.github.io/yyear/06/18/laravel-eloquent-memory-leak/"/>
+    <id>https://recca0120.github.io/yyear/06/18/laravel-eloquent-memory-leak/</id>
+    <published>2020-06-18T06:00:42.000Z</published>
+    <updated>2020-06-18T06:00:42.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>從<a href="https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak" target="_blank" rel="noopener">這篇討論串</a>可以看出 Eloquent 用 property 去取得 relation 時是會造成 memory leak 的這在大型資料運算的時候會給系統造成很大負擔的，不得不小心，但在這討論串中有找出解決方案，所以直接節錄解決方案</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$users = User::with(<span class="string">'posts'</span>)-&gt;get();</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user) &#123;</span><br><span class="line">    $posts = $user-&gt;posts;</span><br><span class="line">    <span class="comment">// 增加這行即可</span></span><br><span class="line">    $user-&gt;setRelations([]);</span><br><span class="line">    <span class="comment">// 討論串有提到這一行，但提問者測試好像無效</span></span><br><span class="line">    <span class="comment">// $user-&gt;setRelation('posts', null);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;從&lt;a href=&quot;https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;這篇討論串&lt;/a&gt;可以看出 Eloquent 用 
+      
+    
+    </summary>
+    
+    
+      <category term="laravel" scheme="https://recca0120.github.io/categories/laravel/"/>
+    
+    
+      <category term="laravel - eloquent" scheme="https://recca0120.github.io/tags/laravel-eloquent/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</title>
