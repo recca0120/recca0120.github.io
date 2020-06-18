@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Laravel Eloquent Memory Leak</title>
-    <url>/year/06/18/laravel-eloquent-memory-leak/</url>
+    <url>/2020/06/18/laravel-eloquent-memory-leak/</url>
     <content><![CDATA[<p>從<a href="https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak" target="_blank" rel="noopener">這篇討論串</a>可以看出 Eloquent 用 property 去取得 relation 時是會造成 memory leak 的這在大型資料運算的時候會給系統造成很大負擔的，不得不小心，但在這討論串中有找出解決方案，所以直接節錄解決方案</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$users = User::with(<span class="string">'posts'</span>)-&gt;get();</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user) &#123;</span><br><span class="line">    $posts = $user-&gt;posts;</span><br><span class="line">    <span class="comment">// 增加這行即可</span></span><br><span class="line">    $user-&gt;setRelations([]);</span><br><span class="line">    <span class="comment">// 討論串有提到這一行，但提問者測試好像無效</span></span><br><span class="line">    <span class="comment">// $user-&gt;setRelation('posts', null);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
@@ -14,7 +14,7 @@
   </entry>
   <entry>
     <title>Laravel Migration 注意事項</title>
-    <url>/year/06/08/laravel-create-migration-precautions/</url>
+    <url>/2020/06/08/laravel-create-migration-precautions/</url>
     <content><![CDATA[<p>最近使用 Migration 的 Rollback 發生了不少問題，要避免以下幾種寫法</p>
 <h4 id="新增欄位和刪除欄位共用"><a href="#新增欄位和刪除欄位共用" class="headerlink" title="新增欄位和刪除欄位共用"></a>新增欄位和刪除欄位共用</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">    $table-&gt;string(<span class="string">'new_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;string(<span class="string">'new_column'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
@@ -44,7 +44,7 @@
   </entry>
   <entry>
     <title>PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤</title>
-    <url>/year/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
+    <url>/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
     <content><![CDATA[<p>用 PHP 抓取某網頁資料的時候遇到了<br><strong>GuzzleHttp/Exception/RequestException with message ‘cURL error 60: SSL certificate problem: certificate has expired (see <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;" target="_blank" rel="noopener">https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;</a></strong><br>這個錯誤訊息，第一時間用 chrome 瀏覽器打開頁面確都正常也全都正常顯示，一檢查 SSL 證書發現是 <strong>COMODO RSA Organization Validation Secure Server CA</strong>，<br>查了一番資料後原來是 Linux 沒有該 Root Certification，所以必須到 <a href="https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2" target="_blank" rel="noopener">Comodo RSA Certification Authority (SHA-2)</a> 下載證書並儲存到 <code>/etc/ssl/certs</code> 下，以為這樣就能正常使用了，但程式一執行還是發生了同樣的錯誤，後來我直接採指定 ssl 證書的方法來解決這個問題</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">$client-&gt;get(<span class="string">'https://xx.xx.xx'</span>);</span><br></pre></td></tr></table></figure>
 
@@ -62,7 +62,7 @@
   </entry>
   <entry>
     <title>Redis The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</title>
-    <url>/year/06/12/redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128/</url>
+    <url>/2020/06/12/redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128/</url>
     <content><![CDATA[<p>看到 <code>The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</code> 這個訊息的修復方式</p>
 <ul>
 <li><code>echo 512 &gt; /proc/sys/net/core/somaxconn</code> with root</li>
@@ -78,7 +78,7 @@
   </entry>
   <entry>
     <title>在 Laravel 如何手動丟出 Validation Exception</title>
-    <url>/year/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
+    <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
     <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
@@ -90,7 +90,7 @@
   </entry>
   <entry>
     <title>解決 adb server version (41) doesn&#39;t match this client (40)</title>
-    <url>/year/05/29/fix-adb-server-version-does-not-match-this-client-problem/</url>
+    <url>/2020/05/29/fix-adb-server-version-does-not-match-this-client-problem/</url>
     <content><![CDATA[<p>更新完 android sdk 後執行 <code>adb devices</code> 後系統回傳 <code>adb server version (41) doesn&#39;t match this client (40)</code> 這樣的訊息<br>發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題<br>所以先執行 <code>brew cask uninstall android-platform-tools</code> 來移除 android-platform-tools 後，<br>再修改 ~/.bashrc 加入</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;&quot;&#x2F;Users&#x2F;recca0120&#x2F;Library&#x2F;Android&#x2F;sdk&quot;</span><br><span class="line">export PATH&#x3D;&quot;$ANDROID_HOME&#x2F;platform-tools:$ANDROID_HOME&#x2F;tools:$ANDROID_HOME&#x2F;tools&#x2F;bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
 
