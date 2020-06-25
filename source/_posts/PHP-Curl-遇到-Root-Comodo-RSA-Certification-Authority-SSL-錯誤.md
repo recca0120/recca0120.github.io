@@ -2,7 +2,8 @@ title: 'PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤'
 urlname: how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php
 comments: true
 tags:
-  - php - laravel
+  - php
+  - laravel
 categories:
   - php
 author: recca0120

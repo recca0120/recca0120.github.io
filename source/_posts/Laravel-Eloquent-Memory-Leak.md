@@ -2,7 +2,8 @@ title: Laravel Eloquent Memory Leak
 urlname: laravel-eloquent-memory-leak
 comments: true
 tags:
-  - laravel - eloquent
+  - laravel
+  - eloquent
 categories:
   - laravel
 author: recca0120
