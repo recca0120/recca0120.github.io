@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://recca0120.github.io/"/>
-  <updated>2020-06-23T04:18:59.000Z</updated>
+  <updated>2020-06-25T04:04:22.000Z</updated>
   <id>https://recca0120.github.io/</id>
   
   <author>
@@ -17,20 +17,49 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
-    <link href="https://recca0120.github.io/2020/06/23/how-to-mock_$_SERVER-in-laravel-feature-testing/"/>
-    <id>https://recca0120.github.io/2020/06/23/how-to-mock_$_SERVER-in-laravel-feature-testing/</id>
-    <published>2020-06-23T04:18:59.000Z</published>
-    <updated>2020-06-23T04:18:59.000Z</updated>
+    <title>Laravel 測試時如何查看 RedirectResponse 的結果</title>
+    <link href="https://recca0120.github.io/2020/06/25/laravel-testing-what-happens-after-a-redirect/"/>
+    <id>https://recca0120.github.io/2020/06/25/laravel-testing-what-happens-after-a-redirect/</id>
+    <published>2020-06-25T04:04:22.000Z</published>
+    <updated>2020-06-25T04:04:22.000Z</updated>
     
-    <content type="html"><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER變數)，Laravel 用以下做法來變更</p><h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure><h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure><h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<p>在 Laravel 遇到以下的程式碼時</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(Request $request)</span> </span>&#123;</span><br><span class="line">        $user = User::create($request-&gt;all());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> redirect(uri(<span class="string">'users.show'</span>, [<span class="string">'id'</span> =&gt; $user-&gt;id]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在測試的時候想要看到轉址的結果，我們能怎麼做呢？</p><p><code>Laravel &gt;= 5.5.19</code></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followingRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><code>Laravel &lt; 5.4.12:</code></p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER變數)，Laravel 用以下做法來變更&lt;/p&gt;
-&lt;h4 id=&quot;GET-時變更&quot;&gt;&lt;a href=&quot;#GET-時變更&quot; class=&quot;headerlink&quot; title=&quot;G
+        &lt;p&gt;在 Laravel 遇到以下的程式碼時&lt;/p&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line
+      
+    
+    </summary>
+    
+    
+      <category term="-laravel -testing" scheme="https://recca0120.github.io/categories/laravel-testing/"/>
+    
+    
+      <category term="laravel" scheme="https://recca0120.github.io/tags/laravel/"/>
+    
+      <category term="testing" scheme="https://recca0120.github.io/tags/testing/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
+    <link href="https://recca0120.github.io/2020/06/23/how-to-mock_$/_SERVER-in-laravel-feature-testing/"/>
+    <id>https://recca0120.github.io/2020/06/23/how-to-mock_$/_SERVER-in-laravel-feature-testing/</id>
+    <published>2020-06-23T04:18:59.000Z</published>
+    <updated>2020-06-23T04:18:59.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p><h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure><h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure><h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更&lt;/p&gt;
+&lt;h4 id=&quot;GET-時變更&quot;&gt;&lt;a href=&quot;#GET-時變更&quot; class=&quot;headerlink&quot; title=&quot;
       
     
     </summary>
@@ -39,7 +68,9 @@
       <category term="laravel" scheme="https://recca0120.github.io/categories/laravel/"/>
     
     
-      <category term="laravel - unittest" scheme="https://recca0120.github.io/tags/laravel-unittest/"/>
+      <category term="laravel" scheme="https://recca0120.github.io/tags/laravel/"/>
+    
+      <category term="testing" scheme="https://recca0120.github.io/tags/testing/"/>
     
   </entry>
   
@@ -65,7 +96,9 @@
       <category term="laravel" scheme="https://recca0120.github.io/categories/laravel/"/>
     
     
-      <category term="laravel - eloquent" scheme="https://recca0120.github.io/tags/laravel-eloquent/"/>
+      <category term="laravel" scheme="https://recca0120.github.io/tags/laravel/"/>
+    
+      <category term="eloquent" scheme="https://recca0120.github.io/tags/eloquent/"/>
     
   </entry>
   
@@ -144,7 +177,9 @@
       <category term="php" scheme="https://recca0120.github.io/categories/php/"/>
     
     
-      <category term="php - laravel" scheme="https://recca0120.github.io/tags/php-laravel/"/>
+      <category term="laravel" scheme="https://recca0120.github.io/tags/laravel/"/>
+    
+      <category term="php" scheme="https://recca0120.github.io/tags/php/"/>
     
   </entry>
   

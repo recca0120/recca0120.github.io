@@ -22,15 +22,21 @@
     var CONFIG = {"hostname":"recca0120.github.io","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="recca0120 技術筆記">
-<meta property="og:url" content="https://recca0120.github.io/tags/laravel-unittest/index.html">
+  <meta name="description" content="在 Laravel 遇到以下的程式碼時 1234567class UserController extends Controller &amp;#123;    public function create(Request $request) &amp;#123;        $user &#x3D; User::create($request-&gt;all());                return redi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel 測試時如何查看 RedirectResponse 的結果">
+<meta property="og:url" content="https://recca0120.github.io/2020/06/25/laravel-testing-what-happens-after-a-redirect/index.html">
 <meta property="og:site_name" content="recca0120 技術筆記">
+<meta property="og:description" content="在 Laravel 遇到以下的程式碼時 1234567class UserController extends Controller &amp;#123;    public function create(Request $request) &amp;#123;        $user &#x3D; User::create($request-&gt;all());                return redi">
 <meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2020-06-25T04:04:22.000Z">
+<meta property="article:modified_time" content="2020-06-25T04:04:22.000Z">
 <meta property="article:author" content="recca0120">
+<meta property="article:tag" content="laravel">
+<meta property="article:tag" content="testing">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://recca0120.github.io/tags/laravel-unittest/">
+<link rel="canonical" href="https://recca0120.github.io/2020/06/25/laravel-testing-what-happens-after-a-redirect/">
 
 
 <script id="page-configurations">
@@ -38,12 +44,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-TW'
   };
 </script>
 
-  <title>標籤: laravel - unittest | recca0120 技術筆記</title>
+  <title>Laravel 測試時如何查看 RedirectResponse 的結果 | recca0120 技術筆記</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4014760-5"></script>
     <script>
@@ -160,51 +166,113 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">laravel - unittest
-          <small>標籤</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/2020/06/25/laravel-testing-what-happens-after-a-redirect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="recca0120">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="recca0120 技術筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Laravel 測試時如何查看 RedirectResponse 的結果
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2020-06-25 12:04:22" itemprop="dateCreated datePublished" datetime="2020-06-25T12:04:22+08:00">2020-06-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/laravel-testing/" itemprop="url" rel="index"><span itemprop="name">-laravel -testing</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <p>在 Laravel 遇到以下的程式碼時</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(Request $request)</span> </span>&#123;</span><br><span class="line">        $user = User::create($request-&gt;all());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> redirect(uri(<span class="string">'users.show'</span>, [<span class="string">'id'</span> =&gt; $user-&gt;id]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在測試的時候想要看到轉址的結果，我們能怎麼做呢？</p>
+<p><code>Laravel &gt;= 5.5.19</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followingRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Laravel &lt; 5.4.12:</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+        
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-06-23T12:18:59+08:00"
-              content="2020-06-23">
-          06-23
-        </time>
-      </div>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>作者： </strong>recca0120
+  </li>
+  <li class="post-copyright-link">
+    <strong>文章連結：</strong>
+    <a href="https://recca0120.github.io/2020/06/25/laravel-testing-what-happens-after-a-redirect/" title="Laravel 測試時如何查看 RedirectResponse 的結果">https://recca0120.github.io/2020/06/25/laravel-testing-what-happens-after-a-redirect/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/06/23/how-to-mock_$_SERVER-in-laravel-feature-testing/" itemprop="url">
-            <span itemprop="name">在 Laravel Feature 測試中如何 mock $_SERVER</span>
-          </a>
-      </div>
 
-    </header>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/laravel/" rel="tag"># laravel</a>
+              <a href="/tags/testing/" rel="tag"># testing</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/" rel="prev" title="在 Laravel Feature 測試中如何 mock $_SERVER">
+      <i class="fa fa-chevron-left"></i> 在 Laravel Feature 測試中如何 mock $_SERVER
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -270,12 +338,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分類</span>
       </div>
       <div class="site-state-item site-state-tags">

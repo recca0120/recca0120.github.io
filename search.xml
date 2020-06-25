@@ -9,7 +9,8 @@
         <category>laravel</category>
       </categories>
       <tags>
-        <tag>laravel - eloquent</tag>
+        <tag>laravel</tag>
+        <tag>eloquent</tag>
       </tags>
   </entry>
   <entry>
@@ -43,19 +44,23 @@
       </tags>
   </entry>
   <entry>
-    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
-    <url>/2020/06/23/how-to-mock_$_SERVER-in-laravel-feature-testing/</url>
-    <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER變數)，Laravel 用以下做法來變更</p>
-<h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+    <title>Laravel 測試時如何查看 RedirectResponse 的結果</title>
+    <url>/2020/06/25/laravel-testing-what-happens-after-a-redirect/</url>
+    <content><![CDATA[<p>在 Laravel 遇到以下的程式碼時</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(Request $request)</span> </span>&#123;</span><br><span class="line">        $user = User::create($request-&gt;all());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> redirect(uri(<span class="string">'users.show'</span>, [<span class="string">'id'</span> =&gt; $user-&gt;id]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+<p>在測試的時候想要看到轉址的結果，我們能怎麼做呢？</p>
+<p><code>Laravel &gt;= 5.5.19</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followingRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>]]></content>
+<p><code>Laravel &lt; 5.4.12:</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>laravel</category>
+        <category>-laravel -testing</category>
       </categories>
       <tags>
-        <tag>laravel - unittest</tag>
+        <tag>laravel</tag>
+        <tag>testing</tag>
       </tags>
   </entry>
   <entry>
@@ -73,7 +78,8 @@
         <category>php</category>
       </categories>
       <tags>
-        <tag>php - laravel</tag>
+        <tag>laravel</tag>
+        <tag>php</tag>
       </tags>
   </entry>
   <entry>
@@ -96,12 +102,31 @@
     <title>在 Laravel 如何手動丟出 Validation Exception</title>
     <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
     <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>laravel</category>
       </categories>
       <tags>
         <tag>laravel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
+    <url>/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/</url>
+    <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p>
+<h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>laravel</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>testing</tag>
       </tags>
   </entry>
   <entry>

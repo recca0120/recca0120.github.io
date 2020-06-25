@@ -2,7 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://recca0120.github.io/2020/06/23/how-to-mock_$_SERVER-in-laravel-feature-testing/</loc>
+    <loc>https://recca0120.github.io/2020/06/25/laravel-testing-what-happens-after-a-redirect/</loc>
+    
+    <lastmod>2020-06-25T04:04:22.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://recca0120.github.io/2020/06/23/how-to-mock_$/_SERVER-in-laravel-feature-testing/</loc>
     
     <lastmod>2020-06-23T04:18:59.000Z</lastmod>
     
