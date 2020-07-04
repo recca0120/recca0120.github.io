@@ -14,6 +14,45 @@
       </tags>
   </entry>
   <entry>
+    <title>PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤</title>
+    <url>/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
+    <content><![CDATA[<p>用 PHP 抓取某網頁資料的時候遇到了<br><strong>GuzzleHttp/Exception/RequestException with message ‘cURL error 60: SSL certificate problem: certificate has expired (see <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;" target="_blank" rel="noopener">https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;</a></strong><br>這個錯誤訊息，第一時間用 chrome 瀏覽器打開頁面確都正常也全都正常顯示，一檢查 SSL 證書發現是 <strong>COMODO RSA Organization Validation Secure Server CA</strong>，<br>查了一番資料後原來是 Linux 沒有該 Root Certification，所以必須到 <a href="https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2" target="_blank" rel="noopener">Comodo RSA Certification Authority (SHA-2)</a> 下載證書並儲存到 <code>/etc/ssl/certs</code> 下，以為這樣就能正常使用了，但程式一執行還是發生了同樣的錯誤，後來我直接採指定 ssl 證書的方法來解決這個問題</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">$client-&gt;get(<span class="string">'https://xx.xx.xx'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>那在 Laravel 內能怎麼做？</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;bind(Client::class, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>但也不是每次 Client 都會用到這張證書所以可以改這樣寫</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Services</span>\<span class="title">GithubService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;when(GitHubService::class)</span><br><span class="line">            -&gt;needs(Client::class)</span><br><span class="line">            -&gt;given(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Laravel 測試時如何查看 RedirectResponse 的結果</title>
+    <url>/2020/06/25/laravel-testing-what-happens-after-a-redirect/</url>
+    <content><![CDATA[<p>在 Laravel 遇到以下的程式碼時</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(Request $request)</span> </span>&#123;</span><br><span class="line">        $user = User::create($request-&gt;all());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> redirect(uri(<span class="string">'users.show'</span>, [<span class="string">'id'</span> =&gt; $user-&gt;id]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在測試的時候想要看到轉址的結果，我們能怎麼做呢？</p>
+<p><code>Laravel &gt;= 5.5.19</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followingRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Laravel &lt; 5.4.12:</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>-laravel -testing</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>testing</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Laravel Migration 注意事項</title>
     <url>/2020/06/08/laravel-create-migration-precautions/</url>
     <content><![CDATA[<p>最近使用 Migration 的 Rollback 發生了不少問題，要避免以下幾種寫法</p>
@@ -44,42 +83,16 @@
       </tags>
   </entry>
   <entry>
-    <title>Laravel 測試時如何查看 RedirectResponse 的結果</title>
-    <url>/2020/06/25/laravel-testing-what-happens-after-a-redirect/</url>
-    <content><![CDATA[<p>在 Laravel 遇到以下的程式碼時</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(Request $request)</span> </span>&#123;</span><br><span class="line">        $user = User::create($request-&gt;all());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> redirect(uri(<span class="string">'users.show'</span>, [<span class="string">'id'</span> =&gt; $user-&gt;id]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在測試的時候想要看到轉址的結果，我們能怎麼做呢？</p>
-<p><code>Laravel &gt;= 5.5.19</code></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followingRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>Laravel &lt; 5.4.12:</code></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <title>在 Laravel 如何手動丟出 Validation Exception</title>
+    <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
+    <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
-        <category>-laravel -testing</category>
+        <category>laravel</category>
       </categories>
       <tags>
         <tag>laravel</tag>
-        <tag>testing</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤</title>
-    <url>/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
-    <content><![CDATA[<p>用 PHP 抓取某網頁資料的時候遇到了<br><strong>GuzzleHttp/Exception/RequestException with message ‘cURL error 60: SSL certificate problem: certificate has expired (see <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;" target="_blank" rel="noopener">https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;</a></strong><br>這個錯誤訊息，第一時間用 chrome 瀏覽器打開頁面確都正常也全都正常顯示，一檢查 SSL 證書發現是 <strong>COMODO RSA Organization Validation Secure Server CA</strong>，<br>查了一番資料後原來是 Linux 沒有該 Root Certification，所以必須到 <a href="https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2" target="_blank" rel="noopener">Comodo RSA Certification Authority (SHA-2)</a> 下載證書並儲存到 <code>/etc/ssl/certs</code> 下，以為這樣就能正常使用了，但程式一執行還是發生了同樣的錯誤，後來我直接採指定 ssl 證書的方法來解決這個問題</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">$client-&gt;get(<span class="string">'https://xx.xx.xx'</span>);</span><br></pre></td></tr></table></figure>
-
-<p>那在 Laravel 內能怎麼做？</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;bind(Client::class, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>但也不是每次 Client 都會用到這張證書所以可以改這樣寫</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Services</span>\<span class="title">GithubService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;when(GitHubService::class)</span><br><span class="line">            -&gt;needs(Client::class)</span><br><span class="line">            -&gt;given(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>php</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-        <tag>php</tag>
       </tags>
   </entry>
   <entry>
@@ -99,19 +112,6 @@
       </tags>
   </entry>
   <entry>
-    <title>在 Laravel 如何手動丟出 Validation Exception</title>
-    <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
-    <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
     <url>/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/</url>
     <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p>
@@ -127,6 +127,82 @@
       <tags>
         <tag>laravel</tag>
         <tag>testing</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 AWS EC2 上安裝 Windows 10</title>
+    <url>/2020/07/04/running-windows10-on-aws-ec2/</url>
+    <content><![CDATA[<h1 id="Running-Windows-10-on-AWS-EC2"><a href="#Running-Windows-10-on-AWS-EC2" class="headerlink" title="Running Windows 10 on AWS EC2"></a>Running Windows 10 on AWS EC2</h1><h1 id="Downloading-the-image"><a href="#Downloading-the-image" class="headerlink" title="Downloading the image"></a>Downloading the image</h1><p>Download the windows image you want.</p>
+<p>AWS vmimport supported versions:<br>Microsoft Windows 10 (Professional, Enterprise, Education) (US English) (64-bit only)</p>
+<p>So Home wont work.</p>
+<p>You can download the trial Enterprise trial here: <a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise" target="_blank" rel="noopener">https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise</a></p>
+<h1 id="Creating-the-virtual-machine"><a href="#Creating-the-virtual-machine" class="headerlink" title="Creating the virtual machine"></a>Creating the virtual machine</h1><ul>
+<li>Use virtualbox to create a new virtual machine, make sure that it uses the VHD or VMDK or OVA format (The OS is 20 gigabyte).</li>
+<li>Install the Windows 10 image onto it.</li>
+<li>Make sure to set a username password on the administrator account otherwise cannot connect trough remote desktop.</li>
+<li>Install teamviewer on the virtual machine grant easy access to yourself and check extras-&gt;options<ul>
+<li>General -&gt; Network Settings: Accept Incoming Lan Connections</li>
+<li>Security -&gt; Windows logon: Allowed for all users</li>
+</ul>
+</li>
+<li>Start -&gt; Allow remote access to your computer<ul>
+<li>Allow remote connections to this computer</li>
+</ul>
+</li>
+<li>Install ec2 configure service <a href="http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/UsingConfig_Install.html" target="_blank" rel="noopener">http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/UsingConfig_Install.html</a></li>
+<li>Restart the virtual machine.</li>
+<li>Wait for windows 10 updates to install.</li>
+<li>Exit the virtual machine.</li>
+</ul>
+<h1 id="Install-and-configure-awscli"><a href="#Install-and-configure-awscli" class="headerlink" title="Install and configure awscli"></a>Install and configure awscli</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install awscli</span><br><span class="line">aws configure</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+
+<p><a href="http://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html" target="_blank" rel="noopener">http://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html</a><br>During configure you can add your:</p>
+<p>AWS access key.<br>AWS secret access key.<br>Default region.</p>
+<p>If you set a default region you dont have to specify the region parameter in the following commands.<br>Note that P2 instances are only avalible in the US.</p>
+<h1 id="Create-an-S3-bucket"><a href="#Create-an-S3-bucket" class="headerlink" title="Create an S3 bucket"></a>Create an S3 bucket</h1><p>The bucketname must be unique.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aws s3 mb s3://peterforgacs --region eu-central-1</span><br></pre></td></tr></table></figure>
+
+<h1 id="Upload-image-to-s3"><a href="#Upload-image-to-s3" class="headerlink" title="Upload image to s3"></a>Upload image to s3</h1><p>Move to the folder you store the virtual machine file and upload the virtual image to the s3 bucket.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> myvmfolder</span><br><span class="line">aws s3 cp codexaws.vhd s3://peterforgacs --region eu-central-1</span><br></pre></td></tr></table></figure>
+
+<h1 id="Configuration-files"><a href="#Configuration-files" class="headerlink" title="Configuration files"></a>Configuration files</h1><p>Create a trust policy in the file trust-policy.json</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</span><br><span class="line">   <span class="attr">"Statement"</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">         <span class="attr">"Principal"</span>: &#123; <span class="attr">"Service"</span>: <span class="string">"vmie.amazonaws.com"</span> &#125;,</span><br><span class="line">         <span class="attr">"Action"</span>: <span class="string">"sts:AssumeRole"</span>,</span><br><span class="line">         <span class="attr">"Condition"</span>: &#123;</span><br><span class="line">            <span class="attr">"StringEquals"</span>:&#123;</span><br><span class="line">               <span class="attr">"sts:Externalid"</span>: <span class="string">"vmimport"</span></span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+
+<p>Create a vmimport role and add vim import/export access to it.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aws iam create-role --role-name vmimport --assume-role-policy-document file://trust-policy.json</span><br></pre></td></tr></table></figure>
+
+<p>Create a file named role-policy.json replace the !!REPLACEME!! to the bucketname you are using.</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</span><br><span class="line">   <span class="attr">"Statement"</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">         <span class="attr">"Action"</span>: [</span><br><span class="line">            <span class="string">"s3:ListBucket"</span>,</span><br><span class="line">            <span class="string">"s3:GetBucketLocation"</span></span><br><span class="line">         ],</span><br><span class="line">         <span class="attr">"Resource"</span>: [</span><br><span class="line">            <span class="string">"arn:aws:s3:::!!REPLACEME!!"</span></span><br><span class="line">         ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">         <span class="attr">"Action"</span>: [</span><br><span class="line">            <span class="string">"s3:GetObject"</span></span><br><span class="line">         ],</span><br><span class="line">         <span class="attr">"Resource"</span>: [</span><br><span class="line">            <span class="string">"arn:aws:s3:::!!REPLACEME!!/*"</span></span><br><span class="line">         ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">         <span class="attr">"Action"</span>:[</span><br><span class="line">            <span class="string">"ec2:ModifySnapshotAttribute"</span>,</span><br><span class="line">            <span class="string">"ec2:CopySnapshot"</span>,</span><br><span class="line">            <span class="string">"ec2:RegisterImage"</span>,</span><br><span class="line">            <span class="string">"ec2:Describe*"</span></span><br><span class="line">         ],</span><br><span class="line">         <span class="attr">"Resource"</span>: <span class="string">"*"</span></span><br><span class="line">      &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Add the policy to the vmimport role.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aws iam put-role-policy --role-name vmimport --policy-name vmimport --policy-document file://role-policy.json</span><br></pre></td></tr></table></figure>
+
+<p>Create a configuration file on your computer called containers.json.<br>Replace bucketname and myimage.vhd with your bucket and image name.</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">[&#123; <span class="attr">"Description"</span>: <span class="string">"Windows 10 Base Install"</span>, <span class="attr">"Format"</span>: <span class="string">"vhd"</span>, <span class="attr">"UserBucket"</span>: &#123; <span class="attr">"S3Bucket"</span>: <span class="string">"peterforgacs"</span>, <span class="attr">"S3Key"</span>: <span class="string">"codexaws.vhd"</span> &#125; &#125;]</span><br></pre></td></tr></table></figure>
+
+<h1 id="Create-EC2-AMI-from-S3-VHD-image"><a href="#Create-EC2-AMI-from-S3-VHD-image" class="headerlink" title="Create EC2 AMI from S3 VHD image"></a>Create EC2 AMI from S3 VHD image</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aws ec2 import-image --description <span class="string">"Windows 10"</span> --disk-containers file://containers.json --region eu-central-1</span><br></pre></td></tr></table></figure>
+
+<p>This may take a while you can check on the status of the import.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">aws ec2 describe-import-image-tasks --region eu-central-1</span><br></pre></td></tr></table></figure>
+
+<p>When the import status is completed you can head to the EC2 console and select the correct region.</p>
+<h1 id="Create-EC2-instance-from-AMI"><a href="#Create-EC2-instance-from-AMI" class="headerlink" title="Create EC2 instance from AMI"></a>Create EC2 instance from AMI</h1><p>Images -&gt; AMI -&gt; Right click -&gt; Launch</p>
+<ul>
+<li>Instance type: g2 (You might have to ask the support for an increase in the g2 limit).</li>
+<li>Security Group: Allow RDP, Teamviewer ports.</li>
+</ul>
+<p>Instances -&gt; Launch</p>
+<h1 id="Running-the-instance"><a href="#Running-the-instance" class="headerlink" title="Running the instance"></a>Running the instance</h1><p>Instances -&gt; Right click -&gt; Connect</p>
+<p>You download the remote desktop file.</p>
+<p>Launch that file with the username and password you set on the original instance.</p>
+<p>In the form:<br>.\Username<br>pass</p>
+<h1 id="Post-Install"><a href="#Post-Install" class="headerlink" title="Post Install"></a>Post Install</h1><p>Reassign teamviewer to the your teamviewer.<br>Download nvidia experience and install a driver.</p>
+]]></content>
+      <categories>
+        <category>aws</category>
+      </categories>
+      <tags>
+        <tag>aws - virtualbox - windows10</tag>
       </tags>
   </entry>
   <entry>

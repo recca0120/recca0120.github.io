@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="XNTyIgBcFo2zEw8YV-JTPIhzi9cnHg6NByiZHe_iYpw">
+  <meta name="msvalidate.01" content="71269254B4FE7B3AAD5CFA84A1743876">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"recca0120.github.io","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Running Windows 10 on AWS EC2Downloading the imageDownload the windows image you want. AWS vmimport supported versions:Microsoft Windows 10 (Professional, Enterprise, Education) (US English) (64-bit o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 AWS EC2 上安裝 Windows 10">
+<meta property="og:url" content="https://recca0120.github.io/2020/07/04/running-windows10-on-aws-ec2/index.html">
+<meta property="og:site_name" content="recca0120 技術筆記">
+<meta property="og:description" content="Running Windows 10 on AWS EC2Downloading the imageDownload the windows image you want. AWS vmimport supported versions:Microsoft Windows 10 (Professional, Enterprise, Education) (US English) (64-bit o">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2020-07-04T03:34:00.000Z">
+<meta property="article:modified_time" content="2020-07-04T03:34:00.000Z">
+<meta property="article:author" content="recca0120">
+<meta property="article:tag" content="aws - virtualbox - windows10">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://recca0120.github.io/2020/07/04/running-windows10-on-aws-ec2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>在 AWS EC2 上安裝 Windows 10 | recca0120 技術筆記</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4014760-5"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-4014760-5');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="recca0120 技術筆記" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">recca0120 技術筆記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/2020/07/04/running-windows10-on-aws-ec2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="recca0120">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="recca0120 技術筆記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在 AWS EC2 上安裝 Windows 10
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2020-07-04 11:34:00" itemprop="dateCreated datePublished" datetime="2020-07-04T11:34:00+08:00">2020-07-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/aws/" itemprop="url" rel="index"><span itemprop="name">aws</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Running-Windows-10-on-AWS-EC2"><a href="#Running-Windows-10-on-AWS-EC2" class="headerlink" title="Running Windows 10 on AWS EC2"></a>Running Windows 10 on AWS EC2</h1><h1 id="Downloading-the-image"><a href="#Downloading-the-image" class="headerlink" title="Downloading the image"></a>Downloading the image</h1><p>Download the windows image you want.</p>
+<p>AWS vmimport supported versions:<br>Microsoft Windows 10 (Professional, Enterprise, Education) (US English) (64-bit only)</p>
+<p>So Home wont work.</p>
+<p>You can download the trial Enterprise trial here: <a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise" target="_blank" rel="noopener">https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise</a></p>
+<h1 id="Creating-the-virtual-machine"><a href="#Creating-the-virtual-machine" class="headerlink" title="Creating the virtual machine"></a>Creating the virtual machine</h1><ul>
+<li>Use virtualbox to create a new virtual machine, make sure that it uses the VHD or VMDK or OVA format (The OS is 20 gigabyte).</li>
+<li>Install the Windows 10 image onto it.</li>
+<li>Make sure to set a username password on the administrator account otherwise cannot connect trough remote desktop.</li>
+<li>Install teamviewer on the virtual machine grant easy access to yourself and check extras-&gt;options<ul>
+<li>General -&gt; Network Settings: Accept Incoming Lan Connections</li>
+<li>Security -&gt; Windows logon: Allowed for all users</li>
+</ul>
+</li>
+<li>Start -&gt; Allow remote access to your computer<ul>
+<li>Allow remote connections to this computer</li>
+</ul>
+</li>
+<li>Install ec2 configure service <a href="http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/UsingConfig_Install.html" target="_blank" rel="noopener">http://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/UsingConfig_Install.html</a></li>
+<li>Restart the virtual machine.</li>
+<li>Wait for windows 10 updates to install.</li>
+<li>Exit the virtual machine.</li>
+</ul>
+<h1 id="Install-and-configure-awscli"><a href="#Install-and-configure-awscli" class="headerlink" title="Install and configure awscli"></a>Install and configure awscli</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install awscli</span><br><span class="line">aws configure</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+
+<p><a href="http://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html" target="_blank" rel="noopener">http://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html</a><br>During configure you can add your:</p>
+<p>AWS access key.<br>AWS secret access key.<br>Default region.</p>
+<p>If you set a default region you dont have to specify the region parameter in the following commands.<br>Note that P2 instances are only avalible in the US.</p>
+<h1 id="Create-an-S3-bucket"><a href="#Create-an-S3-bucket" class="headerlink" title="Create an S3 bucket"></a>Create an S3 bucket</h1><p>The bucketname must be unique.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws s3 mb s3://peterforgacs --region eu-central-1</span><br></pre></td></tr></table></figure>
+
+<h1 id="Upload-image-to-s3"><a href="#Upload-image-to-s3" class="headerlink" title="Upload image to s3"></a>Upload image to s3</h1><p>Move to the folder you store the virtual machine file and upload the virtual image to the s3 bucket.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> myvmfolder</span><br><span class="line">aws s3 cp codexaws.vhd s3://peterforgacs --region eu-central-1</span><br></pre></td></tr></table></figure>
+
+<h1 id="Configuration-files"><a href="#Configuration-files" class="headerlink" title="Configuration files"></a>Configuration files</h1><p>Create a trust policy in the file trust-policy.json</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</span><br><span class="line">   <span class="attr">"Statement"</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">         <span class="attr">"Principal"</span>: &#123; <span class="attr">"Service"</span>: <span class="string">"vmie.amazonaws.com"</span> &#125;,</span><br><span class="line">         <span class="attr">"Action"</span>: <span class="string">"sts:AssumeRole"</span>,</span><br><span class="line">         <span class="attr">"Condition"</span>: &#123;</span><br><span class="line">            <span class="attr">"StringEquals"</span>:&#123;</span><br><span class="line">               <span class="attr">"sts:Externalid"</span>: <span class="string">"vmimport"</span></span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+
+<p>Create a vmimport role and add vim import/export access to it.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws iam create-role --role-name vmimport --assume-role-policy-document file://trust-policy.json</span><br></pre></td></tr></table></figure>
+
+<p>Create a file named role-policy.json replace the !!REPLACEME!! to the bucketname you are using.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">"Version"</span>: <span class="string">"2012-10-17"</span>,</span><br><span class="line">   <span class="attr">"Statement"</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">         <span class="attr">"Action"</span>: [</span><br><span class="line">            <span class="string">"s3:ListBucket"</span>,</span><br><span class="line">            <span class="string">"s3:GetBucketLocation"</span></span><br><span class="line">         ],</span><br><span class="line">         <span class="attr">"Resource"</span>: [</span><br><span class="line">            <span class="string">"arn:aws:s3:::!!REPLACEME!!"</span></span><br><span class="line">         ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">         <span class="attr">"Action"</span>: [</span><br><span class="line">            <span class="string">"s3:GetObject"</span></span><br><span class="line">         ],</span><br><span class="line">         <span class="attr">"Resource"</span>: [</span><br><span class="line">            <span class="string">"arn:aws:s3:::!!REPLACEME!!/*"</span></span><br><span class="line">         ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="attr">"Effect"</span>: <span class="string">"Allow"</span>,</span><br><span class="line">         <span class="attr">"Action"</span>:[</span><br><span class="line">            <span class="string">"ec2:ModifySnapshotAttribute"</span>,</span><br><span class="line">            <span class="string">"ec2:CopySnapshot"</span>,</span><br><span class="line">            <span class="string">"ec2:RegisterImage"</span>,</span><br><span class="line">            <span class="string">"ec2:Describe*"</span></span><br><span class="line">         ],</span><br><span class="line">         <span class="attr">"Resource"</span>: <span class="string">"*"</span></span><br><span class="line">      &#125;</span><br><span class="line">   ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Add the policy to the vmimport role.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws iam put-role-policy --role-name vmimport --policy-name vmimport --policy-document file://role-policy.json</span><br></pre></td></tr></table></figure>
+
+<p>Create a configuration file on your computer called containers.json.<br>Replace bucketname and myimage.vhd with your bucket and image name.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123; <span class="attr">"Description"</span>: <span class="string">"Windows 10 Base Install"</span>, <span class="attr">"Format"</span>: <span class="string">"vhd"</span>, <span class="attr">"UserBucket"</span>: &#123; <span class="attr">"S3Bucket"</span>: <span class="string">"peterforgacs"</span>, <span class="attr">"S3Key"</span>: <span class="string">"codexaws.vhd"</span> &#125; &#125;]</span><br></pre></td></tr></table></figure>
+
+<h1 id="Create-EC2-AMI-from-S3-VHD-image"><a href="#Create-EC2-AMI-from-S3-VHD-image" class="headerlink" title="Create EC2 AMI from S3 VHD image"></a>Create EC2 AMI from S3 VHD image</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws ec2 import-image --description <span class="string">"Windows 10"</span> --disk-containers file://containers.json --region eu-central-1</span><br></pre></td></tr></table></figure>
+
+<p>This may take a while you can check on the status of the import.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws ec2 describe-import-image-tasks --region eu-central-1</span><br></pre></td></tr></table></figure>
+
+<p>When the import status is completed you can head to the EC2 console and select the correct region.</p>
+<h1 id="Create-EC2-instance-from-AMI"><a href="#Create-EC2-instance-from-AMI" class="headerlink" title="Create EC2 instance from AMI"></a>Create EC2 instance from AMI</h1><p>Images -&gt; AMI -&gt; Right click -&gt; Launch</p>
+<ul>
+<li>Instance type: g2 (You might have to ask the support for an increase in the g2 limit).</li>
+<li>Security Group: Allow RDP, Teamviewer ports.</li>
+</ul>
+<p>Instances -&gt; Launch</p>
+<h1 id="Running-the-instance"><a href="#Running-the-instance" class="headerlink" title="Running the instance"></a>Running the instance</h1><p>Instances -&gt; Right click -&gt; Connect</p>
+<p>You download the remote desktop file.</p>
+<p>Launch that file with the username and password you set on the original instance.</p>
+<p>In the form:<br>.\Username<br>pass</p>
+<h1 id="Post-Install"><a href="#Post-Install" class="headerlink" title="Post Install"></a>Post Install</h1><p>Reassign teamviewer to the your teamviewer.<br>Download nvidia experience and install a driver.</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>作者： </strong>recca0120
+  </li>
+  <li class="post-copyright-link">
+    <strong>文章連結：</strong>
+    <a href="https://recca0120.github.io/2020/07/04/running-windows10-on-aws-ec2/" title="在 AWS EC2 上安裝 Windows 10">https://recca0120.github.io/2020/07/04/running-windows10-on-aws-ec2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版權聲明： </strong>本網誌所有文章除特別聲明外，均採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 許可協議。轉載請註明出處！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/aws-virtualbox-windows10/" rel="tag"># aws - virtualbox - windows10</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/25/laravel-testing-what-happens-after-a-redirect/" rel="prev" title="Laravel 測試時如何查看 RedirectResponse 的結果">
+      <i class="fa fa-chevron-left"></i> Laravel 測試時如何查看 RedirectResponse 的結果
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Running-Windows-10-on-AWS-EC2"><span class="nav-number">1.</span> <span class="nav-text">Running Windows 10 on AWS EC2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Downloading-the-image"><span class="nav-number">2.</span> <span class="nav-text">Downloading the image</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Creating-the-virtual-machine"><span class="nav-number">3.</span> <span class="nav-text">Creating the virtual machine</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Install-and-configure-awscli"><span class="nav-number">4.</span> <span class="nav-text">Install and configure awscli</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create-an-S3-bucket"><span class="nav-number">5.</span> <span class="nav-text">Create an S3 bucket</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Upload-image-to-s3"><span class="nav-number">6.</span> <span class="nav-text">Upload image to s3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Configuration-files"><span class="nav-number">7.</span> <span class="nav-text">Configuration files</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create-EC2-AMI-from-S3-VHD-image"><span class="nav-number">8.</span> <span class="nav-text">Create EC2 AMI from S3 VHD image</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create-EC2-instance-from-AMI"><span class="nav-number">9.</span> <span class="nav-text">Create EC2 instance from AMI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Running-the-instance"><span class="nav-number">10.</span> <span class="nav-text">Running the instance</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Post-Install"><span class="nav-number">11.</span> <span class="nav-text">Post Install</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">recca0120</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分類</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">標籤</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/recca0120" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;recca0120" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:recca0120@gmail.com" title="E-Mail → mailto:recca0120@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/recca.tsai" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;recca.tsai" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh_TW" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">recca0120</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 強力驅動
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
