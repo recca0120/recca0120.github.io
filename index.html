@@ -166,6 +166,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/2020/07/06/windows-10-running-in-1g-memory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="recca0120">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="recca0120 技術筆記">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/06/windows-10-running-in-1g-memory/" class="post-title-link" itemprop="url">windows 10 在1G 記憶體的機器如何跑的順暢</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2020-07-06 10:36:37" itemprop="dateCreated datePublished" datetime="2020-07-06T10:36:37+08:00">2020-07-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Memory-Compression"><a href="#Memory-Compression" class="headerlink" title="Memory Compression"></a>Memory Compression</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
+<p>停用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Disable-MMAgent -mc</span><br></pre></td></tr></table></figure>
+
+<p>啟用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enable-MMAgent -mc</span><br></pre></td></tr></table></figure>
+
+<h2 id="Superfetch"><a href="#Superfetch" class="headerlink" title="Superfetch"></a>Superfetch</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
+<p>停用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stop-Service -Force -Name <span class="string">"SysMain"</span>; Set-Service -Name <span class="string">"SysMain"</span> -StartupType Disabled</span><br></pre></td></tr></table></figure>
+
+<p>啟用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stop-Service -Force -Name <span class="string">"SysMain"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Windows-Definder"><a href="#Windows-Definder" class="headerlink" title="Windows Definder"></a>Windows Definder</h2><p>停用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-MpPreference -DisableRealtimeMonitoring <span class="variable">$true</span></span><br></pre></td></tr></table></figure>
+
+<p>啟用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-MpPreference -DisableRealtimeMonitoring <span class="variable">$false</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
     <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/2020/07/04/running-windows10-on-aws-ec2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -943,16 +1027,16 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分類</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">標籤</span>
       </div>
   </nav>
