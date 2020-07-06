@@ -115,17 +115,49 @@
 <p>啟用</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Stop-Service -Force -Name <span class="string">"SysMain"</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Windows-Definder"><a href="#Windows-Definder" class="headerlink" title="Windows Definder"></a>Windows Definder</h2><p>停用</p>
+<h2 id="Windows-Definder"><a href="#Windows-Definder" class="headerlink" title="Windows Definder"></a>Windows Definder</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
+<p>停用</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Set-MpPreference -DisableRealtimeMonitoring <span class="variable">$true</span></span><br></pre></td></tr></table></figure>
 
 <p>啟用</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Set-MpPreference -DisableRealtimeMonitoring <span class="variable">$false</span></span><br></pre></td></tr></table></figure>
-]]></content>
+
+<h2 id="Windows-Network-Data"><a href="#Windows-Network-Data" class="headerlink" title="Windows Network Data"></a>Windows Network Data</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
+<p>停用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Set-ItemProperty -Path <span class="string">"HKLM:\SYSTEM\ControlSet001\Services\Ndu\" -Name Start -Value 4</span></span><br></pre></td></tr></table></figure>
+
+<p>啟用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Set-ItemProperty -Path <span class="string">"HKLM:\SYSTEM\ControlSet001\Services\Ndu\" -Name Start -Value 2</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="OneDriver"><a href="#OneDriver" class="headerlink" title="OneDriver"></a>OneDriver</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
+<p>停用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> Disable-OneDrive</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$regkey1</span> = <span class="string">'Registry::HKEY_CLASSES_ROOT\CLSID\&#123;018D5C66-4533-4307-9B53-224DE2ED1FE6&#125;'</span></span><br><span class="line">    <span class="variable">$regkey2</span> = <span class="string">'Registry::HKEY_CLASSES_ROOT\Wow6432Node\CLSID\&#123;018D5C66-4533-4307-9B53-224DE2ED1FE6&#125;'</span></span><br><span class="line">    Set-ItemProperty -Path <span class="variable">$regkey1</span>, <span class="variable">$regkey2</span> -Name System.IsPinnedToNameSpaceTree -Value 0</span><br><span class="line">&#125;</span><br><span class="line">Disable-OneDrive</span><br></pre></td></tr></table></figure>
+
+<p>啟用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> Enable-OneDrive</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$regkey1</span> = <span class="string">'Registry::HKEY_CLASSES_ROOT\CLSID\&#123;018D5C66-4533-4307-9B53-224DE2ED1FE6&#125;'</span></span><br><span class="line">    <span class="variable">$regkey2</span> = <span class="string">'Registry::HKEY_CLASSES_ROOT\Wow6432Node\CLSID\&#123;018D5C66-4533-4307-9B53-224DE2ED1FE6&#125;'</span>    </span><br><span class="line">    Set-ItemProperty -Path <span class="variable">$regkey1</span>, <span class="variable">$regkey2</span> -Name System.IsPinnedToNameSpaceTree -Value 1</span><br><span class="line">&#125;</span><br><span class="line">Enable-OneDrive</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>windows</category>
       </categories>
       <tags>
         <tag>windows10</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
+    <url>/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/</url>
+    <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p>
+<h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>laravel</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>testing</tag>
       </tags>
   </entry>
   <entry>
@@ -206,24 +238,6 @@
       </categories>
       <tags>
         <tag>aws - virtualbox - windows10</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
-    <url>/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/</url>
-    <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p>
-<h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
-
-<h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-        <tag>testing</tag>
       </tags>
   </entry>
   <entry>

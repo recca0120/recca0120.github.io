@@ -232,12 +232,26 @@
 <p>啟用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stop-Service -Force -Name <span class="string">"SysMain"</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Windows-Definder"><a href="#Windows-Definder" class="headerlink" title="Windows Definder"></a>Windows Definder</h2><p>停用</p>
+<h2 id="Windows-Definder"><a href="#Windows-Definder" class="headerlink" title="Windows Definder"></a>Windows Definder</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
+<p>停用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-MpPreference -DisableRealtimeMonitoring <span class="variable">$true</span></span><br></pre></td></tr></table></figure>
 
 <p>啟用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-MpPreference -DisableRealtimeMonitoring <span class="variable">$false</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="Windows-Network-Data"><a href="#Windows-Network-Data" class="headerlink" title="Windows Network Data"></a>Windows Network Data</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
+<p>停用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-ItemProperty -Path <span class="string">"HKLM:\SYSTEM\ControlSet001\Services\Ndu\" -Name Start -Value 4</span></span><br></pre></td></tr></table></figure>
+
+<p>啟用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-ItemProperty -Path <span class="string">"HKLM:\SYSTEM\ControlSet001\Services\Ndu\" -Name Start -Value 2</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="OneDriver"><a href="#OneDriver" class="headerlink" title="OneDriver"></a>OneDriver</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
+<p>停用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> Disable-OneDrive</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$regkey1</span> = <span class="string">'Registry::HKEY_CLASSES_ROOT\CLSID\&#123;018D5C66-4533-4307-9B53-224DE2ED1FE6&#125;'</span></span><br><span class="line">    <span class="variable">$regkey2</span> = <span class="string">'Registry::HKEY_CLASSES_ROOT\Wow6432Node\CLSID\&#123;018D5C66-4533-4307-9B53-224DE2ED1FE6&#125;'</span></span><br><span class="line">    Set-ItemProperty -Path <span class="variable">$regkey1</span>, <span class="variable">$regkey2</span> -Name System.IsPinnedToNameSpaceTree -Value 0</span><br><span class="line">&#125;</span><br><span class="line">Disable-OneDrive</span><br></pre></td></tr></table></figure>
+
+<p>啟用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> Enable-OneDrive</span><br><span class="line">&#123;</span><br><span class="line">    <span class="variable">$regkey1</span> = <span class="string">'Registry::HKEY_CLASSES_ROOT\CLSID\&#123;018D5C66-4533-4307-9B53-224DE2ED1FE6&#125;'</span></span><br><span class="line">    <span class="variable">$regkey2</span> = <span class="string">'Registry::HKEY_CLASSES_ROOT\Wow6432Node\CLSID\&#123;018D5C66-4533-4307-9B53-224DE2ED1FE6&#125;'</span>    </span><br><span class="line">    Set-ItemProperty -Path <span class="variable">$regkey1</span>, <span class="variable">$regkey2</span> -Name System.IsPinnedToNameSpaceTree -Value 1</span><br><span class="line">&#125;</span><br><span class="line">Enable-OneDrive</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -334,7 +348,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Memory-Compression"><span class="nav-number">1.</span> <span class="nav-text">Memory Compression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Superfetch"><span class="nav-number">2.</span> <span class="nav-text">Superfetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-Definder"><span class="nav-number">3.</span> <span class="nav-text">Windows Definder</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Memory-Compression"><span class="nav-number">1.</span> <span class="nav-text">Memory Compression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Superfetch"><span class="nav-number">2.</span> <span class="nav-text">Superfetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-Definder"><span class="nav-number">3.</span> <span class="nav-text">Windows Definder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-Network-Data"><span class="nav-number">4.</span> <span class="nav-text">Windows Network Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OneDriver"><span class="nav-number">5.</span> <span class="nav-text">OneDriver</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
