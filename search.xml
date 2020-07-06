@@ -100,7 +100,7 @@
   </entry>
   <entry>
     <title>Windows 10 在 1G 記憶體的機器如何跑的順暢</title>
-    <url>/2020/07/06/windows-10-running-in-1g-memory/</url>
+    <url>/2020/07/06/windows-10-running-in-1g-ram/</url>
     <content><![CDATA[<h2 id="Memory-Compression"><a href="#Memory-Compression" class="headerlink" title="Memory Compression"></a>Memory Compression</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
 <p>停用</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Disable-MMAgent -mc</span><br></pre></td></tr></table></figure>
