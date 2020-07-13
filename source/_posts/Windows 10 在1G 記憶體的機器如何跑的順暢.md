@@ -41,17 +41,20 @@ Stop-Service -Force -Name "SysMain"
 
 ## Windows Definder
 
-用 administrator 的身份並用 powershell 執行以下命令
+用 administrator 的身份並用 powershell 執行以下命令，[參考](https://serverfault.com/questions/873522/how-do-i-completely-turn-off-windows-defender-from-powershell)
 
 停用
 ```bash
-Set-MpPreference -DisableRealtimeMonitoring $true
+Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableRealtimeMonitoring $true -DisableScriptScanning $true -EnableControlledFolderAccess Disabled -EnableNetworkProtection AuditMode -Force -MAPSReporting Disabled -SubmitSamplesConsent NeverSend
 ```
+
+<!--
 
 啟用
 ```bash
 Set-MpPreference -DisableRealtimeMonitoring $false
 ```
+-->
 
 ## Windows Network Data
 
