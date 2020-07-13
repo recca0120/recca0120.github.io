@@ -232,13 +232,15 @@
 <p>啟用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stop-Service -Force -Name <span class="string">"SysMain"</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Windows-Definder"><a href="#Windows-Definder" class="headerlink" title="Windows Definder"></a>Windows Definder</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
+<h2 id="Windows-Definder"><a href="#Windows-Definder" class="headerlink" title="Windows Definder"></a>Windows Definder</h2><p>用 administrator 的身份並用 powershell 執行以下命令，<a href="https://serverfault.com/questions/873522/how-do-i-completely-turn-off-windows-defender-from-powershell" target="_blank" rel="noopener">參考</a></p>
 <p>停用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-MpPreference -DisableRealtimeMonitoring <span class="variable">$true</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-MpPreference -DisableIntrusionPreventionSystem <span class="variable">$true</span> -DisableIOAVProtection <span class="variable">$true</span> -DisableRealtimeMonitoring <span class="variable">$true</span> -DisableScriptScanning <span class="variable">$true</span> -EnableControlledFolderAccess Disabled -EnableNetworkProtection AuditMode -Force -MAPSReporting Disabled -SubmitSamplesConsent NeverSend</span><br></pre></td></tr></table></figure>
 
-<p>啟用</p>
+<!--
+
+啟用
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-MpPreference -DisableRealtimeMonitoring <span class="variable">$false</span></span><br></pre></td></tr></table></figure>
-
+<p>–&gt;</p>
 <h2 id="Windows-Network-Data"><a href="#Windows-Network-Data" class="headerlink" title="Windows Network Data"></a>Windows Network Data</h2><p>用 administrator 的身份並用 powershell 執行以下命令</p>
 <p>停用</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-ItemProperty -Path <span class="string">"HKLM:\SYSTEM\ControlSet001\Services\Ndu\" -Name Start -Value 4</span></span><br></pre></td></tr></table></figure>
@@ -348,7 +350,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Memory-Compression"><span class="nav-number">1.</span> <span class="nav-text">Memory Compression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Superfetch"><span class="nav-number">2.</span> <span class="nav-text">Superfetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-Definder"><span class="nav-number">3.</span> <span class="nav-text">Windows Definder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-Network-Data"><span class="nav-number">4.</span> <span class="nav-text">Windows Network Data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OneDriver"><span class="nav-number">5.</span> <span class="nav-text">OneDriver</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Memory-Compression"><span class="nav-number">1.</span> <span class="nav-text">Memory Compression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Superfetch"><span class="nav-number">2.</span> <span class="nav-text">Superfetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-Definder"><span class="nav-number">3.</span> <span class="nav-text">Windows Definder</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
