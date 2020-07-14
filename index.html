@@ -166,6 +166,75 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/2020/07/14/render-markdown-by-blade-template-engine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="recca0120">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="recca0120 技術筆記">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/14/render-markdown-by-blade-template-engine/" class="post-title-link" itemprop="url">用 Blade 來 Render Markdown</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2020-07-14 09:49:36" itemprop="dateCreated datePublished" datetime="2020-07-14T09:49:36+08:00">2020-07-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/laravel/" itemprop="url" rel="index"><span itemprop="name">laravel</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>用 markdown 來寫文件是一個超級便利的事情，如果能再加上 Laravel 的 Blade 就更棒了，好在 Blade 可以做這件事，兩個願望一次達成啊</p>
+<h2 id="How-to"><a href="#How-to" class="headerlink" title="How to"></a>How to</h2><h3 id="安裝-markdown-套件"><a href="#安裝-markdown-套件" class="headerlink" title="安裝 markdown 套件"></a>安裝 markdown 套件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require league/commonmark</span><br></pre></td></tr></table></figure>
+
+<h3 id="Render-Markdown"><a href="#Render-Markdown" class="headerlink" title="Render Markdown"></a>Render Markdown</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">View</span>\<span class="title">Factory</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">League</span>\<span class="title">CommonMark</span>\<span class="title">CommonMarkConverter</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">League</span>\<span class="title">CommonMark</span>\<span class="title">Environment</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DocsController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@var</span> Factory</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> $viewFactory;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Factory $viewFactory)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;viewFactory = $viewFactory;</span><br><span class="line">        <span class="comment">// 設定 md 的副檔名用 blade engine render</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;viewFactory-&gt;addExtension(<span class="string">'md'</span>, <span class="string">'blade'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        $environment = Environment::createGFMEnvironment();</span><br><span class="line"></span><br><span class="line">        $converter = <span class="keyword">new</span> CommonMarkConverter([</span><br><span class="line">            <span class="string">'allow_unsafe_links'</span> =&gt; <span class="keyword">false</span>,</span><br><span class="line">        ], $environment);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 透過 blade engine 及 markdown parser 做轉換</span></span><br><span class="line">        <span class="keyword">return</span> $converter-&gt;convertToHtml(<span class="keyword">$this</span>-&gt;viewFactory-&gt;make(<span class="string">'demo.md'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
     <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/2020/07/06/windows-10-running-in-1g-ram/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -910,76 +979,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="recca0120">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="recca0120 技術筆記">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/" class="post-title-link" itemprop="url">在 Laravel 如何手動丟出 Validation Exception</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2020-05-24 12:51:54" itemprop="dateCreated datePublished" datetime="2020-05-24T12:51:54+08:00">2020-05-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/laravel/" itemprop="url" rel="index"><span itemprop="name">laravel</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一頁"></i></a>
+  </nav>
 
 
 
@@ -1044,7 +1048,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -1053,7 +1057,7 @@
         <span class="site-state-item-name">分類</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">標籤</span>
       </div>
   </nav>
