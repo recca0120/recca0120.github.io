@@ -34,18 +34,18 @@ scan on
 配對
 
 ```bash
-pair xx:xx:xx:xx:xx
+pair xx:xx:xx:xx:xx:xx
 ```
 
 信任裝置
 
 ```bash
-trust xx:xx:xx:xx:xx
+trust xx:xx:xx:xx:xx:xx
 ```
 
 連線
 
 ```bash
-connect xx:xx:xx:xx:xx
+connect xx:xx:xx:xx:xx:xx
 ```
 
