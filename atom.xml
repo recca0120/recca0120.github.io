@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://recca0120.github.io/"/>
-  <updated>2020-07-14T01:49:36.000Z</updated>
+  <updated>2020-07-21T06:48:18.000Z</updated>
   <id>https://recca0120.github.io/</id>
   
   <author>
@@ -15,6 +15,61 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>樹莓派用 command 連結藍芽</title>
+    <link href="https://recca0120.github.io/2020/07/21/raspberry-pi-connect-bluetooth-using-command/"/>
+    <id>https://recca0120.github.io/2020/07/21/raspberry-pi-connect-bluetooth-using-command/</id>
+    <published>2020-07-21T06:48:18.000Z</published>
+    <updated>2020-07-21T06:48:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>執行 bluetoothctl 後會顯示 <code>[bluetooth]</code></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo bluetoothctl</span><br></pre></td></tr></table></figure><p>裝 agent 設為 on</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">agent on</span><br><span class="line">default-agent</span><br></pre></td></tr></table></figure><p>掃瞄裝置</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scan on</span><br></pre></td></tr></table></figure><p>配對</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pair xx:xx:xx:xx:xx</span><br></pre></td></tr></table></figure><p>信任裝置</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trust xx:xx:xx:xx:xx</span><br></pre></td></tr></table></figure><p>連線</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connect xx:xx:xx:xx:xx</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;執行 bluetoothctl 後會顯示 &lt;code&gt;[bluetooth]&lt;/code&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;
+      
+    
+    </summary>
+    
+    
+      <category term="raspberry pi" scheme="https://recca0120.github.io/categories/raspberry-pi/"/>
+    
+    
+      <category term="raspberry pi" scheme="https://recca0120.github.io/tags/raspberry-pi/"/>
+    
+      <category term="bluetooth" scheme="https://recca0120.github.io/tags/bluetooth/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis Connection Refused</title>
+    <link href="https://recca0120.github.io/2020/07/21/redis-connection-refused/"/>
+    <id>https://recca0120.github.io/2020/07/21/redis-connection-refused/</id>
+    <published>2020-07-21T06:40:39.000Z</published>
+    <updated>2020-07-21T06:40:39.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>將 Redis 升級到 6.0.5 後，執行 redis-cli 後會提示 <code>Could not connect to Redis at 127.0.0.1:6379: Connection refused</code>，這時只要修改 <code>redis.conf</code> 將 bind 刪除及將 protected-mode 設為 no 即可 </p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 將 bind 刪除或標註</span></span><br><span class="line"><span class="comment"># bind 192.168.0.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 將 protected-mode yes 改為 no</span></span><br><span class="line">protected-mode no</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;將 Redis 升級到 6.0.5 後，執行 redis-cli 後會提示 &lt;code&gt;Could not connect to Redis at 127.0.0.1:6379: Connection refused&lt;/code&gt;，這時只要修改 &lt;code&gt;redis.co
+      
+    
+    </summary>
+    
+    
+      <category term="redis" scheme="https://recca0120.github.io/categories/redis/"/>
+    
+    
+      <category term="redis" scheme="https://recca0120.github.io/tags/redis/"/>
+    
+  </entry>
   
   <entry>
     <title>用 Blade 來 Render Markdown</title>
@@ -260,9 +315,9 @@
       <category term="php" scheme="https://recca0120.github.io/categories/php/"/>
     
     
-      <category term="laravel" scheme="https://recca0120.github.io/tags/laravel/"/>
-    
       <category term="php" scheme="https://recca0120.github.io/tags/php/"/>
+    
+      <category term="laravel" scheme="https://recca0120.github.io/tags/laravel/"/>
     
   </entry>
   
