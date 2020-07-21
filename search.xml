@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤</title>
-    <url>/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
-    <content><![CDATA[<p>用 PHP 抓取某網頁資料的時候遇到了<br><strong>GuzzleHttp/Exception/RequestException with message ‘cURL error 60: SSL certificate problem: certificate has expired (see <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;" target="_blank" rel="noopener">https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;</a></strong><br>這個錯誤訊息，第一時間用 chrome 瀏覽器打開頁面確都正常也全都正常顯示，一檢查 SSL 證書發現是 <strong>COMODO RSA Organization Validation Secure Server CA</strong>，<br>查了一番資料後原來是 Linux 沒有該 Root Certification，所以必須到 <a href="https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2" target="_blank" rel="noopener">Comodo RSA Certification Authority (SHA-2)</a> 下載證書並儲存到 <code>/etc/ssl/certs</code> 下，以為這樣就能正常使用了，但程式一執行還是發生了同樣的錯誤，後來我直接採指定 ssl 證書的方法來解決這個問題</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">$client-&gt;get(<span class="string">'https://xx.xx.xx'</span>);</span><br></pre></td></tr></table></figure>
-
-<p>那在 Laravel 內能怎麼做？</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;bind(Client::class, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>但也不是每次 Client 都會用到這張證書所以可以改這樣寫</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Services</span>\<span class="title">GithubService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;when(GitHubService::class)</span><br><span class="line">            -&gt;needs(Client::class)</span><br><span class="line">            -&gt;given(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <title>Laravel Eloquent Memory Leak</title>
+    <url>/2020/06/18/laravel-eloquent-memory-leak/</url>
+    <content><![CDATA[<p>從<a href="https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak" target="_blank" rel="noopener">這篇討論串</a>可以看出 Eloquent 用 property 去取得 relation 時是會造成 memory leak 的這在大型資料運算的時候會給系統造成很大負擔的，不得不小心，但在這討論串中有找出解決方案，所以直接節錄解決方案</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$users = User::with(<span class="string">'posts'</span>)-&gt;get();</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user) &#123;</span><br><span class="line">    $posts = $user-&gt;posts;</span><br><span class="line">    <span class="comment">// 增加這行即可</span></span><br><span class="line">    $user-&gt;setRelations([]);</span><br><span class="line">    <span class="comment">// 討論串有提到這一行，但提問者測試好像無效</span></span><br><span class="line">    <span class="comment">// $user-&gt;setRelation('posts', null);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>php</category>
+        <category>laravel</category>
       </categories>
       <tags>
-        <tag>php</tag>
         <tag>laravel</tag>
+        <tag>eloquent</tag>
       </tags>
   </entry>
   <entry>
-    <title>Redis Connection Refused</title>
-    <url>/2020/07/21/redis-connection-refused/</url>
-    <content><![CDATA[<p>將 Redis 升級到 6.0.5 後，執行 redis-cli 後會提示 <code>Could not connect to Redis at 127.0.0.1:6379: Connection refused</code>，這時只要修改 <code>redis.conf</code> 將 bind 刪除及將 protected-mode 設為 no 即可 </p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 將 bind 刪除或標註</span></span><br><span class="line"><span class="comment"># bind 192.168.0.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 將 protected-mode yes 改為 no</span></span><br><span class="line">protected-mode no</span><br></pre></td></tr></table></figure>]]></content>
+    <title>Laravel Migration 注意事項</title>
+    <url>/2020/06/08/laravel-create-migration-precautions/</url>
+    <content><![CDATA[<p>最近使用 Migration 的 Rollback 發生了不少問題，要避免以下幾種寫法</p>
+<h4 id="新增欄位和刪除欄位共用"><a href="#新增欄位和刪除欄位共用" class="headerlink" title="新增欄位和刪除欄位共用"></a>新增欄位和刪除欄位共用</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">    $table-&gt;string(<span class="string">'new_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;string(<span class="string">'new_column'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="同時刪除欄位及索引"><a href="#同時刪除欄位及索引" class="headerlink" title="同時刪除欄位及索引"></a>同時刪除欄位及索引</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropIndex(<span class="string">'users_old_column_index'</span>);</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropIndex(<span class="string">'users_old_column_index'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="刪除多欄位時要寫在一起"><a href="#刪除多欄位時要寫在一起" class="headerlink" title="刪除多欄位時要寫在一起"></a>刪除多欄位時要寫在一起</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column2'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>, <span class="string">'old_column2'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="有沒有避免-migration-錯誤的方法？"><a href="#有沒有避免-migration-錯誤的方法？" class="headerlink" title="有沒有避免 migration 錯誤的方法？"></a>有沒有避免 migration 錯誤的方法？</h3><p>大部份應該都是使用 php artisan migration:rollback 來測 migration 是否正確，但資料庫裡如果有資料可能就不會那麼有勇氣的下這一個指令了<br>所以最好的測試方法，當然是用 PHPUnit + sqlite 的方案了，最大的好處是根本不用擔心資料庫的資料了，所以我們只要設定幾個東西即可</p>
+<ol>
+<li>設定 phpunit.xml 的資料庫為 sqlite</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">phpunit</span> <span class="attr">backupGlobals</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">backupStaticAttributes</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">bootstrap</span>=<span class="string">"vendor/autoload.php"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">colors</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">convertErrorsToExceptions</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">convertNoticesToExceptions</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">convertWarningsToExceptions</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">processIsolation</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">stopOnFailure</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">testsuites</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">testsuite</span> <span class="attr">name</span>=<span class="string">"Feature"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span> <span class="attr">suffix</span>=<span class="string">"Test.php"</span>&gt;</span>./tests/Feature<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">testsuite</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">testsuite</span> <span class="attr">name</span>=<span class="string">"Unit"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span> <span class="attr">suffix</span>=<span class="string">"Test.php"</span>&gt;</span>./tests/Unit<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">testsuite</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">testsuites</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">whitelist</span> <span class="attr">processUncoveredFilesFromWhitelist</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span> <span class="attr">suffix</span>=<span class="string">".php"</span>&gt;</span>./app<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">whitelist</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">php</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"APP_ENV"</span> <span class="attr">value</span>=<span class="string">"testing"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"BCRYPT_ROUNDS"</span> <span class="attr">value</span>=<span class="string">"4"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"CACHE_DRIVER"</span> <span class="attr">value</span>=<span class="string">"array"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"SESSION_DRIVER"</span> <span class="attr">value</span>=<span class="string">"array"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"QUEUE_DRIVER"</span> <span class="attr">value</span>=<span class="string">"sync"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"MAIL_DRIVER"</span> <span class="attr">value</span>=<span class="string">"array"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這兩行 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"DB_CONNECTION"</span> <span class="attr">value</span>=<span class="string">"sqlite"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"DB_DATABASE"</span> <span class="attr">value</span>=<span class="string">":memory:"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">php</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">phpunit</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>寫個整合測試(不用擔心不會寫測試，照抄即可)</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Tests</span>\<span class="title">Feature</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseMigrations</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Tests</span>\<span class="title">TestCase</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">// 加入這一行即可</span></span><br><span class="line">    <span class="keyword">use</span> <span class="title">DatabaseMigrations</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * A basic test example.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicTest</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;assertTrue(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最後只需執行 <code>vendor/bin/phpunit</code> 就可以讓 phpunit 幫忙做檢查了</p>
+]]></content>
       <categories>
-        <category>redis</category>
+        <category>laravel</category>
       </categories>
       <tags>
-        <tag>redis</tag>
+        <tag>laravel</tag>
       </tags>
   </entry>
   <entry>
@@ -49,6 +61,53 @@
       <tags>
         <tag>laravel</tag>
         <tag>testing</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤</title>
+    <url>/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
+    <content><![CDATA[<p>用 PHP 抓取某網頁資料的時候遇到了<br><strong>GuzzleHttp/Exception/RequestException with message ‘cURL error 60: SSL certificate problem: certificate has expired (see <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;" target="_blank" rel="noopener">https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;</a></strong><br>這個錯誤訊息，第一時間用 chrome 瀏覽器打開頁面確都正常也全都正常顯示，一檢查 SSL 證書發現是 <strong>COMODO RSA Organization Validation Secure Server CA</strong>，<br>查了一番資料後原來是 Linux 沒有該 Root Certification，所以必須到 <a href="https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2" target="_blank" rel="noopener">Comodo RSA Certification Authority (SHA-2)</a> 下載證書並儲存到 <code>/etc/ssl/certs</code> 下，以為這樣就能正常使用了，但程式一執行還是發生了同樣的錯誤，後來我直接採指定 ssl 證書的方法來解決這個問題</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">$client-&gt;get(<span class="string">'https://xx.xx.xx'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>那在 Laravel 內能怎麼做？</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;bind(Client::class, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>但也不是每次 Client 都會用到這張證書所以可以改這樣寫</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Services</span>\<span class="title">GithubService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;when(GitHubService::class)</span><br><span class="line">            -&gt;needs(Client::class)</span><br><span class="line">            -&gt;given(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis Connection Refused</title>
+    <url>/2020/07/21/redis-connection-refused/</url>
+    <content><![CDATA[<p>將 Redis 升級到 6.0.5 後，執行 redis-cli 後會提示 <code>Could not connect to Redis at 127.0.0.1:6379: Connection refused</code>，這時只要修改 <code>redis.conf</code> 將 bind 刪除及將 protected-mode 設為 no 即可 </p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 將 bind 刪除或標註</span></span><br><span class="line"><span class="comment"># bind 192.168.0.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 將 protected-mode yes 改為 no</span></span><br><span class="line">protected-mode no</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</title>
+    <url>/2020/06/12/redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128/</url>
+    <content><![CDATA[<p>看到 <code>The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</code> 這個訊息的修復方式</p>
+<ul>
+<li><code>echo 512 &gt; /proc/sys/net/core/somaxconn</code> with root</li>
+<li>add <code>net.core.somaxconn=512</code> in the <code>/etc/sysctl.conf</code> file and restart</li>
+</ul>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
       </tags>
   </entry>
   <entry>
@@ -95,157 +154,6 @@
       </categories>
       <tags>
         <tag>windows10</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Laravel Migration 注意事項</title>
-    <url>/2020/06/08/laravel-create-migration-precautions/</url>
-    <content><![CDATA[<p>最近使用 Migration 的 Rollback 發生了不少問題，要避免以下幾種寫法</p>
-<h4 id="新增欄位和刪除欄位共用"><a href="#新增欄位和刪除欄位共用" class="headerlink" title="新增欄位和刪除欄位共用"></a>新增欄位和刪除欄位共用</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">    $table-&gt;string(<span class="string">'new_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;string(<span class="string">'new_column'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="同時刪除欄位及索引"><a href="#同時刪除欄位及索引" class="headerlink" title="同時刪除欄位及索引"></a>同時刪除欄位及索引</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropIndex(<span class="string">'users_old_column_index'</span>);</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropIndex(<span class="string">'users_old_column_index'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="刪除多欄位時要寫在一起"><a href="#刪除多欄位時要寫在一起" class="headerlink" title="刪除多欄位時要寫在一起"></a>刪除多欄位時要寫在一起</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column2'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>, <span class="string">'old_column2'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="有沒有避免-migration-錯誤的方法？"><a href="#有沒有避免-migration-錯誤的方法？" class="headerlink" title="有沒有避免 migration 錯誤的方法？"></a>有沒有避免 migration 錯誤的方法？</h3><p>大部份應該都是使用 php artisan migration:rollback 來測 migration 是否正確，但資料庫裡如果有資料可能就不會那麼有勇氣的下這一個指令了<br>所以最好的測試方法，當然是用 PHPUnit + sqlite 的方案了，最大的好處是根本不用擔心資料庫的資料了，所以我們只要設定幾個東西即可</p>
-<ol>
-<li>設定 phpunit.xml 的資料庫為 sqlite</li>
-</ol>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">phpunit</span> <span class="attr">backupGlobals</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">backupStaticAttributes</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">bootstrap</span>=<span class="string">"vendor/autoload.php"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">colors</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">convertErrorsToExceptions</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">convertNoticesToExceptions</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">convertWarningsToExceptions</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">processIsolation</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">stopOnFailure</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">testsuites</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">testsuite</span> <span class="attr">name</span>=<span class="string">"Feature"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span> <span class="attr">suffix</span>=<span class="string">"Test.php"</span>&gt;</span>./tests/Feature<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">testsuite</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">testsuite</span> <span class="attr">name</span>=<span class="string">"Unit"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span> <span class="attr">suffix</span>=<span class="string">"Test.php"</span>&gt;</span>./tests/Unit<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">testsuite</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">testsuites</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">whitelist</span> <span class="attr">processUncoveredFilesFromWhitelist</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span> <span class="attr">suffix</span>=<span class="string">".php"</span>&gt;</span>./app<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">whitelist</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">php</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"APP_ENV"</span> <span class="attr">value</span>=<span class="string">"testing"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"BCRYPT_ROUNDS"</span> <span class="attr">value</span>=<span class="string">"4"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"CACHE_DRIVER"</span> <span class="attr">value</span>=<span class="string">"array"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"SESSION_DRIVER"</span> <span class="attr">value</span>=<span class="string">"array"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"QUEUE_DRIVER"</span> <span class="attr">value</span>=<span class="string">"sync"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"MAIL_DRIVER"</span> <span class="attr">value</span>=<span class="string">"array"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這兩行 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"DB_CONNECTION"</span> <span class="attr">value</span>=<span class="string">"sqlite"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"DB_DATABASE"</span> <span class="attr">value</span>=<span class="string">":memory:"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">php</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">phpunit</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>寫個整合測試(不用擔心不會寫測試，照抄即可)</li>
-</ol>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Tests</span>\<span class="title">Feature</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseMigrations</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Tests</span>\<span class="title">TestCase</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">// 加入這一行即可</span></span><br><span class="line">    <span class="keyword">use</span> <span class="title">DatabaseMigrations</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * A basic test example.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicTest</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;assertTrue(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>最後只需執行 <code>vendor/bin/phpunit</code> 就可以讓 phpunit 幫忙做檢查了</p>
-]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Laravel Eloquent Memory Leak</title>
-    <url>/2020/06/18/laravel-eloquent-memory-leak/</url>
-    <content><![CDATA[<p>從<a href="https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak" target="_blank" rel="noopener">這篇討論串</a>可以看出 Eloquent 用 property 去取得 relation 時是會造成 memory leak 的這在大型資料運算的時候會給系統造成很大負擔的，不得不小心，但在這討論串中有找出解決方案，所以直接節錄解決方案</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$users = User::with(<span class="string">'posts'</span>)-&gt;get();</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> ($users <span class="keyword">as</span> $user) &#123;</span><br><span class="line">    $posts = $user-&gt;posts;</span><br><span class="line">    <span class="comment">// 增加這行即可</span></span><br><span class="line">    $user-&gt;setRelations([]);</span><br><span class="line">    <span class="comment">// 討論串有提到這一行，但提問者測試好像無效</span></span><br><span class="line">    <span class="comment">// $user-&gt;setRelation('posts', null);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-        <tag>eloquent</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</title>
-    <url>/2020/06/12/redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128/</url>
-    <content><![CDATA[<p>看到 <code>The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</code> 這個訊息的修復方式</p>
-<ul>
-<li><code>echo 512 &gt; /proc/sys/net/core/somaxconn</code> with root</li>
-<li>add <code>net.core.somaxconn=512</code> in the <code>/etc/sysctl.conf</code> file and restart</li>
-</ul>
-]]></content>
-      <categories>
-        <category>redis</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>樹莓派用 command 連結藍芽</title>
-    <url>/2020/07/21/raspberry-pi-connect-bluetooth-using-command/</url>
-    <content><![CDATA[<p>執行 bluetoothctl 後會顯示 <code>[bluetooth]</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo bluetoothctl</span><br></pre></td></tr></table></figure>
-
-<p>裝 agent 設為 on</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">agent on</span><br><span class="line">default-agent</span><br></pre></td></tr></table></figure>
-
-<p>掃瞄裝置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scan on</span><br></pre></td></tr></table></figure>
-
-<p>配對</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pair xx:xx:xx:xx:xx</span><br></pre></td></tr></table></figure>
-
-<p>信任裝置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">trust xx:xx:xx:xx:xx</span><br></pre></td></tr></table></figure>
-
-<p>連線</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">connect xx:xx:xx:xx:xx</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>raspberry pi</category>
-      </categories>
-      <tags>
-        <tag>raspberry pi</tag>
-        <tag>bluetooth</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在 Laravel 如何手動丟出 Validation Exception</title>
-    <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
-    <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解決 adb server version (41) doesn&#39;t match this client (40)</title>
-    <url>/2020/05/29/fix-adb-server-version-does-not-match-this-client-problem/</url>
-    <content><![CDATA[<p>更新完 android sdk 後執行 <code>adb devices</code> 後系統回傳 <code>adb server version (41) doesn&#39;t match this client (40)</code> 這樣的訊息<br>發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題<br>所以先執行 <code>brew cask uninstall android-platform-tools</code> 來移除 android-platform-tools 後，<br>再修改 ~/.bashrc 加入</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;&quot;&#x2F;Users&#x2F;recca0120&#x2F;Library&#x2F;Android&#x2F;sdk&quot;</span><br><span class="line">export PATH&#x3D;&quot;$ANDROID_HOME&#x2F;platform-tools:$ANDROID_HOME&#x2F;tools:$ANDROID_HOME&#x2F;tools&#x2F;bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
-
-<p>再執行 <code>source ~/.bashrc</code> 就可以修復這個問題了</p>
-]]></content>
-      <categories>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>用 Blade 來 Render Markdown</title>
-    <url>/2020/07/14/render-markdown-by-blade-template-engine/</url>
-    <content><![CDATA[<p>用 markdown 來寫文件是一個超級便利的事情，如果能再加上 Laravel 的 Blade 就更棒了，好在 Blade 可以做這件事，兩個願望一次達成啊</p>
-<h2 id="How-to"><a href="#How-to" class="headerlink" title="How to"></a>How to</h2><h3 id="安裝-markdown-套件"><a href="#安裝-markdown-套件" class="headerlink" title="安裝 markdown 套件"></a>安裝 markdown 套件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">composer require league/commonmark</span><br></pre></td></tr></table></figure>
-
-<h3 id="Render-Markdown"><a href="#Render-Markdown" class="headerlink" title="Render Markdown"></a>Render Markdown</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">View</span>\<span class="title">Factory</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">League</span>\<span class="title">CommonMark</span>\<span class="title">CommonMarkConverter</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">League</span>\<span class="title">CommonMark</span>\<span class="title">Environment</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DocsController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@var</span> Factory</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> $viewFactory;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Factory $viewFactory)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;viewFactory = $viewFactory;</span><br><span class="line">        <span class="comment">// 設定 md 的副檔名用 blade engine render</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;viewFactory-&gt;addExtension(<span class="string">'md'</span>, <span class="string">'blade'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        $environment = Environment::createGFMEnvironment();</span><br><span class="line"></span><br><span class="line">        $converter = <span class="keyword">new</span> CommonMarkConverter([</span><br><span class="line">            <span class="string">'allow_unsafe_links'</span> =&gt; <span class="keyword">false</span>,</span><br><span class="line">        ], $environment);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 透過 blade engine 及 markdown parser 做轉換</span></span><br><span class="line">        <span class="keyword">return</span> $converter-&gt;convertToHtml(<span class="keyword">$this</span>-&gt;viewFactory-&gt;make(<span class="string">'demo.md'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-        <tag>blade</tag>
-        <tag>markdown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
-    <url>/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/</url>
-    <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p>
-<h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
-
-<h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-        <tag>testing</tag>
       </tags>
   </entry>
   <entry>
@@ -326,6 +234,98 @@
       </categories>
       <tags>
         <tag>aws - virtualbox - windows10</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
+    <url>/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/</url>
+    <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p>
+<h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>laravel</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>testing</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 Laravel 如何手動丟出 Validation Exception</title>
+    <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
+    <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>laravel</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>樹莓派用 command 連結藍芽</title>
+    <url>/2020/07/21/raspberry-pi-connect-bluetooth-using-command/</url>
+    <content><![CDATA[<p>執行 bluetoothctl 後會顯示 <code>[bluetooth]</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo bluetoothctl</span><br></pre></td></tr></table></figure>
+
+<p>裝 agent 設為 on</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">agent on</span><br><span class="line">default-agent</span><br></pre></td></tr></table></figure>
+
+<p>掃瞄裝置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">scan on</span><br></pre></td></tr></table></figure>
+
+<p>配對</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pair xx:xx:xx:xx:xx</span><br></pre></td></tr></table></figure>
+
+<p>信任裝置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">trust xx:xx:xx:xx:xx</span><br></pre></td></tr></table></figure>
+
+<p>連線</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">connect xx:xx:xx:xx:xx</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>raspberry pi</category>
+      </categories>
+      <tags>
+        <tag>raspberry pi</tag>
+        <tag>bluetooth</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>用 Blade 來 Render Markdown</title>
+    <url>/2020/07/14/render-markdown-by-blade-template-engine/</url>
+    <content><![CDATA[<p>用 markdown 來寫文件是一個超級便利的事情，如果能再加上 Laravel 的 Blade 就更棒了，好在 Blade 可以做這件事，兩個願望一次達成啊</p>
+<h2 id="How-to"><a href="#How-to" class="headerlink" title="How to"></a>How to</h2><h3 id="安裝-markdown-套件"><a href="#安裝-markdown-套件" class="headerlink" title="安裝 markdown 套件"></a>安裝 markdown 套件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">composer require league/commonmark</span><br></pre></td></tr></table></figure>
+
+<h3 id="Render-Markdown"><a href="#Render-Markdown" class="headerlink" title="Render Markdown"></a>Render Markdown</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">View</span>\<span class="title">Factory</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">League</span>\<span class="title">CommonMark</span>\<span class="title">CommonMarkConverter</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">League</span>\<span class="title">CommonMark</span>\<span class="title">Environment</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DocsController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@var</span> Factory</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> $viewFactory;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">(Factory $viewFactory)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;viewFactory = $viewFactory;</span><br><span class="line">        <span class="comment">// 設定 md 的副檔名用 blade engine render</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;viewFactory-&gt;addExtension(<span class="string">'md'</span>, <span class="string">'blade'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">index</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        $environment = Environment::createGFMEnvironment();</span><br><span class="line"></span><br><span class="line">        $converter = <span class="keyword">new</span> CommonMarkConverter([</span><br><span class="line">            <span class="string">'allow_unsafe_links'</span> =&gt; <span class="keyword">false</span>,</span><br><span class="line">        ], $environment);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 透過 blade engine 及 markdown parser 做轉換</span></span><br><span class="line">        <span class="keyword">return</span> $converter-&gt;convertToHtml(<span class="keyword">$this</span>-&gt;viewFactory-&gt;make(<span class="string">'demo.md'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>laravel</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>blade</tag>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解決 adb server version (41) doesn&#39;t match this client (40)</title>
+    <url>/2020/05/29/fix-adb-server-version-does-not-match-this-client-problem/</url>
+    <content><![CDATA[<p>更新完 android sdk 後執行 <code>adb devices</code> 後系統回傳 <code>adb server version (41) doesn&#39;t match this client (40)</code> 這樣的訊息<br>發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題<br>所以先執行 <code>brew cask uninstall android-platform-tools</code> 來移除 android-platform-tools 後，<br>再修改 ~/.bashrc 加入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;&quot;&#x2F;Users&#x2F;recca0120&#x2F;Library&#x2F;Android&#x2F;sdk&quot;</span><br><span class="line">export PATH&#x3D;&quot;$ANDROID_HOME&#x2F;platform-tools:$ANDROID_HOME&#x2F;tools:$ANDROID_HOME&#x2F;tools&#x2F;bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
+
+<p>再執行 <code>source ~/.bashrc</code> 就可以修復這個問題了</p>
+]]></content>
+      <categories>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
       </tags>
   </entry>
 </search>
