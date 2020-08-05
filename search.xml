@@ -9,8 +9,9 @@
 <p>取得的內容會一模一樣，但是同一個 method 執行兩次是有差異的</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// method 1</span></span><br><span class="line">(string) $response-&gt;getBody(); <span class="comment">// 正常回傳</span></span><br><span class="line">(string) $response-&gt;getBody(); <span class="comment">// 正常回傳</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// method 2</span></span><br><span class="line">$response-&gt;getBody()-&gt;getContents(); <span class="comment">// 正常回傳</span></span><br><span class="line">$response-&gt;getBody()-&gt;getContents(); <span class="comment">// 空值</span></span><br></pre></td></tr></table></figure>
 
-<p>後來去查了一下原始碼發現，原來 __toString 會執行 seek(0)</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 部份程式碼</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stream</span> <span class="keyword">implements</span> <span class="title">StreamInterface</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;seek(<span class="number">0</span>);</span><br><span class="line">            <span class="keyword">return</span> (string) stream_get_contents(<span class="keyword">$this</span>-&gt;stream);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (\<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<p>後來去查了一下原始碼發現，原來 __toString 會執行 seek(0)，自動將指標歸零，才能一直重覆執行啊</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 部份程式碼</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stream</span> <span class="keyword">implements</span> <span class="title">StreamInterface</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 就是這一行</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;seek(<span class="number">0</span>);</span><br><span class="line">            <span class="keyword">return</span> (string) stream_get_contents(<span class="keyword">$this</span>-&gt;stream);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (\<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>php</category>
       </categories>
@@ -62,25 +63,6 @@
       </tags>
   </entry>
   <entry>
-    <title>PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤</title>
-    <url>/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
-    <content><![CDATA[<p>用 PHP 抓取某網頁資料的時候遇到了<br><strong>GuzzleHttp/Exception/RequestException with message ‘cURL error 60: SSL certificate problem: certificate has expired (see <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;" target="_blank" rel="noopener">https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;</a></strong><br>這個錯誤訊息，第一時間用 chrome 瀏覽器打開頁面確都正常也全都正常顯示，一檢查 SSL 證書發現是 <strong>COMODO RSA Organization Validation Secure Server CA</strong>，<br>查了一番資料後原來是 Linux 沒有該 Root Certification，所以必須到 <a href="https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2" target="_blank" rel="noopener">Comodo RSA Certification Authority (SHA-2)</a> 下載證書並儲存到 <code>/etc/ssl/certs</code> 下，以為這樣就能正常使用了，但程式一執行還是發生了同樣的錯誤，後來我直接採指定 ssl 證書的方法來解決這個問題</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">$client-&gt;get(<span class="string">'https://xx.xx.xx'</span>);</span><br></pre></td></tr></table></figure>
-
-<p>那在 Laravel 內能怎麼做？</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;bind(Client::class, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>但也不是每次 Client 都會用到這張證書所以可以改這樣寫</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Services</span>\<span class="title">GithubService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;when(GitHubService::class)</span><br><span class="line">            -&gt;needs(Client::class)</span><br><span class="line">            -&gt;given(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>php</category>
-      </categories>
-      <tags>
-        <tag>php</tag>
-        <tag>laravel</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Laravel 測試時如何查看 RedirectResponse 的結果</title>
     <url>/2020/06/25/laravel-testing-what-happens-after-a-redirect/</url>
     <content><![CDATA[<p>在 Laravel 遇到以下的程式碼時</p>
@@ -101,10 +83,45 @@
       </tags>
   </entry>
   <entry>
+    <title>PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤</title>
+    <url>/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
+    <content><![CDATA[<p>用 PHP 抓取某網頁資料的時候遇到了<br><strong>GuzzleHttp/Exception/RequestException with message ‘cURL error 60: SSL certificate problem: certificate has expired (see <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;" target="_blank" rel="noopener">https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;</a></strong><br>這個錯誤訊息，第一時間用 chrome 瀏覽器打開頁面確都正常也全都正常顯示，一檢查 SSL 證書發現是 <strong>COMODO RSA Organization Validation Secure Server CA</strong>，<br>查了一番資料後原來是 Linux 沒有該 Root Certification，所以必須到 <a href="https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2" target="_blank" rel="noopener">Comodo RSA Certification Authority (SHA-2)</a> 下載證書並儲存到 <code>/etc/ssl/certs</code> 下，以為這樣就能正常使用了，但程式一執行還是發生了同樣的錯誤，後來我直接採指定 ssl 證書的方法來解決這個問題</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">$client-&gt;get(<span class="string">'https://xx.xx.xx'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>那在 Laravel 內能怎麼做？</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;bind(Client::class, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>但也不是每次 Client 都會用到這張證書所以可以改這樣寫</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Services</span>\<span class="title">GithubService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;when(GitHubService::class)</span><br><span class="line">            -&gt;needs(Client::class)</span><br><span class="line">            -&gt;given(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>php</tag>
+        <tag>laravel</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redis Connection Refused</title>
     <url>/2020/07/21/redis-connection-refused/</url>
     <content><![CDATA[<p>將 Redis 升級到 6.0.5 後，執行 redis-cli 後會提示 <code>Could not connect to Redis at 127.0.0.1:6379: Connection refused</code>，這時只要修改 <code>redis.conf</code> 將 bind 刪除及將 protected-mode 設為 no 即可 </p>
 <figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 將 bind 刪除或標註</span></span><br><span class="line"><span class="comment"># bind 192.168.0.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 將 protected-mode yes 改為 no</span></span><br><span class="line">protected-mode no</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</title>
+    <url>/2020/06/12/redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128/</url>
+    <content><![CDATA[<p>看到 <code>The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</code> 這個訊息的修復方式</p>
+<ul>
+<li><code>echo 512 &gt; /proc/sys/net/core/somaxconn</code> with root</li>
+<li>add <code>net.core.somaxconn=512</code> in the <code>/etc/sysctl.conf</code> file and restart</li>
+</ul>
+]]></content>
       <categories>
         <category>redis</category>
       </categories>
@@ -156,35 +173,6 @@
       </categories>
       <tags>
         <tag>windows10</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</title>
-    <url>/2020/06/12/redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128/</url>
-    <content><![CDATA[<p>看到 <code>The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</code> 這個訊息的修復方式</p>
-<ul>
-<li><code>echo 512 &gt; /proc/sys/net/core/somaxconn</code> with root</li>
-<li>add <code>net.core.somaxconn=512</code> in the <code>/etc/sysctl.conf</code> file and restart</li>
-</ul>
-]]></content>
-      <categories>
-        <category>redis</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在 Laravel 如何手動丟出 Validation Exception</title>
-    <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
-    <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
       </tags>
   </entry>
   <entry>
@@ -268,21 +256,6 @@
       </tags>
   </entry>
   <entry>
-    <title>解決 adb server version (41) doesn&#39;t match this client (40)</title>
-    <url>/2020/05/29/fix-adb-server-version-does-not-match-this-client-problem/</url>
-    <content><![CDATA[<p>更新完 android sdk 後執行 <code>adb devices</code> 後系統回傳 <code>adb server version (41) doesn&#39;t match this client (40)</code> 這樣的訊息<br>發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題<br>所以先執行 <code>brew cask uninstall android-platform-tools</code> 來移除 android-platform-tools 後，<br>再修改 ~/.bashrc 加入</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;&quot;&#x2F;Users&#x2F;recca0120&#x2F;Library&#x2F;Android&#x2F;sdk&quot;</span><br><span class="line">export PATH&#x3D;&quot;$ANDROID_HOME&#x2F;platform-tools:$ANDROID_HOME&#x2F;tools:$ANDROID_HOME&#x2F;tools&#x2F;bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
-
-<p>再執行 <code>source ~/.bashrc</code> 就可以修復這個問題了</p>
-]]></content>
-      <categories>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>android</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
     <url>/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/</url>
     <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p>
@@ -298,6 +271,19 @@
       <tags>
         <tag>laravel</tag>
         <tag>testing</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 Laravel 如何手動丟出 Validation Exception</title>
+    <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
+    <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>laravel</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
       </tags>
   </entry>
   <entry>
@@ -344,6 +330,21 @@
         <tag>laravel</tag>
         <tag>blade</tag>
         <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解決 adb server version (41) doesn&#39;t match this client (40)</title>
+    <url>/2020/05/29/fix-adb-server-version-does-not-match-this-client-problem/</url>
+    <content><![CDATA[<p>更新完 android sdk 後執行 <code>adb devices</code> 後系統回傳 <code>adb server version (41) doesn&#39;t match this client (40)</code> 這樣的訊息<br>發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題<br>所以先執行 <code>brew cask uninstall android-platform-tools</code> 來移除 android-platform-tools 後，<br>再修改 ~/.bashrc 加入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;&quot;&#x2F;Users&#x2F;recca0120&#x2F;Library&#x2F;Android&#x2F;sdk&quot;</span><br><span class="line">export PATH&#x3D;&quot;$ANDROID_HOME&#x2F;platform-tools:$ANDROID_HOME&#x2F;tools:$ANDROID_HOME&#x2F;tools&#x2F;bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
+
+<p>再執行 <code>source ~/.bashrc</code> 就可以修復這個問題了</p>
+]]></content>
+      <categories>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
       </tags>
   </entry>
 </search>
