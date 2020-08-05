@@ -166,6 +166,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/2020/06/08/laravel-create-migration-precautions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="recca0120">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="recca0120 技術筆記">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/08/laravel-create-migration-precautions/" class="post-title-link" itemprop="url">Laravel Migration 注意事項</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2020-06-08 22:18:27" itemprop="dateCreated datePublished" datetime="2020-06-08T22:18:27+08:00">2020-06-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/laravel/" itemprop="url" rel="index"><span itemprop="name">laravel</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近使用 Migration 的 Rollback 發生了不少問題，要避免以下幾種寫法</p>
+<h4 id="新增欄位和刪除欄位共用"><a href="#新增欄位和刪除欄位共用" class="headerlink" title="新增欄位和刪除欄位共用"></a>新增欄位和刪除欄位共用</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">    $table-&gt;string(<span class="string">'new_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;string(<span class="string">'new_column'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="同時刪除欄位及索引"><a href="#同時刪除欄位及索引" class="headerlink" title="同時刪除欄位及索引"></a>同時刪除欄位及索引</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropIndex(<span class="string">'users_old_column_index'</span>);</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropIndex(<span class="string">'users_old_column_index'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="刪除多欄位時要寫在一起"><a href="#刪除多欄位時要寫在一起" class="headerlink" title="刪除多欄位時要寫在一起"></a>刪除多欄位時要寫在一起</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Bad</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>);</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column2'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Good</span></span><br><span class="line">Schema::table(<span class="string">'users'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(Blueprint $table)</span> </span>&#123;</span><br><span class="line">    $table-&gt;dropColumn(<span class="string">'old_column'</span>, <span class="string">'old_column2'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="有沒有避免-migration-錯誤的方法？"><a href="#有沒有避免-migration-錯誤的方法？" class="headerlink" title="有沒有避免 migration 錯誤的方法？"></a>有沒有避免 migration 錯誤的方法？</h3><p>大部份應該都是使用 php artisan migration:rollback 來測 migration 是否正確，但資料庫裡如果有資料可能就不會那麼有勇氣的下這一個指令了<br>所以最好的測試方法，當然是用 PHPUnit + sqlite 的方案了，最大的好處是根本不用擔心資料庫的資料了，所以我們只要設定幾個東西即可</p>
+<ol>
+<li>設定 phpunit.xml 的資料庫為 sqlite</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">phpunit</span> <span class="attr">backupGlobals</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">backupStaticAttributes</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">bootstrap</span>=<span class="string">"vendor/autoload.php"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">colors</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">convertErrorsToExceptions</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">convertNoticesToExceptions</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">convertWarningsToExceptions</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">processIsolation</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">stopOnFailure</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">testsuites</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">testsuite</span> <span class="attr">name</span>=<span class="string">"Feature"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span> <span class="attr">suffix</span>=<span class="string">"Test.php"</span>&gt;</span>./tests/Feature<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">testsuite</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">testsuite</span> <span class="attr">name</span>=<span class="string">"Unit"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span> <span class="attr">suffix</span>=<span class="string">"Test.php"</span>&gt;</span>./tests/Unit<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">testsuite</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">testsuites</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">whitelist</span> <span class="attr">processUncoveredFilesFromWhitelist</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">directory</span> <span class="attr">suffix</span>=<span class="string">".php"</span>&gt;</span>./app<span class="tag">&lt;/<span class="name">directory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">whitelist</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">php</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"APP_ENV"</span> <span class="attr">value</span>=<span class="string">"testing"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"BCRYPT_ROUNDS"</span> <span class="attr">value</span>=<span class="string">"4"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"CACHE_DRIVER"</span> <span class="attr">value</span>=<span class="string">"array"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"SESSION_DRIVER"</span> <span class="attr">value</span>=<span class="string">"array"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"QUEUE_DRIVER"</span> <span class="attr">value</span>=<span class="string">"sync"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"MAIL_DRIVER"</span> <span class="attr">value</span>=<span class="string">"array"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 這兩行 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"DB_CONNECTION"</span> <span class="attr">value</span>=<span class="string">"sqlite"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">env</span> <span class="attr">name</span>=<span class="string">"DB_DATABASE"</span> <span class="attr">value</span>=<span class="string">":memory:"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">php</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">phpunit</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>寫個整合測試(不用擔心不會寫測試，照抄即可)</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Tests</span>\<span class="title">Feature</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Foundation</span>\<span class="title">Testing</span>\<span class="title">DatabaseMigrations</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Tests</span>\<span class="title">TestCase</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">// 加入這一行即可</span></span><br><span class="line">    <span class="keyword">use</span> <span class="title">DatabaseMigrations</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * A basic test example.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">testBasicTest</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;assertTrue(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最後只需執行 <code>vendor/bin/phpunit</code> 就可以讓 phpunit 幫忙做檢查了</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
     <link itemprop="mainEntityOfPage" href="https://recca0120.github.io/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -442,7 +527,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
