@@ -2,12 +2,15 @@ title: 如何在樹莓派上部署 usbip server
 urlname: how-to-setup-usbip-server-on-raspberry-pi
 comments: true
 categories:
+  - raspberry pi
   - usbip
 author: recca0120
 abbrlink: 15047
+tags:
+  - raspberry pi
+  - usbip
 date: 2020-07-07 14:44:11
 updated: 2020-07-07 14:44:11
-tags:
 keywords:
 description:
 ---
