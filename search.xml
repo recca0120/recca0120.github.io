@@ -20,6 +20,49 @@
       </tags>
   </entry>
   <entry>
+    <title>LazyCollection 加 Generate 踩雷記</title>
+    <url>/2020/08/17/lazy-collection-with-generator-notice/</url>
+    <content><![CDATA[<p>在看文件的時候就知道 LazyCollection 搭 Generator 是一個很棒的組合<br>就誤以為直接丟 generator 就可以當找到 $i &gt; 5 之後就會停止執行迴圈<br>但事與願違啊</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">LazyCollection</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PHPUnit</span>\<span class="title">Framework</span>\<span class="title">TestCase</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_lazy_collect</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;assertEquals(<span class="number">6</span>, LazyCollection::make(<span class="keyword">$this</span>-&gt;generator())-&gt;collapse()-&gt;first(<span class="function"><span class="keyword">function</span> <span class="params">($i)</span> </span>&#123;</span><br><span class="line">            var_dump($i);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> $i &gt; <span class="number">5</span>;</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">generator</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $x = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">1</span>; $i &lt;= <span class="number">9</span>; $i++) &#123;</span><br><span class="line">            var_dump(sprintf(<span class="string">'loop-%02d'</span>, $x));</span><br><span class="line">            $temp = [];</span><br><span class="line">            <span class="keyword">for</span> ($j = <span class="number">1</span>; $j &lt;= <span class="number">9</span>; $j++) &#123;</span><br><span class="line">                $temp[] = $i * $j;</span><br><span class="line">            &#125;</span><br><span class="line">            $x++;</span><br><span class="line">            <span class="keyword">yield</span> $temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 會跑完所有迴圈</span></span><br><span class="line"><span class="comment">// string(7) "loop-01"</span></span><br><span class="line"><span class="comment">// string(7) "loop-02"</span></span><br><span class="line"><span class="comment">// string(7) "loop-03"</span></span><br><span class="line"><span class="comment">// string(7) "loop-04"</span></span><br><span class="line"><span class="comment">// string(7) "loop-05"</span></span><br><span class="line"><span class="comment">// string(7) "loop-06"</span></span><br><span class="line"><span class="comment">// string(7) "loop-07"</span></span><br><span class="line"><span class="comment">// string(7) "loop-08"</span></span><br><span class="line"><span class="comment">// string(7) "loop-09"</span></span><br><span class="line"><span class="comment">// int(1)</span></span><br><span class="line"><span class="comment">// int(2)</span></span><br><span class="line"><span class="comment">// int(3)</span></span><br><span class="line"><span class="comment">// int(4)</span></span><br><span class="line"><span class="comment">// int(5)</span></span><br><span class="line"><span class="comment">// int(6)</span></span><br></pre></td></tr></table></figure>
+
+<p>查了一下原始碼必須用 Closure 來回傳 Generator</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LazyCollection</span> <span class="keyword">implements</span> <span class="title">Enumerable</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($source = null)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($source <span class="keyword">instanceof</span> Closure || $source <span class="keyword">instanceof</span> <span class="keyword">self</span>) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;source = $source;</span><br><span class="line">        &#125; <span class="keyword">elseif</span> (is_null($source)) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;source = <span class="keyword">static</span>::empty();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;source = <span class="keyword">$this</span>-&gt;getArrayableItems($source);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Results array of items from Collection or Arrayable.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span>  mixed  $items</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> array</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">getArrayableItems</span><span class="params">($items)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (is_array($items)) &#123;</span><br><span class="line">            <span class="keyword">return</span> $items;</span><br><span class="line">        &#125; <span class="keyword">elseif</span> ($items <span class="keyword">instanceof</span> Enumerable) &#123;</span><br><span class="line">            <span class="keyword">return</span> $items-&gt;all();</span><br><span class="line">        &#125; <span class="keyword">elseif</span> ($items <span class="keyword">instanceof</span> Arrayable) &#123;</span><br><span class="line">            <span class="keyword">return</span> $items-&gt;toArray();</span><br><span class="line">        &#125; <span class="keyword">elseif</span> ($items <span class="keyword">instanceof</span> Jsonable) &#123;</span><br><span class="line">            <span class="keyword">return</span> json_decode($items-&gt;toJson(), <span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">elseif</span> ($items <span class="keyword">instanceof</span> JsonSerializable) &#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">array</span>) $items-&gt;jsonSerialize();</span><br><span class="line">        &#125; <span class="keyword">elseif</span> ($items <span class="keyword">instanceof</span> Traversable) &#123;</span><br><span class="line">            <span class="comment">// 不是用 Closure 就會跑到一段</span></span><br><span class="line">            <span class="keyword">return</span> iterator_to_array($items);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">array</span>) $items;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以正確的寫法應該是</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">LazyCollection</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PHPUnit</span>\<span class="title">Framework</span>\<span class="title">TestCase</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExampleTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_lazy_collect</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// 必須使用 Closure</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;assertEquals(<span class="number">6</span>, LazyCollection::make(<span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;generator();</span><br><span class="line">        &#125;)-&gt;collapse()-&gt;first(<span class="function"><span class="keyword">function</span> <span class="params">($i)</span> </span>&#123;</span><br><span class="line">            var_dump($i);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> $i &gt; <span class="number">5</span>;</span><br><span class="line">        &#125;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">generator</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $x = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> ($i = <span class="number">1</span>; $i &lt;= <span class="number">9</span>; $i++) &#123;</span><br><span class="line">            var_dump(sprintf(<span class="string">'loop-%02d'</span>, $x));</span><br><span class="line">            $temp = [];</span><br><span class="line">            <span class="keyword">for</span> ($j = <span class="number">1</span>; $j &lt;= <span class="number">9</span>; $j++) &#123;</span><br><span class="line">                $temp[] = $i * $j;</span><br><span class="line">            &#125;</span><br><span class="line">            $x++;</span><br><span class="line">            <span class="keyword">yield</span> $temp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 只執行了第一行迴圈</span></span><br><span class="line">string(<span class="number">7</span>) <span class="string">"loop-01"</span></span><br><span class="line">int(<span class="number">1</span>)</span><br><span class="line">int(<span class="number">2</span>)</span><br><span class="line">int(<span class="number">3</span>)</span><br><span class="line">int(<span class="number">4</span>)</span><br><span class="line">int(<span class="number">5</span>)</span><br><span class="line">int(<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+
+<p>這告訴我們文件必須仔細看啊</p>
+]]></content>
+      <categories>
+        <category>laravel</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>lazy-collection</tag>
+        <tag>generator</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Laravel 測試時如何查看 RedirectResponse 的結果</title>
+    <url>/2020/06/25/laravel-testing-what-happens-after-a-redirect/</url>
+    <content><![CDATA[<p>在 Laravel 遇到以下的程式碼時</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(Request $request)</span> </span>&#123;</span><br><span class="line">        $user = User::create($request-&gt;all());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> redirect(uri(<span class="string">'users.show'</span>, [<span class="string">'id'</span> =&gt; $user-&gt;id]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在測試的時候想要看到轉址的結果，我們能怎麼做呢？</p>
+<p><code>Laravel &gt;= 5.5.19</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followingRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Laravel &lt; 5.4.12:</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>-laravel -testing</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>testing</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Laravel Eloquent Memory Leak</title>
     <url>/2020/06/18/laravel-eloquent-memory-leak/</url>
     <content><![CDATA[<p>從<a href="https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak" target="_blank" rel="noopener">這篇討論串</a>可以看出 Eloquent 用 property 去取得 relation 時是會造成 memory leak 的這在大型資料運算的時候會給系統造成很大負擔的，不得不小心，但在這討論串中有找出解決方案，所以直接節錄解決方案</p>
@@ -60,73 +103,6 @@
       </categories>
       <tags>
         <tag>laravel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Laravel 測試時如何查看 RedirectResponse 的結果</title>
-    <url>/2020/06/25/laravel-testing-what-happens-after-a-redirect/</url>
-    <content><![CDATA[<p>在 Laravel 遇到以下的程式碼時</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">create</span><span class="params">(Request $request)</span> </span>&#123;</span><br><span class="line">        $user = User::create($request-&gt;all());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> redirect(uri(<span class="string">'users.show'</span>, [<span class="string">'id'</span> =&gt; $user-&gt;id]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在測試的時候想要看到轉址的結果，我們能怎麼做呢？</p>
-<p><code>Laravel &gt;= 5.5.19</code></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followingRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>Laravel &lt; 5.4.12:</code></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserControllerTest</span> <span class="keyword">extends</span> <span class="title">TestCase</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">test_it_should_show_user_after_create_user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span></span><br><span class="line">            -&gt;followRedirects() <span class="comment">// 加這行即可</span></span><br><span class="line">            -&gt;post(<span class="string">'user'</span>, [</span><br><span class="line">                <span class="string">'name'</span> =&gt; <span class="string">'foo'</span></span><br><span class="line">            ]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>-laravel -testing</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-        <tag>testing</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤</title>
-    <url>/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
-    <content><![CDATA[<p>用 PHP 抓取某網頁資料的時候遇到了<br><strong>GuzzleHttp/Exception/RequestException with message ‘cURL error 60: SSL certificate problem: certificate has expired (see <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;" target="_blank" rel="noopener">https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;</a></strong><br>這個錯誤訊息，第一時間用 chrome 瀏覽器打開頁面確都正常也全都正常顯示，一檢查 SSL 證書發現是 <strong>COMODO RSA Organization Validation Secure Server CA</strong>，<br>查了一番資料後原來是 Linux 沒有該 Root Certification，所以必須到 <a href="https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2" target="_blank" rel="noopener">Comodo RSA Certification Authority (SHA-2)</a> 下載證書並儲存到 <code>/etc/ssl/certs</code> 下，以為這樣就能正常使用了，但程式一執行還是發生了同樣的錯誤，後來我直接採指定 ssl 證書的方法來解決這個問題</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">$client-&gt;get(<span class="string">'https://xx.xx.xx'</span>);</span><br></pre></td></tr></table></figure>
-
-<p>那在 Laravel 內能怎麼做？</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;bind(Client::class, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<p>但也不是每次 Client 都會用到這張證書所以可以改這樣寫</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Services</span>\<span class="title">GithubService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;when(GitHubService::class)</span><br><span class="line">            -&gt;needs(Client::class)</span><br><span class="line">            -&gt;given(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>php</category>
-      </categories>
-      <tags>
-        <tag>php</tag>
-        <tag>laravel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis Connection Refused</title>
-    <url>/2020/07/21/redis-connection-refused/</url>
-    <content><![CDATA[<p>將 Redis 升級到 6.0.5 後，執行 redis-cli 後會提示 <code>Could not connect to Redis at 127.0.0.1:6379: Connection refused</code>，這時只要修改 <code>redis.conf</code> 將 bind 刪除及將 protected-mode 設為 no 即可 </p>
-<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 將 bind 刪除或標註</span></span><br><span class="line"><span class="comment"># bind 192.168.0.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 將 protected-mode yes 改為 no</span></span><br><span class="line">protected-mode no</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>redis</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Redis The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</title>
-    <url>/2020/06/12/redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128/</url>
-    <content><![CDATA[<p>看到 <code>The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</code> 這個訊息的修復方式</p>
-<ul>
-<li><code>echo 512 &gt; /proc/sys/net/core/somaxconn</code> with root</li>
-<li>add <code>net.core.somaxconn=512</code> in the <code>/etc/sysctl.conf</code> file and restart</li>
-</ul>
-]]></content>
-      <categories>
-        <category>redis</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
       </tags>
   </entry>
   <entry>
@@ -173,6 +149,66 @@
       </categories>
       <tags>
         <tag>windows10</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PHP Curl 遇到 [Root] Comodo RSA Certification Authority SSL 錯誤</title>
+    <url>/2020/06/01/how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php/</url>
+    <content><![CDATA[<p>用 PHP 抓取某網頁資料的時候遇到了<br><strong>GuzzleHttp/Exception/RequestException with message ‘cURL error 60: SSL certificate problem: certificate has expired (see <a href="https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;" target="_blank" rel="noopener">https://curl.haxx.se/libcurl/c/libcurl-errors.html)&#39;</a></strong><br>這個錯誤訊息，第一時間用 chrome 瀏覽器打開頁面確都正常也全都正常顯示，一檢查 SSL 證書發現是 <strong>COMODO RSA Organization Validation Secure Server CA</strong>，<br>查了一番資料後原來是 Linux 沒有該 Root Certification，所以必須到 <a href="https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2" target="_blank" rel="noopener">Comodo RSA Certification Authority (SHA-2)</a> 下載證書並儲存到 <code>/etc/ssl/certs</code> 下，以為這樣就能正常使用了，但程式一執行還是發生了同樣的錯誤，後來我直接採指定 ssl 證書的方法來解決這個問題</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"></span><br><span class="line">$client = <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">$client-&gt;get(<span class="string">'https://xx.xx.xx'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>那在 Laravel 內能怎麼做？</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;bind(Client::class, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>但也不是每次 Client 都會用到這張證書所以可以改這樣寫</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Providers</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">App</span>\<span class="title">Services</span>\<span class="title">GithubService</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">GuzzleHttp</span>\<span class="title">Client</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">ServiceProvider</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppServiceProvider</span> <span class="keyword">extends</span> <span class="title">ServiceProvider</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Register any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">register</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;app-&gt;when(GitHubService::class)</span><br><span class="line">            -&gt;needs(Client::class)</span><br><span class="line">            -&gt;given(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client([<span class="string">'verify'</span> =&gt; <span class="string">'證書位置'</span>]);</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Bootstrap any application services.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> void</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>php</tag>
+        <tag>laravel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis Connection Refused</title>
+    <url>/2020/07/21/redis-connection-refused/</url>
+    <content><![CDATA[<p>將 Redis 升級到 6.0.5 後，執行 redis-cli 後會提示 <code>Could not connect to Redis at 127.0.0.1:6379: Connection refused</code>，這時只要修改 <code>redis.conf</code> 將 bind 刪除及將 protected-mode 設為 no 即可 </p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 將 bind 刪除或標註</span></span><br><span class="line"><span class="comment"># bind 192.168.0.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 將 protected-mode yes 改為 no</span></span><br><span class="line">protected-mode no</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 Laravel 如何手動丟出 Validation Exception</title>
+    <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
+    <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>laravel</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Redis The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</title>
+    <url>/2020/06/12/redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128/</url>
+    <content><![CDATA[<p>看到 <code>The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128</code> 這個訊息的修復方式</p>
+<ul>
+<li><code>echo 512 &gt; /proc/sys/net/core/somaxconn</code> with root</li>
+<li>add <code>net.core.somaxconn=512</code> in the <code>/etc/sysctl.conf</code> file and restart</li>
+</ul>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
       </tags>
   </entry>
   <entry>
@@ -256,37 +292,6 @@
       </tags>
   </entry>
   <entry>
-    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
-    <url>/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/</url>
-    <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p>
-<h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
-
-<h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-        <tag>testing</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在 Laravel 如何手動丟出 Validation Exception</title>
-    <url>/2020/05/24/how-to-throw-a-validation-exception-manually-in-laravel/</url>
-    <content><![CDATA[<p>呼叫 api 時回傳錯誤回來後，希望把 api 的錯誤訊息偽裝成 ValidationException 時，我們可以這樣做</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Validation</span>\<span class="title">ValidationException</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// call api</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (<span class="keyword">Exception</span> $e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> ValidationException::withMessages([</span><br><span class="line">        <span class="string">'field'</span> =&gt; [$e-&gt;getMessage()],</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>laravel</category>
-      </categories>
-      <tags>
-        <tag>laravel</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>樹莓派用 command 連結藍芽</title>
     <url>/2020/07/21/raspberry-pi-connect-bluetooth-using-command/</url>
     <content><![CDATA[<p>執行 bluetoothctl 後會顯示 <code>[bluetooth]</code></p>
@@ -317,6 +322,39 @@
       </tags>
   </entry>
   <entry>
+    <title>解決 adb server version (41) doesn&#39;t match this client (40)</title>
+    <url>/2020/05/29/fix-adb-server-version-does-not-match-this-client-problem/</url>
+    <content><![CDATA[<p>更新完 android sdk 後執行 <code>adb devices</code> 後系統回傳 <code>adb server version (41) doesn&#39;t match this client (40)</code> 這樣的訊息<br>發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題<br>所以先執行 <code>brew cask uninstall android-platform-tools</code> 來移除 android-platform-tools 後，<br>再修改 ~/.bashrc 加入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;&quot;&#x2F;Users&#x2F;recca0120&#x2F;Library&#x2F;Android&#x2F;sdk&quot;</span><br><span class="line">export PATH&#x3D;&quot;$ANDROID_HOME&#x2F;platform-tools:$ANDROID_HOME&#x2F;tools:$ANDROID_HOME&#x2F;tools&#x2F;bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
+
+<p>再執行 <code>source ~/.bashrc</code> 就可以修復這個問題了</p>
+]]></content>
+      <categories>
+        <category>android</category>
+      </categories>
+      <tags>
+        <tag>android</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在 Laravel Feature 測試中如何 mock $_SERVER</title>
+    <url>/2020/06/23/how-to-mock_$%5C_SERVER-in-laravel-feature-testing/</url>
+    <content><![CDATA[<p>寫 Laravel Feature 測試時有時需要變更 REMOTE_ADDR ($_SERVER 變數)，Laravel 用以下做法來變更</p>
+<h4 id="GET-時變更"><a href="#GET-時變更" class="headerlink" title="GET 時變更"></a>GET 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;get(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;getJson(<span class="string">'/api/path'</span>, [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="POST-時變更"><a href="#POST-時變更" class="headerlink" title="POST 時變更"></a>POST 時變更</h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;post(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="keyword">$this</span>-&gt;postJson(<span class="string">'/api/path'</span>, [<span class="string">'foo'</span> =&gt; <span class="string">'bar'</span>], [</span><br><span class="line">    <span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span></span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-withServerVariables"><a href="#使用-withServerVariables" class="headerlink" title="使用 withServerVariables"></a>使用 <code>withServerVariables</code></h4><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;withServerVariables([<span class="string">'REMOTE_ADDR'</span> =&gt; <span class="string">'10.1.0.1'</span>]);</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>laravel</category>
+      </categories>
+      <tags>
+        <tag>laravel</tag>
+        <tag>testing</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>用 Blade 來 Render Markdown</title>
     <url>/2020/07/14/render-markdown-by-blade-template-engine/</url>
     <content><![CDATA[<p>用 markdown 來寫文件是一個超級便利的事情，如果能再加上 Laravel 的 Blade 就更棒了，好在 Blade 可以做這件事，兩個願望一次達成啊</p>
@@ -330,21 +368,6 @@
         <tag>laravel</tag>
         <tag>blade</tag>
         <tag>markdown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解決 adb server version (41) doesn&#39;t match this client (40)</title>
-    <url>/2020/05/29/fix-adb-server-version-does-not-match-this-client-problem/</url>
-    <content><![CDATA[<p>更新完 android sdk 後執行 <code>adb devices</code> 後系統回傳 <code>adb server version (41) doesn&#39;t match this client (40)</code> 這樣的訊息<br>發現原來在 mac 上已經用 brew 安裝了 android-platform-tools 才會造成 server 和 client 的 adb 版本不一致的問題<br>所以先執行 <code>brew cask uninstall android-platform-tools</code> 來移除 android-platform-tools 後，<br>再修改 ~/.bashrc 加入</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export ANDROID_HOME&#x3D;&quot;&#x2F;Users&#x2F;recca0120&#x2F;Library&#x2F;Android&#x2F;sdk&quot;</span><br><span class="line">export PATH&#x3D;&quot;$ANDROID_HOME&#x2F;platform-tools:$ANDROID_HOME&#x2F;tools:$ANDROID_HOME&#x2F;tools&#x2F;bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
-
-<p>再執行 <code>source ~/.bashrc</code> 就可以修復這個問題了</p>
-]]></content>
-      <categories>
-        <category>android</category>
-      </categories>
-      <tags>
-        <tag>android</tag>
       </tags>
   </entry>
 </search>
