@@ -152,18 +152,27 @@ draft: false
 產圖指令：
 
 ```bash
-curl -sS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0" \
+# flux-1-schnell 回傳 JSON（base64），需要解碼
+response=$(curl -sS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/@cf/black-forest-labs/flux-1-schnell" \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"prompt": "你的英文描述", "width": 1024, "height": 576}' \
-  --output content/post/{slug}/featured.png
+  --max-time 60)
+
+echo "$response" | python3 -c "
+import json,sys,base64
+d=json.load(sys.stdin)
+img=base64.b64decode(d['result']['image'])
+with open('content/post/{slug}/featured.png','wb') as f: f.write(img)
+"
 ```
 
 Prompt 撰寫原則：
 - 用英文描述
-- 風格統一：dark background、minimal、tech illustration
-- 描述文章主題的視覺意象，不要放文字
-- 保持簡短，一句話就好
+- 風格：cinematic lighting、4k wallpaper style、具體的視覺意象
+- 描述文章主題的核心概念，加上氛圍描述（色調、光線、構圖）
+- 不要放文字、不要放人臉
+- 兩到三句話，具體比抽象好
 
 ## 寫作流程
 
