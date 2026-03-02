@@ -1,4 +1,4 @@
-colorScheme = "blowfish"
+colorScheme = "slate"
 defaultAppearance = "dark"
 autoSwitchAppearance = true
 
@@ -8,7 +8,7 @@ enableCodeCopy = true
 mainSections = ["posts"]
 
 [header]
-  layout = "fixed"
+  layout = "fixed-fill-blur"
 
 [footer]
   showMenu = true
@@ -18,7 +18,7 @@ mainSections = ["posts"]
   showScrollToTop = true
 
 [homepage]
-  layout = "profile"
+  layout = "hero"
   showRecent = true
   showRecentItems = 10
   showMoreLink = true
@@ -36,7 +36,8 @@ mainSections = ["posts"]
   showPagination = true
   showReadingTime = true
   showTableOfContents = true
-  showRelatedContent = false
+  showRelatedContent = true
+  relatedContentLimit = 6
   showTaxonomies = true
   showWordCount = false
   sharingLinks = ["twitter", "reddit", "facebook", "email"]
