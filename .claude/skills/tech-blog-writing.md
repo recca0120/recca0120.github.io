@@ -201,7 +201,7 @@ draft: false
 
 規則：
 - `slug` 用英文 kebab-case
-- `date` 一定要帶時區 `+08:00`，且不能是未來時間（Hugo 預設不建置未來文章）
+- `date` 一定要帶時區 `+08:00`，且不能是未來時間（Hugo 預設不建置未來文章）。**寫文章前先用 `date` 指令確認當前時間**，時間設為當前或更早，不要憑感覺填整數時間
 - `image` 封面圖檔名，通常是 `featured.png`
 - `categories` 只放一個，`tags` 是陣列格式
 - 不要加 `author`、`comments`、`keywords`、`description`（空值）、`abbrlink`
