@@ -2,7 +2,7 @@ baseURL = "https://recca0120.github.io/"
 title = "recca0120 技術筆記"
 theme = "hugo-theme-stack"
 languageCode = "zh-TW"
-defaultContentLanguage = "zh-tw"
+defaultContentLanguage = "zh-hant-tw"
 hasCJKLanguage = true
 timeZone = "Asia/Taipei"
 
