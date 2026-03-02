@@ -9,6 +9,7 @@ tags:
   - PHP
   - PSR-7
   - Guzzle
+  - Symfony
 image: featured.png
 draft: false
 ---
@@ -19,7 +20,7 @@ Sometimes Python already has a great package for scraping web data, but all the 
 
 ## Why PSR-7 Message Format
 
-HTTP messages are a plain-text protocol, and PSR-7 defines a standard message interface. As long as the Python side outputs the response as an HTTP message string, PHP can parse it directly into a `ResponseInterface` using `GuzzleHttp\Psr7\Message::parseResponse` — no manual header/body splitting needed.
+HTTP messages are a plain-text protocol, and PSR-7 defines a standard message interface. As long as the Python side outputs the response as an HTTP message string, PHP can parse it directly into a `ResponseInterface` using [`GuzzleHttp\Psr7`](https://github.com/guzzle/psr7)'s `Message::parseResponse` — no manual header/body splitting needed.
 
 ## Python Side: Convert requests Response to PSR-7 Message
 
@@ -76,7 +77,7 @@ The key is filtering out `Transfer-Encoding: chunked` and `Content-Encoding` hea
 
 ## PHP Side: Implement PSR-18 ClientInterface
 
-On the PHP side, implement `ClientInterface` to call the Python script via `Symfony\Component\Process\Process`, then parse the output into a `ResponseInterface` using `Message::parseResponse`.
+On the PHP side, implement `ClientInterface` to call the Python script via [Symfony Process](https://symfony.com/doc/current/components/process.html), then parse the output into a `ResponseInterface` using `Message::parseResponse`.
 
 ```php
 namespace App\Services;

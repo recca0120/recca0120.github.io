@@ -46,7 +46,7 @@ But when the request is AJAX, Laravel returns JSON:
 }
 ```
 
-To avoid having to learn a separate frontend error handling approach, I wrote an Alpine.js plugin that provides an API similar to Laravel's `MessageBag`.
+To avoid having to learn a separate frontend error handling approach, I wrote an [Alpine.js](https://alpinejs.dev) plugin that provides an API similar to Laravel's `MessageBag`.
 
 ## Alpine.js errors plugin
 

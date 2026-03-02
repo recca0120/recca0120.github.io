@@ -14,7 +14,7 @@ tags:
 draft: false
 ---
 
-寫前端或 Node.js 測試時，mock HTTP 請求幾乎是必做的事。但光是選 mock 方案就有一堆：MSW、nock、fetch-mock、jest-fetch-mock……每個的 API 風格、攔截層級、支援度都不一樣。如果你同時在寫 Cloudflare Workers 和 Node.js 專案，會發現兩邊的 mock 寫法完全不同，測試程式碼無法共用。
+寫前端或 Node.js 測試時，mock HTTP 請求幾乎是必做的事。但光是選 mock 方案就有一堆：[MSW](https://mswjs.io)、[nock](https://github.com/nock/nock)、[fetch-mock](https://github.com/wheresrhys/fetch-mock)、jest-fetch-mock……每個的 API 風格、攔截層級、支援度都不一樣。如果你同時在寫 Cloudflare Workers 和 Node.js 專案，會發現兩邊的 mock 寫法完全不同，測試程式碼無法共用。
 
 [msw-fetch-mock](https://github.com/recca0120/msw-fetch-mock) 要解決的就是這件事：用跟 undici `MockAgent` 和 Cloudflare Workers `fetchMock` 一樣的 API 風格，底層接 MSW 做攔截，讓你在任何環境都能用同一套寫法寫 mock。
 

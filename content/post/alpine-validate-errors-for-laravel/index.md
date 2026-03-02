@@ -46,7 +46,7 @@ Laravel validation 失敗時，如果是一般表單提交，可以在 Blade 裡
 }
 ```
 
-為了不用另外記一套前端錯誤處理方式，我直接幫 Alpine.js 寫了一個 plugin，讓前端也能用類似 Laravel `MessageBag` 的 API。
+為了不用另外記一套前端錯誤處理方式，我直接幫 [Alpine.js](https://alpinejs.dev) 寫了一個 plugin，讓前端也能用類似 Laravel `MessageBag` 的 API。
 
 ## Alpine.js errors plugin
 

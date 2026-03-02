@@ -16,7 +16,7 @@ draft: false
 
 ## 用 InstalledVersions 取得版本
 
-Composer 2 內建的 `InstalledVersions` class 可以直接查詢任何已安裝套件的版本：
+Composer 2 內建的 [`InstalledVersions`](https://getcomposer.org/doc/07-runtime.md#installed-versions) class 可以直接查詢任何已安裝套件的版本：
 
 ```php
 use Composer\InstalledVersions;

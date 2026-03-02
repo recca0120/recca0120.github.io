@@ -16,7 +16,7 @@ image: featured.png
 
 ## Problem
 
-When fetching data from a website using GuzzleHttp, I got this error:
+When fetching data from a website using [Guzzle](https://docs.guzzlephp.org), I got this error:
 
 ```
 cURL error 60: SSL certificate problem: certificate has expired

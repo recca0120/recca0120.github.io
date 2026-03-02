@@ -9,6 +9,7 @@ tags:
 - Laravel
 - Blade
 - Composer
+- CommonMark
 draft: false
 image: featured.png
 ---
@@ -20,6 +21,8 @@ Writing documentation in Markdown is convenient. It would be even better if you 
 ## Implementation
 
 ### Install a Markdown Package
+
+Install [league/commonmark](https://github.com/thephpleague/commonmark):
 
 ```bash
 composer require league/commonmark

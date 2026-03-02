@@ -16,7 +16,7 @@ image: featured.png
 
 ## 問題
 
-用 GuzzleHttp 抓某個網站的資料時噴了這個錯：
+用 [Guzzle](https://docs.guzzlephp.org) 抓某個網站的資料時噴了這個錯：
 
 ```
 cURL error 60: SSL certificate problem: certificate has expired

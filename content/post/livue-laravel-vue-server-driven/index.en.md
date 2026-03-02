@@ -12,6 +12,7 @@ tags:
   - Vue.js
   - Blade
   - Alpine.js
+  - LiVue
 draft: false
 ---
 

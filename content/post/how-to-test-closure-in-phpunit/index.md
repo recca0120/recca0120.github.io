@@ -45,7 +45,7 @@ class ExampleTest extends TestCase
 
 這樣寫能驗參數，但如果 `executeCallback` 根本沒呼叫 `$callback`，測試也不會失敗，因為 assertion 根本沒被執行到。
 
-## 用 Mockery::spy 對 Closure 做驗證
+## 用 [Mockery](https://github.com/mockery/mockery)::spy 對 Closure 做驗證
 
 根據這個 [PR](https://github.com/mockery/mockery/pull/712)，Mockery 支援直接對 closure 做 spy：
 

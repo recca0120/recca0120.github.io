@@ -16,7 +16,7 @@ Sometimes you need to check a Composer package's version at runtime, e.g., for b
 
 ## Using InstalledVersions
 
-Composer 2's built-in `InstalledVersions` class can query the version of any installed package:
+Composer 2's built-in [`InstalledVersions`](https://getcomposer.org/doc/07-runtime.md#installed-versions) class can query the version of any installed package:
 
 ```php
 use Composer\InstalledVersions;

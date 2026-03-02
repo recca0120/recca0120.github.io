@@ -45,7 +45,7 @@ class ExampleTest extends TestCase
 
 This verifies the argument, but if `executeCallback` never calls `$callback`, the test still passes because the assertion is never executed.
 
-## Using Mockery::spy to Verify Closures
+## Using [Mockery](https://github.com/mockery/mockery)::spy to Verify Closures
 
 According to this [PR](https://github.com/mockery/mockery/pull/712), Mockery supports spying on closures directly:
 

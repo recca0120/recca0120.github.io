@@ -9,6 +9,7 @@ tags:
   - PHP
   - PSR-7
   - Guzzle
+  - Symfony
 image: featured.png
 draft: false
 ---
@@ -19,7 +20,7 @@ draft: false
 
 ## 為什麼用 PSR7 message 格式
 
-HTTP message 本身就是純文字協定，PSR7 定義了標準的 message interface。只要 Python 端把 response 輸出成 HTTP message 格式的字串，PHP 端用 `GuzzleHttp\Psr7\Message::parseResponse` 就能直接解析回 `ResponseInterface`，不需要自己拆 header 和 body。
+HTTP message 本身就是純文字協定，PSR7 定義了標準的 message interface。只要 Python 端把 response 輸出成 HTTP message 格式的字串，PHP 端用 [`GuzzleHttp\Psr7`](https://github.com/guzzle/psr7) 的 `Message::parseResponse` 就能直接解析回 `ResponseInterface`，不需要自己拆 header 和 body。
 
 ## Python 端：將 requests response 轉成 PSR7 message
 
@@ -76,7 +77,7 @@ if __name__ == '__main__':
 
 ## PHP 端：實作 PSR-18 ClientInterface
 
-PHP 這邊實作 `ClientInterface`，透過 `Symfony\Component\Process\Process` 呼叫 Python script，再用 `Message::parseResponse` 把輸出解析成 `ResponseInterface`。
+PHP 這邊實作 `ClientInterface`，透過 [Symfony Process](https://symfony.com/doc/current/components/process.html) 呼叫 Python script，再用 `Message::parseResponse` 把輸出解析成 `ResponseInterface`。
 
 ```php
 namespace App\Services;

@@ -15,7 +15,7 @@ image: featured.png
 draft: false
 ---
 
-在開發 Google Firebase 相關程式時，需要 mock `QuerySnapshot`，而它 implement 了 `IteratorAggregate`，直接 mock 會不知道怎麼讓 `foreach` 跑起來。
+在開發 Google Firebase 相關程式時，需要 mock `QuerySnapshot`，而它 implement 了 `IteratorAggregate`，直接用 [Mockery](https://github.com/mockery/mockery) mock 會不知道怎麼讓 `foreach` 跑起來。
 
 ## IteratorAggregate 是什麼
 

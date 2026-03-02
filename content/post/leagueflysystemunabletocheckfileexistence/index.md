@@ -1,6 +1,6 @@
 ---
 title: 'S3 Storage::exists 拋出 403 UnableToCheckFileExistence 的解法'
-description: 'IAM 缺少 s3:ListBucket 時，S3 對不存在的檔案回傳 403 而非 404，Flysystem 因此拋出例外。補上權限後 exists() 即可正常回傳 false。'
+description: 'IAM 缺少 s3:ListBucket 時，S3 對不存在的檔案回傳 403 而非 404，[Flysystem](https://flysystem.thephpleague.com) 因此拋出例外。補上權限後 exists() 即可正常回傳 false。'
 slug: leagueflysystemunabletocheckfileexistence
 date: '2023-01-19T03:12:27+08:00'
 categories:

@@ -9,6 +9,7 @@ tags:
 - Laravel
 - Blade
 - Composer
+- CommonMark
 draft: false
 image: featured.png
 ---
@@ -20,6 +21,8 @@ image: featured.png
 ## 做法
 
 ### 安裝 Markdown 套件
+
+安裝 [league/commonmark](https://github.com/thephpleague/commonmark)：
 
 ```bash
 composer require league/commonmark

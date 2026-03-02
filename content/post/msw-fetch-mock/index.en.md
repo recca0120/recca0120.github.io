@@ -14,7 +14,7 @@ tags:
 draft: false
 ---
 
-When writing frontend or Node.js tests, mocking HTTP requests is practically mandatory. But choosing a mock solution is overwhelming: MSW, nock, fetch-mock, jest-fetch-mock… each has a different API style, interception level, and environment support. If you work on both Cloudflare Workers and Node.js projects, you'll find the mock APIs are completely different and test code can't be shared.
+When writing frontend or Node.js tests, mocking HTTP requests is practically mandatory. But choosing a mock solution is overwhelming: [MSW](https://mswjs.io), [nock](https://github.com/nock/nock), [fetch-mock](https://github.com/wheresrhys/fetch-mock), jest-fetch-mock… each has a different API style, interception level, and environment support. If you work on both Cloudflare Workers and Node.js projects, you'll find the mock APIs are completely different and test code can't be shared.
 
 [msw-fetch-mock](https://github.com/recca0120/msw-fetch-mock) solves exactly this: it provides the same API style as undici's `MockAgent` and Cloudflare Workers' `fetchMock`, with MSW handling network-level interception underneath. One API, every environment.
 

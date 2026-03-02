@@ -15,7 +15,7 @@ image: featured.png
 
 ## 兩種取法
 
-用 GuzzleHttp 拿到 Response 後，有兩種方式取得內容：
+用 [GuzzleHttp PSR-7](https://github.com/guzzle/psr7) 拿到 Response 後，有兩種方式取得內容：
 
 ```php
 // 方法一：轉字串

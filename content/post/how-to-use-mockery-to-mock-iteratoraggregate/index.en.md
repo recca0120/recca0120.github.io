@@ -15,7 +15,7 @@ image: featured.png
 draft: false
 ---
 
-While developing Google Firebase-related code, I needed to mock `QuerySnapshot`, which implements `IteratorAggregate`. It wasn't immediately obvious how to make `foreach` work with the mock.
+While developing Google Firebase-related code, I needed to mock `QuerySnapshot`, which implements `IteratorAggregate`. It wasn't immediately obvious how to make `foreach` work with [Mockery](https://github.com/mockery/mockery).
 
 ## What is IteratorAggregate
 

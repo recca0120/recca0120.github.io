@@ -126,6 +126,36 @@ metadata:
 - 不要用樂觀空泛的結尾
 - 有就寫，沒有就不寫
 
+## 套件介紹規範
+
+文章中提到或介紹第三方套件時，必須遵守以下規則：
+
+### 連結
+
+- 首次提到套件名稱時，必須附上**官方連結**（GitHub repo、npm、Packagist、VS Code Marketplace 等）
+- 用 Markdown 超連結，錨點文字用套件名稱：`[league/commonmark](https://github.com/thephpleague/commonmark)`
+- 如果文章比較多個套件，每個都要附連結
+
+### 標籤
+
+- 文章介紹或深度使用的套件，必須加入 `tags`
+- tag 用套件的常見名稱（不含 vendor prefix）：`Mockery` 不是 `mockery/mockery`、`Flysystem` 不是 `league/flysystem`
+- 比較型文章只標主要比較對象（3-5 個），不用每個都標
+
+### 安裝方式
+
+- 介紹套件的文章必須包含安裝指令（`composer require`、`npm install`、VS Code 安裝方式等）
+- 安裝指令放在文章前段（通常在「安裝」或「開始使用」小節）
+- 如果有特殊設定步驟（config publish、alias 設定等），也要一併說明
+
+### 檢查清單
+
+寫完文章後確認：
+- [ ] 每個提到的套件都有官方連結
+- [ ] 主要套件名稱都在 tags 裡
+- [ ] 有安裝指令
+- [ ] 中英文版的 tags 一致
+
 ## 語氣規範
 
 ### 要

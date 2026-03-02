@@ -15,7 +15,7 @@ image: featured.png
 
 ## Two Ways to Get the Body
 
-After getting a Response from GuzzleHttp, there are two ways to retrieve the content:
+After getting a Response from [GuzzleHttp PSR-7](https://github.com/guzzle/psr7), there are two ways to retrieve the content:
 
 ```php
 // Method 1: Cast to string
