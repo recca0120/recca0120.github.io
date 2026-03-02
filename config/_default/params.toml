@@ -6,6 +6,11 @@ favicon = "/favicon.ico"
 [footer]
   since = 2020
 
+[imageProcessing.cover]
+  enabled = true
+[imageProcessing.content]
+  enabled = true
+
 [sidebar]
   subtitle = "Software Developer / 技術筆記"
   avatar = "img/avatar.png"
@@ -19,6 +24,11 @@ favicon = "/favicon.ico"
   [article.license]
     enabled = true
     default = "Licensed under CC BY-SA 4.0"
+  [article.mermaid]
+    look = "classic"
+    lightTheme = "default"
+    darkTheme = "dark"
+    securityLevel = "strict"
 
 [widgets]
   homepage = [

@@ -9,6 +9,7 @@
   {{- if .Lastmod }}
   "dateModified": {{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
   {{- end }}
+  "inLanguage": {{ .Lang | jsonify }},
   {{- if .Description }}
   "description": {{ .Description | jsonify }},
   {{- else }}
@@ -20,7 +21,10 @@
   "author": {
     "@type": "Person",
     "name": "recca0120",
-    "url": "https://github.com/recca0120"
+    "url": "https://github.com/recca0120",
+    "sameAs": [
+      "https://github.com/recca0120"
+    ]
   },
   "publisher": {
     "@type": "Organization",
@@ -36,6 +40,33 @@
   {{- end }}
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": {{ .Site.Title | jsonify }},
+      "item": {{ .Site.BaseURL | jsonify }}
+    }
+    {{- with .CurrentSection }},
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ .Title | jsonify }},
+      "item": {{ .Permalink | jsonify }}
+    }
+    {{- end }},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ .Title | jsonify }}
+    }
+  ]
+}
+</script>
 {{- else if .IsHome -}}
 <script type="application/ld+json">
 {
@@ -44,6 +75,7 @@
   "name": {{ .Site.Title | jsonify }},
   "url": {{ .Site.BaseURL | jsonify }},
   "description": {{ .Site.Params.description | jsonify }},
+  "inLanguage": {{ .Lang | jsonify }},
   "potentialAction": {
     "@type": "SearchAction",
     "target": "{{ .Site.BaseURL }}search/?q={search_term_string}",
