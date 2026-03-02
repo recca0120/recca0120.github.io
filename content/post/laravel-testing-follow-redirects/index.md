@@ -8,6 +8,7 @@ tags:
 - laravel
 - testing
 draft: false
+image: featured.png
 ---
 
 ## 情境

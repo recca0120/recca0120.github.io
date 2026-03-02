@@ -7,6 +7,7 @@ categories:
 tags:
 - redis
 draft: false
+image: featured.png
 ---
 
 ## 問題

@@ -7,6 +7,7 @@ categories:
 tags:
 - php
 draft: false
+image: featured.png
 ---
 
 ## 兩種取法

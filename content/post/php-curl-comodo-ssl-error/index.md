@@ -8,6 +8,7 @@ tags:
 - php
 - laravel
 draft: false
+image: featured.png
 ---
 
 ## 問題

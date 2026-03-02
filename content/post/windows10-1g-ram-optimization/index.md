@@ -7,6 +7,7 @@ categories:
 tags:
 - windows10
 draft: false
+image: featured.png
 ---
 
 ## 前言

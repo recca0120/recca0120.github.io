@@ -7,6 +7,7 @@ categories:
 tags:
 - aws - virtualbox - windows10
 draft: false
+image: featured.png
 ---
 
 ## 前置準備

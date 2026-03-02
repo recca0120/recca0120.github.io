@@ -8,6 +8,7 @@ tags:
 - raspberry pi
 - bluetooth
 draft: false
+image: featured.png
 ---
 
 ## 前言

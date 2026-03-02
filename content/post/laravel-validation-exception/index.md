@@ -7,6 +7,7 @@ categories:
 tags:
 - laravel
 draft: false
+image: featured.png
 ---
 
 ## 情境

@@ -9,6 +9,7 @@ tags:
 - blade
 - markdown
 draft: false
+image: featured.png
 ---
 
 ## 想法

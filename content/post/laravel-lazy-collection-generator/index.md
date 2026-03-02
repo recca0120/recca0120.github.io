@@ -9,6 +9,7 @@ tags:
 - lazy-collection
 - generator
 draft: false
+image: featured.png
 ---
 
 ## 以為會動的寫法

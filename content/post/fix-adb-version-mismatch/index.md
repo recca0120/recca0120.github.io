@@ -7,6 +7,7 @@ categories:
 tags:
 - android
 draft: false
+image: featured.png
 ---
 
 ## 問題
