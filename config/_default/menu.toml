@@ -1,3 +1,30 @@
+[[main]]
+  identifier = "home"
+  name = "首頁"
+  url = "/"
+  weight = 10
+
+  [main.params]
+    icon = "home"
+
+[[main]]
+  identifier = "archives"
+  name = "彙整"
+  url = "/archives/"
+  weight = 20
+
+  [main.params]
+    icon = "archives"
+
+[[main]]
+  identifier = "search"
+  name = "搜尋"
+  url = "/search/"
+  weight = 30
+
+  [main.params]
+    icon = "search"
+
 [[social]]
   identifier = "github"
   name = "GitHub"
