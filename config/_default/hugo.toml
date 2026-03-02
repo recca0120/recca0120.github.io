@@ -1,0 +1,25 @@
+theme = "blowfish"
+baseURL = "https://recca0120.github.io/"
+defaultContentLanguage = "zh-tw"
+enableRobotsTXT = true
+hasCJKLanguage = true
+enableEmoji = true
+timeZone = "Asia/Taipei"
+
+[pagination]
+  pagerSize = 10
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[sitemap]
+  changefreq = "weekly"
+  filename = "sitemap.xml"
+  priority = 0.5
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[permalinks]
+  posts = "/:year/:month/:day/:slug/"
