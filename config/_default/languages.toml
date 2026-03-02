@@ -1,0 +1,15 @@
+[zh-hant-tw]
+  languageName = "正體中文"
+  title = "recca0120 技術筆記"
+  weight = 1
+
+  [zh-hant-tw.params.sidebar]
+    subtitle = "Software Developer / 技術筆記"
+
+[en]
+  languageName = "English"
+  title = "recca0120 Tech Notes"
+  weight = 2
+
+  [en.params.sidebar]
+    subtitle = "Software Developer / Tech Notes"
