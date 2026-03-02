@@ -13,4 +13,8 @@
 {{- $image := partial "helper/image" (dict "Image" .Params.image "Resources" .Resources) -}}
 {{- if $image -}}
     <meta name="twitter:image" content='{{ absURL $image.Permalink }}' />
+{{- else -}}
+    {{- with resources.Get "img/avatar.png" -}}
+        <meta name="twitter:image" content='{{ .Permalink }}' />
+    {{- end -}}
 {{- end -}}
