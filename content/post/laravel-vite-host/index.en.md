@@ -1,5 +1,6 @@
 ---
 title: 'Configuring Laravel Vite Host'
+description: 'Configure server.host in vite.config.js for custom domains; use valetTls for HTTPS with Laravel Valet.'
 slug: laravel-vite-host
 date: '2023-03-20T07:08:10+08:00'
 categories:

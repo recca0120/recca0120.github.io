@@ -1,5 +1,6 @@
 ---
 title: 'League\Flysystem\UnableToCheckFileExistence'
+description: 'S3 Storage::exists throws 403 UnableToCheckFileExistence when the IAM policy is missing s3:ListBucket permission.'
 slug: leagueflysystemunabletocheckfileexistence
 date: '2023-01-19T03:12:27+08:00'
 categories:

@@ -1,5 +1,6 @@
 ---
 title: 'Getting Third-Party Package Versions in PHP'
+description: 'Use Composer 2 built-in InstalledVersions::getVersion() to programmatically retrieve any installed package version.'
 slug: php-third-package-version
 date: '2023-02-25T10:04:03+08:00'
 categories:

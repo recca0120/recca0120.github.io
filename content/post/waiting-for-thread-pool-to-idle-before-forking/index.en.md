@@ -1,5 +1,6 @@
 ---
 title: 'Waiting for thread pool to idle before forking'
+description: 'Fix the gRPC thread pool idle warning in PHPUnit tests by downgrading the grpc extension to version 1.49.0.'
 slug: waiting-for-thread-pool-to-idle-before-forking
 date: '2023-01-18T15:37:51+08:00'
 categories:

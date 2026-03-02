@@ -1,5 +1,6 @@
 ---
 title: 'League\Flysystem\UnableToCheckFileExistence'
+description: 'S3 的 Storage::exists 拋出 403 UnableToCheckFileExistence，原因是缺少 s3:ListBucket 權限。'
 slug: leagueflysystemunabletocheckfileexistence
 date: '2023-01-19T03:12:27+08:00'
 categories:

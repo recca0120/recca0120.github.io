@@ -1,5 +1,6 @@
 ---
 title: 'Laravel Model reads old data when using Transaction and Queue'
+description: '在 Transaction 裡 dispatch Job，因 SerializesModels 會重新查 DB，commit 前 Job 讀到舊資料，加 afterCommit 解決。'
 slug: laravel-model-reads-old-data-when-using-transaction-and-queue
 date: '2022-12-02T10:30:00+08:00'
 categories:

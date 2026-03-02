@@ -1,5 +1,6 @@
 ---
 title: Redis Connection Refused
+description: '升級 Redis 6.0 後遇到 Connection refused，原因是 bind 和 protected-mode 預設值變更，調整 redis.conf 即可。'
 slug: redis-connection-refused
 date: '2020-07-21T14:40:39+08:00'
 categories:

@@ -1,5 +1,6 @@
 ---
 title: 'Laravel Blade Template 遇到重覆區塊的解決方'
+description: 'Blade 出現重覆 HTML 區塊時，可用 @include、Component 或 ob_start 三種方式消除重覆程式碼。'
 slug: laravel-blade-template
 date: '2024-05-07T07:47:27+08:00'
 categories:

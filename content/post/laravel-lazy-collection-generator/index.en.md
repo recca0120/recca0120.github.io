@@ -1,5 +1,6 @@
 ---
 title: Gotchas with LazyCollection and Generator
+description: 'Passing a Generator directly to LazyCollection triggers iterator_to_array; wrap it in a Closure for true lazy evaluation.'
 slug: lazy-collection-with-generator-notice
 date: '2020-08-17T12:46:29+08:00'
 categories:

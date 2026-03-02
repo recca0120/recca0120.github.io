@@ -1,5 +1,6 @@
 ---
 title: 'How to Test Closure in PHPUnit'
+description: 'Use Mockery::spy to wrap closures in PHPUnit, verifying callback invocation, arguments, and call count reliably.'
 slug: how-to-test-closure-in-phpunit
 date: '2022-11-26T09:31:24+08:00'
 categories:

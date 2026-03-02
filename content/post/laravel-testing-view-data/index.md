@@ -1,5 +1,6 @@
 ---
 title: 'Laravel Testing 只測 View data'
+description: '用 viewData() 直接取回傳給 View 的變數來做 assertion，避免直接測 HTML 的痛苦，但要注意 Model 物件同一性。'
 slug: laravel-testing-view-data
 date: '2022-11-29T15:58:53+08:00'
 categories:

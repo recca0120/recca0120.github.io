@@ -1,5 +1,6 @@
 ---
 title: '[Laravel] The Relationship Between Container and Facade'
+description: 'Facade uses getFacadeAccessor to resolve instances from the Container; bind creates new instances each time, singleton creates one.'
 slug: laravel-container-facade
 date: '2023-01-12T05:34:12+08:00'
 categories:

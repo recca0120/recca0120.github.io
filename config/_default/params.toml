@@ -1,4 +1,5 @@
 mainSections = ["post"]
+description = "recca0120 的技術筆記，記錄 Laravel、PHP、Testing、DevOps 等開發經驗與解決方案。"
 rssFullContent = true
 favicon = "/favicon.ico"
 

@@ -1,5 +1,6 @@
 ---
 title: 'PHP: objc[86150]: +[__NSCFConstantString initialize] may have been in progress in another thread…'
+description: 'Fix the macOS NSCFConstantString fork error in PHP by setting OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES.'
 slug: php-objc86150-nscfconstantstring-initialize-may-have-been-in-progress-in-another-thread
 date: '2022-12-26T08:41:00+08:00'
 categories:

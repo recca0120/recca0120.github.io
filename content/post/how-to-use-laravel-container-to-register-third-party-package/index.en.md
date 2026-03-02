@@ -1,5 +1,6 @@
 ---
 title: 'How to Use Laravel Container to Register Third-Party Packages'
+description: 'Register third-party classes with constructor parameters in a ServiceProvider using bind so Laravel Container can auto-inject them.'
 slug: how-to-use-laravel-container-to-register-third-party-package
 date: '2023-01-06T01:46:18+08:00'
 categories:

@@ -1,5 +1,6 @@
 ---
 title: How to Mock $_SERVER in Laravel Feature Tests
+description: 'Pass server variables via request method parameters or withServerVariables() to fake $_SERVER values like REMOTE_ADDR in tests.'
 slug: how-to-mock_$_SERVER-in-laravel-feature-testing
 date: '2020-06-23T12:18:59+08:00'
 categories:

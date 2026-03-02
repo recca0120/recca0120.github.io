@@ -1,5 +1,6 @@
 ---
 title: 修復 Redis TCP backlog 警告
+description: 'Redis 啟動警告 TCP backlog 511 但 somaxconn 只有 128，將 /proc/sys/net/core/somaxconn 調大即可解決。'
 slug: redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128
 date: '2020-06-12T14:01:07+08:00'
 categories:

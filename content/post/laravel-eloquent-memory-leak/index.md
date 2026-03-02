@@ -1,5 +1,6 @@
 ---
 title: Laravel Eloquent Memory Leak
+description: 'Eloquent 載入 relation 後會快取在 Model 上，大量資料時需用 setRelations([]) 手動釋放記憶體。'
 slug: laravel-eloquent-memory-leak
 date: '2020-06-18T14:00:42+08:00'
 categories:

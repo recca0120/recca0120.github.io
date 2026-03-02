@@ -1,5 +1,6 @@
 ---
 title: 樹莓派用 command 連結藍芽
+description: '樹莓派無桌面環境時，用 bluetoothctl 的 scan、pair、trust、connect 指令完成藍芽裝置配對和自動連線。'
 slug: raspberry-pi-connect-bluetooth-using-command
 date: '2020-07-21T14:48:18+08:00'
 categories:

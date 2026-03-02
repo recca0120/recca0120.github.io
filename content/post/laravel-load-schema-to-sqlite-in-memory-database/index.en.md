@@ -1,5 +1,6 @@
 ---
 title: '[Laravel] Load Schema to SQLite In-Memory Database'
+description: 'Load schema dump into SQLite in-memory database using PDO::exec to speed up tests from 2+ minutes to 18 seconds.'
 slug: laravel-load-schema-to-sqlite-in-memory-database
 date: '2022-12-19T15:26:54+08:00'
 categories:

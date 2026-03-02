@@ -1,5 +1,6 @@
 ---
 title: 'tester-phpunit (https://github.com/recca0120/tester-phpunit)'
+description: 'tester-phpunit 是為 Atom 編輯器開發的 PHPUnit 套件，可直接在編輯器內執行測試。'
 slug: tester-phpunit
 date: '2017-07-23T12:36:38+08:00'
 categories:

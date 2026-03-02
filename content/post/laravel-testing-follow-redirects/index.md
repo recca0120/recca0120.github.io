@@ -1,5 +1,6 @@
 ---
 title: Laravel 測試時如何查看 RedirectResponse 的結果
+description: 'Laravel 測試時 POST 後只拿到 302，用 followingRedirects() 讓測試自動跟隨轉址並驗證最終頁面內容。'
 slug: laravel-testing-what-happens-after-a-redirect
 date: '2020-06-25T12:04:22+08:00'
 categories:

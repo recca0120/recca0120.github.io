@@ -1,5 +1,6 @@
 ---
 title: Windows 10 在 1G 記憶體的機器如何跑的順暢
+description: '在 1GB 記憶體的機器上關閉 Memory Compression、Superfetch、Defender 等服務讓 Windows 10 跑得更順。'
 slug: windows-10-running-in-1g-ram
 date: '2020-07-06T10:36:37+08:00'
 categories:

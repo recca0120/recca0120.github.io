@@ -1,5 +1,6 @@
 ---
 title: 'Waiting for thread pool to idle before forking'
+description: 'PHPUnit 測試時出現 gRPC 的 thread pool idle 警告，將 grpc 擴充套件降版到 1.49.0 即可解決。'
 slug: waiting-for-thread-pool-to-idle-before-forking
 date: '2023-01-18T15:37:51+08:00'
 categories:

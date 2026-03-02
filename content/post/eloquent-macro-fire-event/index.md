@@ -1,5 +1,6 @@
 ---
 title: '用 Eloquent Macro 定義 fire 方法手動觸發 Event'
+description: '用 saveQuietly 存資料後想手動觸發特定 Eloquent event，透過 Builder macro 定義 fire 方法實現。'
 slug: eloquent-macro-fire-event
 date: '2023-01-20T10:00:00+08:00'
 categories:

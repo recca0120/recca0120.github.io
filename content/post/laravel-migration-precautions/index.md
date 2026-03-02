@@ -1,5 +1,6 @@
 ---
 title: Laravel Migration 注意事項
+description: 'Laravel migration 常見踩坑：新增和刪除欄位不能放同一個 closure，刪多個欄位要寫同一行，用 SQLite 測試驗證。'
 slug: laravel-create-migration-precautions
 date: '2020-06-08T22:18:27+08:00'
 categories:

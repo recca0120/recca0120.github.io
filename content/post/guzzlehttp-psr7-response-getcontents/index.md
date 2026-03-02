@@ -1,5 +1,6 @@
 ---
 title: GuzzleHttp Psr7 Response 取得內容的注意事項
+description: 'GuzzleHttp Response 用 (string) 轉換會自動 seek(0)，但 getContents() 不會，第二次呼叫會拿到空字串。'
 slug: guzzlehttp-psr7-response-get-contents-notice
 date: '2020-08-05T13:12:49+08:00'
 categories:

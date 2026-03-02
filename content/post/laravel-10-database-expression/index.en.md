@@ -1,5 +1,6 @@
 ---
 title: 'Laravel 10 Database Expression'
+description: 'Laravel 10 Expression interface generates different SQL based on Grammar type, handling MySQL vs SQLite syntax differences cleanly.'
 slug: laravel-10-database-expression
 date: '2023-02-20T05:41:20+08:00'
 categories:

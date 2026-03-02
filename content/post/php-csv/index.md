@@ -1,5 +1,6 @@
 ---
 title: 'PHP 匯入 CSV 時遇到指數怎麼辦'
+description: 'CSV 匯入時數字被 Excel 轉成指數格式，用 sprintf 搭配動態小數位數計算將指數轉回正確的小數表示。'
 slug: php-csv
 date: '2024-07-16T06:05:35+08:00'
 categories:

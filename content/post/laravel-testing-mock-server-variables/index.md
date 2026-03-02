@@ -1,5 +1,6 @@
 ---
 title: 在 Laravel Feature 測試中如何 mock $_SERVER
+description: 'Laravel Feature 測試可透過 request 方法的參數或 withServerVariables() 來偽造 $_SERVER 變數如 REMOTE_ADDR。'
 slug: how-to-mock_$\_SERVER-in-laravel-feature-testing
 date: '2020-06-23T12:18:59+08:00'
 categories:

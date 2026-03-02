@@ -1,5 +1,6 @@
 ---
 title: Laravel Migration Precautions
+description: 'Common Laravel migration pitfalls: do not mix add/drop columns in one closure, drop multiple columns in a single call, and test with SQLite.'
 slug: laravel-create-migration-precautions
 date: '2020-06-08T22:18:27+08:00'
 categories:

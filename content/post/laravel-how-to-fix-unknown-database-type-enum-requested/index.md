@@ -1,5 +1,6 @@
 ---
 title: '[Laravel] How to fix Unknown database type enum requested'
+description: 'Laravel migration 用 Doctrine DBAL 不認識 MySQL enum 型別，需手動註冊為 StringType 或用 registerDoctrineTypeMapping。'
 slug: laravel-how-to-fix-unknown-database-type-enum-requested
 date: '2022-12-13T06:16:19+08:00'
 categories:

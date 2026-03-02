@@ -1,5 +1,6 @@
 ---
 title: 'Laravel Model Reads Old Data When Using Transaction and Queue'
+description: 'Jobs dispatched inside a Transaction read stale data because SerializesModels re-queries the DB before commit; use afterCommit to fix it.'
 slug: laravel-model-reads-old-data-when-using-transaction-and-queue
 date: '2022-12-02T10:30:00+08:00'
 categories:

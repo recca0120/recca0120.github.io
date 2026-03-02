@@ -1,5 +1,6 @@
 ---
 title: 'Laravel 為 SQLite 增加自定 Function'
+description: 'SQLite 沒有 MySQL 的 FIELD 等函式，可透過 PDO 的 sqliteCreateFunction 自行補上，讓測試正常通過。'
 slug: laravel-sqlite-function
 date: '2023-02-17T03:27:51+08:00'
 categories:

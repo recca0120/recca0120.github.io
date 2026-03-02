@@ -1,5 +1,6 @@
 ---
 title: Redis Connection Refused
+description: 'Redis 6.0 changed bind and protected-mode defaults causing Connection refused; adjust redis.conf to restore connectivity.'
 slug: redis-connection-refused
 date: '2020-07-21T14:40:39+08:00'
 categories:

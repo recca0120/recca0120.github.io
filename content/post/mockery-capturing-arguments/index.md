@@ -1,5 +1,6 @@
 ---
 title: '利用 Mockery 的 Capturing Arguments 測亂數'
+description: '方法內部有亂數導致結果不固定時，用 Mockery::capture 搭配 passthru 抓出中間值來寫確定的 assertion。'
 slug: mockery-capturing-arguments
 date: '2022-11-22T14:21:07+08:00'
 categories:

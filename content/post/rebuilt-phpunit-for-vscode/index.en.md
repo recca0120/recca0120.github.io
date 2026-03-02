@@ -1,5 +1,6 @@
 ---
 title: 'Rebuilt PHPUnit for VSCode (New Version 3.0)'
+description: 'PHPUnit for VSCode 3.0 rewrite with Testing API integration, real-time test results, and Docker/SSH support.'
 slug: rebuilt-phpunit-for-vscode
 date: '2022-12-06T05:57:57+08:00'
 categories:

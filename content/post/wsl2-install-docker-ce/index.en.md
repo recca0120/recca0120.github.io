@@ -1,5 +1,6 @@
 ---
 title: 'Install Docker CE on WSL2'
+description: 'Install Docker CE directly in WSL2 without Docker Desktop, and configure systemd for automatic startup.'
 slug: wsl2-install-docker-ce
 date: '2023-01-15T10:00:00+08:00'
 categories:

@@ -1,5 +1,6 @@
 ---
 title: 解決 adb server version (41) doesn't match this client (40)
+description: 'Mac 上 Homebrew 和 Android SDK 各有一份 adb 導致版本不一致，移除 Homebrew 版並統一 PATH 即可解決。'
 slug: fix-adb-server-version-does-not-match-this-client-problem
 date: '2020-05-29T19:01:07+08:00'
 categories:

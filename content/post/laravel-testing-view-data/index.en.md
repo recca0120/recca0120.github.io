@@ -1,5 +1,6 @@
 ---
 title: 'Laravel Testing: Test Only View Data'
+description: 'Use viewData() to retrieve variables passed to a View for assertions, avoiding the complexity of testing raw HTML output.'
 slug: laravel-testing-view-data
 date: '2022-11-29T15:58:53+08:00'
 categories:

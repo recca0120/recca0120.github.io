@@ -1,5 +1,6 @@
 ---
 title: 用 Blade 來 Render Markdown
+description: '透過 Blade addExtension 讓 .md 檔也能用 Blade 語法，再交給 CommonMark 轉成 HTML。'
 slug: render-markdown-by-blade-template-engine
 date: '2020-07-14T09:49:36+08:00'
 categories:

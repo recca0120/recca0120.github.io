@@ -1,5 +1,6 @@
 ---
 title: 'How to test Closure in PHPUnit'
+description: '用 Mockery::spy 包裝 closure，可驗證 callback 是否被呼叫、傳入參數和呼叫次數，避免漏測。'
 slug: how-to-test-closure-in-phpunit
 date: '2022-11-26T09:31:24+08:00'
 categories:

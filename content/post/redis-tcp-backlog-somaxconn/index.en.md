@@ -1,5 +1,6 @@
 ---
 title: Fix Redis TCP Backlog Warning
+description: 'Redis warns TCP backlog 511 exceeds somaxconn 128; increase /proc/sys/net/core/somaxconn to resolve it.'
 slug: redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128
 date: '2020-06-12T14:01:07+08:00'
 categories:

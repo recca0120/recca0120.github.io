@@ -1,5 +1,6 @@
 ---
 title: 'Handling Scientific Notation When Importing CSV in PHP'
+description: 'Excel exports CSV numbers in scientific notation; use sprintf with dynamic decimal precision to convert them back to proper decimals.'
 slug: php-csv
 date: '2024-07-16T06:05:35+08:00'
 categories:

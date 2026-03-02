@@ -1,5 +1,6 @@
 ---
 title: Connect Bluetooth on Raspberry Pi via Command Line
+description: 'Use bluetoothctl commands (scan, pair, trust, connect) to pair Bluetooth devices on a headless Raspberry Pi.'
 slug: raspberry-pi-connect-bluetooth-using-command
 date: '2020-07-21T14:48:18+08:00'
 categories:

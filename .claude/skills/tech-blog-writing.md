@@ -106,9 +106,17 @@ metadata:
 
 ```
 content/post/{slug}/
-├── index.md        # 文章內容
-└── featured.png    # 封面圖
+├── index.md        # 中文文章（預設語言）
+├── index.en.md     # 英文翻譯
+└── featured.png    # 封面圖（共用）
 ```
+
+多語系規則：
+- 中文是預設語言（`zh-hant-tw`），檔名用 `index.md`
+- 英文版檔名用 `index.en.md`
+- 兩個版本的 `slug` 必須相同
+- 英文版的 `title` 和 `description` 翻譯成英文，其餘 frontmatter 不變
+- 封面圖 `featured.png` 共用，不需要複製
 
 ### 檔名規則
 
@@ -125,8 +133,10 @@ content/post/{slug}/
 ```yaml
 ---
 title: 文章標題（中英文皆可）
+description: '一句話摘要，160 字元以內，用於 meta description 和 SEO'
 slug: url-slug-kebab-case
 date: 'YYYY-MM-DDTHH:MM:SS+08:00'
+image: featured.png
 categories:
 - 分類名稱
 tags:
@@ -137,8 +147,10 @@ draft: false
 ```
 
 規則：
+- `description` 必填，一句話描述文章重點，160 字元以內，用於搜尋引擎摘要
 - `slug` 用英文 kebab-case
 - `date` 一定要帶時區 `+08:00`
+- `image` 封面圖檔名，通常是 `featured.png`
 - `categories` 只放一個，`tags` 是陣列格式
 - 不要加 `author`、`comments`、`keywords`、`description`（空值）、`abbrlink`
 

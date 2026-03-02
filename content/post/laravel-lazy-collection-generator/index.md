@@ -1,5 +1,6 @@
 ---
 title: LazyCollection 加 Generator 踩雷記
+description: 'LazyCollection 直接傳 Generator 會被 iterator_to_array 一口氣展開，必須用 Closure 包一層才有延遲載入效果。'
 slug: lazy-collection-with-generator-notice
 date: '2020-08-17T12:46:29+08:00'
 categories:

@@ -1,5 +1,6 @@
 ---
 title: "Fixing adb server version (41) doesn't match this client (40)"
+description: 'Two different adb versions from Homebrew and Android SDK cause a version mismatch; remove the Homebrew one and unify PATH.'
 slug: fix-adb-server-version-does-not-match-this-client-problem
 date: '2020-05-29T19:01:07+08:00'
 categories:

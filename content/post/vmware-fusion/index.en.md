@@ -1,5 +1,6 @@
 ---
 title: 'VMware Fusion Free Personal License'
+description: 'VMware Fusion Player offers a free personal license; create an account on the VMware site to get a License Key and download link.'
 slug: vmware-fusion
 date: '2022-11-21T13:34:53+08:00'
 categories:
