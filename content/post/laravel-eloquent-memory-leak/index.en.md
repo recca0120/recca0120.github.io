@@ -1,6 +1,6 @@
 ---
-title: 'Fix Laravel Eloquent Memory Leak When Processing Large Datasets'
-description: 'Eloquent caches loaded relations on every Model instance, causing memory to climb in large loops. Call setRelations([]) after each iteration to release the cache.'
+title: 'Fix Laravel Eloquent Memory Leak with Large Datasets'
+description: 'Eloquent caches loaded relations on every Model instance, causing memory to climb in large loops. Call setRelations([]) on each iteration to release the cache.'
 slug: laravel-eloquent-memory-leak
 date: '2020-06-18T14:00:42+08:00'
 categories:

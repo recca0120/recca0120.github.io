@@ -1,5 +1,5 @@
 ---
-title: 'Add MySQL Functions to SQLite in Laravel Tests with sqliteCreateFunction'
+title: 'Add MySQL Functions to SQLite in Laravel Tests'
 description: 'SQLite throws "no such function" for MySQL-specific functions like FIELD. Use PDO sqliteCreateFunction in TestCase setUp to register them and make tests pass.'
 slug: laravel-sqlite-function
 date: '2023-02-17T03:27:51+08:00'

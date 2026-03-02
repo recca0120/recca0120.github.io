@@ -1,6 +1,6 @@
 ---
-title: 'Fix the Missing mysql Command in DBngin'
-description: 'DBngin supports multiple MySQL versions but never adds them to PATH. One line in .bashrc pointing to the latest version gets the mysql command working in the terminal.'
+title: 'Fix the Missing mysql Command After Installing DBngin'
+description: 'DBngin supports multiple MySQL versions but never adds them to PATH. Add one line to .bashrc pointing to the latest version to get the mysql command working.'
 slug: dbngin-mysql-command
 date: '2022-11-08T03:16:32+08:00'
 categories:

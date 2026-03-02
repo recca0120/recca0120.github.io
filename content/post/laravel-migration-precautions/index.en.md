@@ -1,6 +1,6 @@
 ---
-title: '3 Laravel Migration Pitfalls and How to Catch Them with SQLite'
-description: 'Covers 3 common migration mistakes: mixing add/drop in one closure, dropping index and column together, and calling dropColumn twice. Includes SQLite in-memory test setup to catch errors early.'
+title: '3 Laravel Migration Pitfalls and How to Fix Them'
+description: 'Avoid 3 migration rollback mistakes: mixing add/drop in one closure, dropping index and column together, and multiple dropColumn calls. Catch them with SQLite.'
 slug: laravel-create-migration-precautions
 date: '2020-06-08T22:18:27+08:00'
 categories:

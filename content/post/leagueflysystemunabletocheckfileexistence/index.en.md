@@ -1,6 +1,6 @@
 ---
-title: 'Fix S3 Storage::exists Throwing 403 UnableToCheckFileExistence'
-description: 'Without s3:ListBucket in the IAM policy, S3 returns 403 instead of 404 for missing files, causing Flysystem to throw an UnableToCheckFileExistence exception. Adding the permission lets exists() return false correctly.'
+title: 'Fix S3 UnableToCheckFileExistence 403 Error in Laravel'
+description: 'Without s3:ListBucket in the IAM policy, S3 returns 403 for missing files, making Flysystem throw UnableToCheckFileExistence. Adding the permission resolves it.'
 slug: leagueflysystemunabletocheckfileexistence
 date: '2023-01-19T03:12:27+08:00'
 categories:

@@ -1,6 +1,6 @@
 ---
 title: 'Laravel Testing: Assert View Data Without Parsing HTML'
-description: 'Testing complex Laravel views via HTML is brittle. Use viewData() to assert variables passed to the View directly, and compare Models by id or toArray() rather than the object itself.'
+description: 'HTML assertions on complex views are brittle. Use viewData() to assert view variables directly, and compare Models by id or toArray() to avoid identity issues.'
 slug: laravel-testing-view-data
 date: '2022-11-29T15:58:53+08:00'
 categories:

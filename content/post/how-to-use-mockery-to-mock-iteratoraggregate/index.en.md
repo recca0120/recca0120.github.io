@@ -1,6 +1,6 @@
 ---
-title: 'Mock IteratorAggregate with Mockery So foreach Works in Tests'
-description: 'Mocking an IteratorAggregate object breaks foreach iteration in tests. Return an ArrayObject from the mocked getIterator method to make foreach iterate over your test data correctly.'
+title: 'Mock IteratorAggregate with Mockery to Fix foreach in Tests'
+description: 'Mocking IteratorAggregate breaks foreach in PHPUnit. Return an ArrayObject from the mocked getIterator method to make foreach iterate over test data correctly.'
 slug: how-to-use-mockery-to-mock-iteratoraggregate
 date: '2022-11-25T03:41:39+08:00'
 categories:

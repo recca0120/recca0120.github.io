@@ -1,6 +1,6 @@
 ---
-title: 'Fix Laravel Queue Job Reading Stale Data Inside a Transaction'
-description: 'Jobs dispatched inside a Transaction re-query the DB via SerializesModels before commit, returning stale data. Adding afterCommit() delays queuing until after commit.'
+title: 'Laravel Queue Job Reads Stale Data in Transaction: Fix'
+description: 'Jobs dispatched in a transaction re-query the DB via SerializesModels before commit, reading stale data. Use afterCommit() to delay dispatch until after commit.'
 slug: laravel-model-reads-old-data-when-using-transaction-and-queue
 date: '2022-12-02T10:30:00+08:00'
 categories:

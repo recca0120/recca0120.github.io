@@ -1,6 +1,6 @@
 ---
 title: 'Laravel Vite Assets Fail on Custom Domain? Set server.host'
-description: 'Laravel Vite defaults to localhost, so assets fail to load when using a custom dev domain. Fix it by setting server.host in vite.config.js; for Valet HTTPS, use the valetTls option instead.'
+description: 'Laravel Vite defaults to localhost, breaking assets on custom domains. Set server.host and server.hmr.host in vite.config.js, or use valetTls for Valet HTTPS.'
 slug: laravel-vite-host
 date: '2023-03-20T07:08:10+08:00'
 categories:

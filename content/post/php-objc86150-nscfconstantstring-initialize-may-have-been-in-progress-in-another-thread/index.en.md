@@ -1,6 +1,6 @@
 ---
 title: 'Fix macOS PHP NSCFConstantString Fork Error with One Env Var'
-description: 'Using Guzzle inside artisan tinker on macOS throws an NSCFConstantString initialize fork error due to the Objective-C runtime safety check. Set OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES to fix it permanently.'
+description: 'macOS artisan tinker throws an NSCFConstantString fork error when Guzzle is used. Set OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES in ~/.zshrc to fix it permanently.'
 slug: php-objc86150-nscfconstantstring-initialize-may-have-been-in-progress-in-another-thread
 date: '2022-12-26T08:41:00+08:00'
 categories:

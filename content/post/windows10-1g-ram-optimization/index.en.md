@@ -1,6 +1,6 @@
 ---
-title: 5 PowerShell Tweaks to Run Windows 10 on 1GB RAM
-description: 'Running Windows 10 on just 1GB of RAM is possible with the right tweaks. Disable Memory Compression, Superfetch, Windows Defender, and the Ndu service via PowerShell to significantly cut memory usage.'
+title: 'Run Windows 10 on 1GB RAM: 5 PowerShell Optimizations'
+description: 'Disable Memory Compression, Superfetch, Windows Defender, and Ndu via PowerShell to significantly reduce RAM usage and run Windows 10 on just 1GB of memory.'
 slug: windows-10-running-in-1g-ram
 date: '2020-07-06T10:36:37+08:00'
 categories:

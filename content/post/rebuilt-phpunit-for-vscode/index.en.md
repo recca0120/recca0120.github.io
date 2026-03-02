@@ -1,6 +1,6 @@
 ---
-title: 'PHPUnit for VSCode 3.0: Testing API Integration and Docker Support'
-description: 'A full rewrite of PHPUnit for VSCode integrating the VS Code Testing API for real-time sidebar results, with Docker and SSH remote execution support.'
+title: 'PHPUnit for VSCode 3.0: VS Code Testing API and Docker'
+description: 'A complete rewrite of PHPUnit for VSCode using the VS Code Testing API for real-time sidebar results, now with Docker and SSH remote execution support.'
 slug: rebuilt-phpunit-for-vscode
 date: '2022-12-06T05:57:57+08:00'
 categories:

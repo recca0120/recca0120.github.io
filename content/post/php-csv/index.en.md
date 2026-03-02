@@ -1,6 +1,6 @@
 ---
-title: 'PHP CSV Scientific Notation: Convert Back with Dynamic sprintf'
-description: 'Excel exports small decimals as 8.90E-05 in CSV, breaking bcmul with a malformed argument error. Use sprintf with dynamic precision to restore any float correctly.'
+title: 'PHP CSV: Convert Scientific Notation Back to Decimal'
+description: 'Excel exports small decimals as 8.90E-05 scientific notation in CSV, breaking bcmul. Use sprintf with dynamic precision from the exponent to restore any float.'
 slug: php-csv
 date: '2024-07-16T06:05:35+08:00'
 categories:

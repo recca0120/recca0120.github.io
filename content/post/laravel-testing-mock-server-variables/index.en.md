@@ -1,7 +1,7 @@
 ---
 title: '2 Ways to Fake $_SERVER Variables in Laravel Feature Tests'
-description: 'When testing IP restrictions or logic that reads $_SERVER, pass server vars per-request or use withServerVariables() to apply them globally for the entire test method.'
-slug: how-to-mock_$_SERVER-in-laravel-feature-testing
+description: 'Fake $_SERVER in Laravel feature tests by passing server vars per-request, or use withServerVariables() to apply them globally for the entire test method.'
+slug: 'how-to-mock_$\_SERVER-in-laravel-feature-testing'
 date: '2020-06-23T12:18:59+08:00'
 categories:
 - Laravel

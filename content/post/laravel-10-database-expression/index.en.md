@@ -1,6 +1,6 @@
 ---
-title: 'Laravel 10 Database Expression: Handle MySQL vs SQLite Differences'
-description: "MySQL's IF() throws an error on SQLite. Laravel 10's Expression interface generates different SQL per Grammar type, encapsulating cross-database differences into a reusable class."
+title: 'Laravel 10 Database Expression: Cross-Database SQL'
+description: "MySQL's IF() fails on SQLite. Laravel 10's Expression interface generates Grammar-specific SQL, encapsulating cross-database differences into a reusable class."
 slug: laravel-10-database-expression
 date: '2023-02-20T05:41:20+08:00'
 categories:

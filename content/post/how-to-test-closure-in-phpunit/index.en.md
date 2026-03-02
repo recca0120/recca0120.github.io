@@ -1,6 +1,6 @@
 ---
-title: 'PHPUnit: Test Closures with Mockery::spy to Catch Silent Failures'
-description: 'Assertions inside closures pass even when the callback is never called. Use Mockery::spy to verify callback invocation, arguments, and call count in a proper 3A structure.'
+title: 'PHPUnit: Test Closures with Mockery::spy'
+description: 'Assertions inside a closure pass silently even if never called. Wrap the closure in Mockery::spy to verify invocation count and arguments in PHPUnit tests.'
 slug: how-to-test-closure-in-phpunit
 date: '2022-11-26T09:31:24+08:00'
 categories:

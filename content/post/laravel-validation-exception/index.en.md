@@ -1,6 +1,6 @@
 ---
-title: Throw Laravel Validation Errors Manually with ValidationException
-description: 'Use ValidationException::withMessages to wrap external API errors into Laravel standard validation format, so the frontend handles them the same way as form errors.'
+title: 'Throw Laravel ValidationException Manually for API Errors'
+description: 'Wrap external API errors with ValidationException::withMessages to output Laravel validation format, so the frontend displays them like regular form errors.'
 slug: how-to-throw-a-validation-exception-manually-in-laravel
 date: '2020-05-24T12:51:54+08:00'
 categories:

@@ -1,6 +1,6 @@
 ---
-title: How to Connect Bluetooth on a Headless Raspberry Pi
-description: 'Use bluetoothctl commands (scan, pair, trust, connect) to pair Bluetooth devices on a headless Raspberry Pi and auto-reconnect on every boot.'
+title: 'Connect Bluetooth on a Headless Raspberry Pi via CLI'
+description: 'Use bluetoothctl scan, pair, trust, and connect to pair Bluetooth devices on a headless Raspberry Pi without a desktop and auto-reconnect on every reboot.'
 slug: raspberry-pi-connect-bluetooth-using-command
 date: '2020-07-21T14:48:18+08:00'
 categories:

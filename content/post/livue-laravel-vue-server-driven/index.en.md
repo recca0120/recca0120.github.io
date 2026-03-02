@@ -1,6 +1,6 @@
 ---
-title: 'LiVue: Replace Alpine.js with Vue 3 for Server-Driven Laravel Development'
-description: 'LiVue brings Vue 3 directives into Blade templates without APIs or .vue files, combining Livewire server-driven architecture with the Vue ecosystem.'
+title: 'LiVue: Use Vue 3 Directives in Laravel Blade Templates'
+description: 'LiVue lets you write Vue 3 directives in Blade templates without APIs or .vue files, merging Livewire server-driven architecture with the Vue ecosystem.'
 slug: livue-laravel-vue-server-driven
 date: '2026-03-03T06:00:00+08:00'
 image: featured.png

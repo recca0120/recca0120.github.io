@@ -1,5 +1,5 @@
 ---
-title: 'Why Laravel LazyCollection Loses Lazy Evaluation with Generator'
+title: 'Laravel LazyCollection Loses Lazy Evaluation with Generator'
 description: 'Passing a Generator directly to LazyCollection causes iterator_to_array to expand it all at once. Wrap it in a Closure to restore true lazy evaluation.'
 slug: lazy-collection-with-generator-notice
 date: '2020-08-17T12:46:29+08:00'
