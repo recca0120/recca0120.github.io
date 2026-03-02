@@ -4,6 +4,7 @@ description: 'POST requests only return a 302, hiding the final page. Use follow
 slug: laravel-testing-what-happens-after-a-redirect
 date: '2020-06-25T12:04:22+08:00'
 categories:
+- Laravel
 - Testing
 tags:
 - Laravel

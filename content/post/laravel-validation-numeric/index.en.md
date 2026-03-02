@@ -8,6 +8,7 @@ categories:
 tags:
 - Laravel
 - Validation
+- PHP
 image: featured.png
 draft: false
 ---

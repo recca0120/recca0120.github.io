@@ -5,6 +5,7 @@ slug: laravel-vite-host
 date: '2023-03-20T07:08:10+08:00'
 categories:
 - Laravel
+- Frontend
 tags:
 - Laravel
 - Vite

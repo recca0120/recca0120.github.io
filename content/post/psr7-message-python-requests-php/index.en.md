@@ -4,11 +4,11 @@ description: 'When Python handles scraping but PHP handles processing, have Pyth
 slug: psr7-message-python-requests-php
 date: '2022-12-26T06:34:26+08:00'
 categories:
-- PHP
+  - PHP
 tags:
-- PSR-7
-- PHP
-- Guzzle
+  - PHP
+  - PSR-7
+  - Guzzle
 image: featured.png
 draft: false
 ---

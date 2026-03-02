@@ -4,11 +4,13 @@ description: 'Load schema dump directly into SQLite in-memory database via PDO::
 slug: laravel-load-schema-to-sqlite-in-memory-database
 date: '2022-12-19T15:26:54+08:00'
 categories:
+- Laravel
 - Testing
 tags:
 - Laravel
 - SQLite
 - Testing
+- Migration
 image: featured.png
 draft: false
 ---

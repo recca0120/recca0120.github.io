@@ -4,10 +4,12 @@ description: 'When testing IP restrictions or logic that reads $_SERVER, pass se
 slug: how-to-mock_$_SERVER-in-laravel-feature-testing
 date: '2020-06-23T12:18:59+08:00'
 categories:
+- Laravel
 - Testing
 tags:
 - Laravel
 - Testing
+- PHPUnit
 draft: false
 image: featured.png
 ---

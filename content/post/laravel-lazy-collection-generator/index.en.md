@@ -5,8 +5,10 @@ slug: lazy-collection-with-generator-notice
 date: '2020-08-17T12:46:29+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
+- PHP
 draft: false
 image: featured.png
 ---

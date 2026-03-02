@@ -4,10 +4,11 @@ description: 'Without s3:ListBucket in the IAM policy, S3 returns 403 instead of
 slug: leagueflysystemunabletocheckfileexistence
 date: '2023-01-19T03:12:27+08:00'
 categories:
-- PHP
-tags:
-- Flysystem
 - Laravel
+- DevOps
+tags:
+- Laravel
+- Flysystem
 - AWS
 image: featured.png
 draft: false

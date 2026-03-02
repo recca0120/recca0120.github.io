@@ -5,6 +5,7 @@ slug: how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php
 date: '2020-06-01T18:29:17+08:00'
 categories:
 - PHP
+- Laravel
 tags:
 - PHP
 - Guzzle

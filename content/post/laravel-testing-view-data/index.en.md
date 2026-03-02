@@ -4,10 +4,12 @@ description: 'Testing complex Laravel views via HTML is brittle. Use viewData() 
 slug: laravel-testing-view-data
 date: '2022-11-29T15:58:53+08:00'
 categories:
+- Laravel
 - Testing
 tags:
 - Laravel
 - Testing
+- Blade
 image: featured.png
 draft: false
 ---

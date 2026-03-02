@@ -4,10 +4,12 @@ description: 'SQLite throws "no such function" for MySQL-specific functions like
 slug: laravel-sqlite-function
 date: '2023-02-17T03:27:51+08:00'
 categories:
+- Laravel
 - Database
 tags:
-- SQLite
 - Laravel
+- SQLite
+- Testing
 image: featured.png
 draft: false
 ---

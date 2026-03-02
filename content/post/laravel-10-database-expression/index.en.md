@@ -5,10 +5,12 @@ slug: laravel-10-database-expression
 date: '2023-02-20T05:41:20+08:00'
 categories:
 - Laravel
+- Database
 tags:
 - Laravel
 - MySQL
 - SQLite
+- Testing
 image: featured.png
 draft: false
 ---

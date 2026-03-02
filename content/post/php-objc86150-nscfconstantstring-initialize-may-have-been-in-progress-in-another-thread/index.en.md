@@ -5,8 +5,10 @@ slug: php-objc86150-nscfconstantstring-initialize-may-have-been-in-progress-in-a
 date: '2022-12-26T08:41:00+08:00'
 categories:
 - macOS
+- PHP
 tags:
 - PHP
+- Guzzle
 image: featured.png
 draft: false
 ---

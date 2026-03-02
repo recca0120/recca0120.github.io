@@ -8,6 +8,7 @@ categories:
 tags:
 - Laravel
 - Queue
+- Redis
 image: featured.png
 draft: false
 ---

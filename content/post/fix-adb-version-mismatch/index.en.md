@@ -7,6 +7,7 @@ categories:
 - macOS
 tags:
 - Android
+- macOS
 draft: false
 image: featured.png
 ---

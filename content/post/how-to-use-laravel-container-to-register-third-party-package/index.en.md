@@ -5,8 +5,11 @@ slug: how-to-use-laravel-container-to-register-third-party-package
 date: '2023-01-06T01:46:18+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
+- PHP
+- Composer
 image: featured.png
 draft: false
 ---

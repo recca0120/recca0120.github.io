@@ -5,6 +5,7 @@ slug: dbngin-mysql-command
 date: '2022-11-08T03:16:32+08:00'
 categories:
 - Database
+- macOS
 tags:
 - MySQL
 - macOS
