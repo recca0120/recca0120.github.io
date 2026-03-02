@@ -6,6 +6,7 @@ categories:
 - PHP
 tags:
 - PHP
+- Composer
 image: featured.png
 draft: false
 ---

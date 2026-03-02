@@ -3,9 +3,10 @@ title: 'Laravel Validation 檢查數字時務必加上 numeric'
 slug: laravel-validation-numeric
 date: '2022-11-23T08:30:00+08:00'
 categories:
-- PHP
+- Laravel
 tags:
 - Laravel
+- Validation
 image: featured.png
 draft: false
 ---

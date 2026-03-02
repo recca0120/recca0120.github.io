@@ -3,9 +3,9 @@ title: 解決 adb server version (41) doesn't match this client (40)
 slug: fix-adb-server-version-does-not-match-this-client-problem
 date: '2020-05-29T19:01:07+08:00'
 categories:
-- android
+- macOS
 tags:
-- android
+- Android
 draft: false
 image: featured.png
 ---

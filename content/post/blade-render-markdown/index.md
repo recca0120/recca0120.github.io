@@ -3,11 +3,11 @@ title: 用 Blade 來 Render Markdown
 slug: render-markdown-by-blade-template-engine
 date: '2020-07-14T09:49:36+08:00'
 categories:
-- laravel
+- Laravel
 tags:
-- laravel
-- blade
-- markdown
+- Laravel
+- Blade
+- Composer
 draft: false
 image: featured.png
 ---

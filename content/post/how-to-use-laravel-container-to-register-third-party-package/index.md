@@ -3,7 +3,7 @@ title: 'How to use Laravel Container to register third-party package'
 slug: how-to-use-laravel-container-to-register-third-party-package
 date: '2023-01-06T01:46:18+08:00'
 categories:
-- PHP
+- Laravel
 tags:
 - Laravel
 image: featured.png

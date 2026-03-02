@@ -3,7 +3,7 @@ title: 'PHP 遇到 objc[86150]: +[__NSCFConstantString initialize] may have been
 slug: php-objc86150-nscfconstantstring-initialize-may-have-been-in-progress-in-another-thread
 date: '2022-12-26T08:41:00+08:00'
 categories:
-- PHP
+- macOS
 tags:
 - PHP
 image: featured.png

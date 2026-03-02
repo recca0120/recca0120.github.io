@@ -6,6 +6,7 @@ categories:
 - Database
 tags:
 - MySQL
+- macOS
 image: featured.png
 draft: false
 ---

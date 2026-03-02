@@ -3,10 +3,10 @@ title: 在 Laravel Feature 測試中如何 mock $_SERVER
 slug: how-to-mock_$\_SERVER-in-laravel-feature-testing
 date: '2020-06-23T12:18:59+08:00'
 categories:
-- laravel
+- Testing
 tags:
-- laravel
-- testing
+- Laravel
+- Testing
 draft: false
 image: featured.png
 ---

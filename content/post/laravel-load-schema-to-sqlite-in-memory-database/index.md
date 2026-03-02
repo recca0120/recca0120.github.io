@@ -3,11 +3,11 @@ title: '[Laravel] load schema to sqlite in memory database'
 slug: laravel-load-schema-to-sqlite-in-memory-database
 date: '2022-12-19T15:26:54+08:00'
 categories:
-- Database
-- PHP
+- Testing
 tags:
-- SQLite
 - Laravel
+- SQLite
+- Testing
 image: featured.png
 draft: false
 ---

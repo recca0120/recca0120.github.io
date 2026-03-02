@@ -3,10 +3,10 @@ title: 樹莓派用 command 連結藍芽
 slug: raspberry-pi-connect-bluetooth-using-command
 date: '2020-07-21T14:48:18+08:00'
 categories:
-- raspberry pi
+- DevOps
 tags:
-- raspberry pi
-- bluetooth
+- Raspberry Pi
+- Bluetooth
 draft: false
 image: featured.png
 ---

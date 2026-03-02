@@ -3,10 +3,11 @@ title: PHP Curl 遇到 Comodo RSA Certification Authority SSL 錯誤
 slug: how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php
 date: '2020-06-01T18:29:17+08:00'
 categories:
-- php
+- PHP
 tags:
-- php
-- laravel
+- PHP
+- Guzzle
+- Laravel
 draft: false
 image: featured.png
 ---

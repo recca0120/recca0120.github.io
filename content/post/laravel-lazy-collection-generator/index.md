@@ -3,11 +3,9 @@ title: LazyCollection 加 Generator 踩雷記
 slug: lazy-collection-with-generator-notice
 date: '2020-08-17T12:46:29+08:00'
 categories:
-- laravel
+- Laravel
 tags:
-- laravel
-- lazy-collection
-- generator
+- Laravel
 draft: false
 image: featured.png
 ---

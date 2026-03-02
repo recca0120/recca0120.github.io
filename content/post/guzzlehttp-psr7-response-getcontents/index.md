@@ -3,9 +3,11 @@ title: GuzzleHttp Psr7 Response 取得內容的注意事項
 slug: guzzlehttp-psr7-response-get-contents-notice
 date: '2020-08-05T13:12:49+08:00'
 categories:
-- php
+- PHP
 tags:
-- php
+- Guzzle
+- PSR-7
+- PHP
 draft: false
 image: featured.png
 ---

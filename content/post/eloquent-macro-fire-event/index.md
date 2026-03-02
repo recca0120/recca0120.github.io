@@ -3,7 +3,7 @@ title: '用 Eloquent Macro 定義 fire 方法手動觸發 Event'
 slug: eloquent-macro-fire-event
 date: '2023-01-20T10:00:00+08:00'
 categories:
-- PHP
+- Laravel
 tags:
 - Laravel
 - Eloquent

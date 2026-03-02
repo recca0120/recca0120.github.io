@@ -3,11 +3,10 @@ title: 'Laravel Blade Template 遇到重覆區塊的解決方'
 slug: laravel-blade-template
 date: '2024-05-07T07:47:27+08:00'
 categories:
-- Blade
-- PHP
-tags:
-- Blade
 - Laravel
+tags:
+- Laravel
+- Blade
 image: featured.png
 draft: false
 ---

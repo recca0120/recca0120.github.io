@@ -3,7 +3,7 @@ title: '[Laravel] Container 和 Facade 的關聯'
 slug: laravel-container-facade
 date: '2023-01-12T05:34:12+08:00'
 categories:
-- PHP
+- Laravel
 tags:
 - Laravel
 image: featured.png

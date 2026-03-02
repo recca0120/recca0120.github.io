@@ -3,9 +3,10 @@ title: Laravel Migration 注意事項
 slug: laravel-create-migration-precautions
 date: '2020-06-08T22:18:27+08:00'
 categories:
-- laravel
+- Laravel
 tags:
-- laravel
+- Laravel
+- Migration
 draft: false
 image: featured.png
 ---

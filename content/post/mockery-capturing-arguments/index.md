@@ -3,9 +3,10 @@ title: '利用 Mockery 的 Capturing Arguments 測亂數'
 slug: mockery-capturing-arguments
 date: '2022-11-22T14:21:07+08:00'
 categories:
-- PHP
+- Testing
 tags:
 - Mockery
+- PHP
 image: featured.png
 draft: false
 ---

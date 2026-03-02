@@ -3,9 +3,10 @@ title: 'Laravel Testing 只測 View data'
 slug: laravel-testing-view-data
 date: '2022-11-29T15:58:53+08:00'
 categories:
-- PHP
+- Testing
 tags:
 - Laravel
+- Testing
 image: featured.png
 draft: false
 ---

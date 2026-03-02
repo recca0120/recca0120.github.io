@@ -3,10 +3,11 @@ title: 'Rebuilt PHPUnit for VSCode (New Version 3.0)'
 slug: rebuilt-phpunit-for-vscode
 date: '2022-12-06T05:57:57+08:00'
 categories:
-- PHP
+- Testing
 tags:
 - PHPUnit
-- PHP
+- VS Code
+- Docker
 image: featured.png
 draft: false
 ---

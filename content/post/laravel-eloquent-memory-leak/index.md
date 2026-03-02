@@ -3,10 +3,10 @@ title: Laravel Eloquent Memory Leak
 slug: laravel-eloquent-memory-leak
 date: '2020-06-18T14:00:42+08:00'
 categories:
-- laravel
+- Laravel
 tags:
-- laravel
-- eloquent
+- Laravel
+- Eloquent
 draft: false
 image: featured.png
 ---

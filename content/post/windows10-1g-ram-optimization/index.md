@@ -3,9 +3,9 @@ title: Windows 10 在 1G 記憶體的機器如何跑的順暢
 slug: windows-10-running-in-1g-ram
 date: '2020-07-06T10:36:37+08:00'
 categories:
-- windows
+- Windows
 tags:
-- windows10
+- Windows
 draft: false
 image: featured.png
 ---

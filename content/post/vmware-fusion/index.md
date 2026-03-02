@@ -3,7 +3,7 @@ title: 'VMware Fusion 個人免費版'
 slug: vmware-fusion
 date: '2022-11-21T13:34:53+08:00'
 categories:
-- VMware
+- macOS
 tags:
 - VMware
 image: featured.png

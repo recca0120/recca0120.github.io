@@ -3,9 +3,10 @@ title: 在 AWS EC2 上安裝 Windows 10
 slug: running-windows10-on-aws-ec2
 date: '2020-07-04T11:34:00+08:00'
 categories:
-- aws
+- Windows
 tags:
-- aws - virtualbox - windows10
+- Windows
+- AWS
 draft: false
 image: featured.png
 ---

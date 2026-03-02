@@ -3,9 +3,10 @@ title: 'How to use Mockery to mock IteratorAggregate'
 slug: how-to-use-mockery-to-mock-iteratoraggregate
 date: '2022-11-25T03:41:39+08:00'
 categories:
-- PHP
+- Testing
 tags:
 - Mockery
+- PHP
 image: featured.png
 draft: false
 ---

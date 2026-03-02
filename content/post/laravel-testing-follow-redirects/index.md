@@ -3,10 +3,11 @@ title: Laravel 測試時如何查看 RedirectResponse 的結果
 slug: laravel-testing-what-happens-after-a-redirect
 date: '2020-06-25T12:04:22+08:00'
 categories:
-- -laravel -testing
+- Testing
 tags:
-- laravel
-- testing
+- Laravel
+- PHPUnit
+- Testing
 draft: false
 image: featured.png
 ---

@@ -3,11 +3,11 @@ title: '使用 PSR7 message 將 python requests 結果回傳至 PHP'
 slug: psr7-message-python-requests-php
 date: '2022-12-26T06:34:26+08:00'
 categories:
-- PSR-7
 - PHP
 tags:
 - PSR-7
 - PHP
+- Guzzle
 image: featured.png
 draft: false
 ---

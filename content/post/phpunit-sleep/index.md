@@ -3,7 +3,7 @@ title: 'PHPUnit 寫測試時遇到 sleep 時該怎麼辦？'
 slug: phpunit-sleep
 date: '2023-01-06T08:55:58+08:00'
 categories:
-- PHP
+- Testing
 tags:
 - PHPUnit
 - PHP

@@ -3,7 +3,7 @@ title: '在 WSL2 安裝 Docker CE'
 slug: wsl2-install-docker-ce
 date: '2023-01-15T10:00:00+08:00'
 categories:
-- Docker
+- DevOps
 tags:
 - Docker
 - WSL2

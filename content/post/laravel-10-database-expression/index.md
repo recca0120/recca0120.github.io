@@ -3,9 +3,11 @@ title: 'Laravel 10 Database Expression 新功能'
 slug: laravel-10-database-expression
 date: '2023-02-20T05:41:20+08:00'
 categories:
-- PHP
+- Laravel
 tags:
 - Laravel
+- MySQL
+- SQLite
 image: featured.png
 draft: false
 ---

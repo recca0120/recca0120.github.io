@@ -3,7 +3,7 @@ title: 'tester-phpunit (https://github.com/recca0120/tester-phpunit)'
 slug: tester-phpunit
 date: '2017-07-23T12:36:38+08:00'
 categories:
-- PHP
+- Testing
 tags:
 - PHPUnit
 - PHP

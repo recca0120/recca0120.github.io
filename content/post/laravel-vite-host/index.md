@@ -3,11 +3,10 @@ title: 'Laravel Vite host 設定'
 slug: laravel-vite-host
 date: '2023-03-20T07:08:10+08:00'
 categories:
-- Vite
-- PHP
-tags:
-- Vite
 - Laravel
+tags:
+- Laravel
+- Vite
 image: featured.png
 draft: false
 ---

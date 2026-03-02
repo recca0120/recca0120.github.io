@@ -4,7 +4,6 @@ slug: laravel-sqlite-function
 date: '2023-02-17T03:27:51+08:00'
 categories:
 - Database
-- PHP
 tags:
 - SQLite
 - Laravel

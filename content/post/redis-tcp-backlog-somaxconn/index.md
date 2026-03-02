@@ -3,9 +3,10 @@ title: 修復 Redis TCP backlog 警告
 slug: redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128
 date: '2020-06-12T14:01:07+08:00'
 categories:
-- redis
+- Database
 tags:
-- redis
+- Redis
+- Linux
 draft: false
 image: featured.png
 ---

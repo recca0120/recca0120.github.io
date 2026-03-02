@@ -3,9 +3,9 @@ title: Redis Connection Refused
 slug: redis-connection-refused
 date: '2020-07-21T14:40:39+08:00'
 categories:
-- redis
+- Database
 tags:
-- redis
+- Redis
 draft: false
 image: featured.png
 ---

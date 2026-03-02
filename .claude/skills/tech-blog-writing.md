@@ -139,8 +139,39 @@ draft: false
 規則：
 - `slug` 用英文 kebab-case
 - `date` 一定要帶時區 `+08:00`
-- `categories` 和 `tags` 都是陣列格式
+- `categories` 只放一個，`tags` 是陣列格式
 - 不要加 `author`、`comments`、`keywords`、`description`（空值）、`abbrlink`
+
+### 分類與標籤規則
+
+`categories` 只選一個主分類，從以下固定清單選：
+
+| 分類 | 適用範圍 |
+|------|----------|
+| Laravel | Laravel 框架核心功能（Eloquent、Blade、Container、Migration、Queue 等） |
+| PHP | 非 Laravel 的 PHP 相關（Composer、PSR、原生函數、擴展） |
+| Testing | 測試相關（PHPUnit、Mockery、測試技巧，不管是否用 Laravel） |
+| Database | 資料庫操作（Redis、MySQL、SQLite，非 Laravel ORM 層面） |
+| Frontend | 前端技術（Alpine.js、JavaScript、CSS） |
+| DevOps | 部署、容器、CI/CD（Docker、WSL2、GitHub Actions） |
+| Windows | Windows 系統相關 |
+| macOS | macOS 系統相關 |
+
+`tags` 標記文章涉及的具體技術，使用**正確大小寫**：
+
+- Laravel 生態：`Laravel`、`Eloquent`、`Blade`、`Validation`、`Migration`、`Queue`、`Vite`
+- PHP 生態：`PHP`、`Composer`、`PSR-7`
+- 測試工具：`PHPUnit`、`Mockery`、`Testing`
+- 資料庫：`Redis`、`MySQL`、`SQLite`
+- 前端：`Alpine.js`、`JavaScript`
+- 工具/服務：`Docker`、`WSL2`、`AWS`、`VS Code`、`Guzzle`、`Flysystem`
+- 系統：`Windows`、`VMware`、`Android`、`Linux`
+- 硬體：`Raspberry Pi`、`Bluetooth`
+
+原則：
+- tag 用英文，保留官方大小寫（`PHPUnit` 不是 `phpunit`）
+- 一篇文章通常 1-4 個 tags
+- 只標文章**實際用到**的技術，不要為了 SEO 亂標
 
 ## 封面圖產生
 

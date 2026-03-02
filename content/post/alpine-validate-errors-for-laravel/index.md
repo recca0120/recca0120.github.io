@@ -3,11 +3,11 @@ title: 'Alpine Validate Errors For Laravel'
 slug: alpine-validate-errors-for-laravel
 date: '2024-04-19T09:30:26+08:00'
 categories:
-- Alpine.js
-- PHP
+- Frontend
 tags:
 - Alpine.js
 - Laravel
+- JavaScript
 image: featured.png
 draft: false
 ---
