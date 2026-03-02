@@ -16,6 +16,14 @@ metadata:
 
 # 技術部落格文章撰寫規範
 
+## 專案資訊
+
+- Hugo + Stack 主題
+- 設定檔：`config/_default/` 下多個 `.toml`
+- 文章放在：`content/post/{slug}/index.md`
+- 部署：push 到 `main` 分支自動透過 GitHub Actions 部署到 GitHub Pages
+- 網址：https://recca0120.github.io/
+
 ## 文章結構：起承轉合
 
 每篇文章必須有明確的敘事線，讓讀者知道前因後果。
@@ -97,9 +105,9 @@ metadata:
 使用 Hugo Page Bundle 格式：
 
 ```
-content/post/文章名稱/
+content/post/{slug}/
 ├── index.md        # 文章內容
-└── featured.jpg    # 封面圖（選填）
+└── featured.png    # 封面圖
 ```
 
 ### 檔名規則
@@ -134,12 +142,51 @@ draft: false
 - `categories` 和 `tags` 都是陣列格式
 - 不要加 `author`、`comments`、`keywords`、`description`（空值）、`abbrlink`
 
+## 封面圖產生
+
+使用 Cloudflare Workers AI 產生封面圖。API 金鑰在 `~/.zshrc` 的環境變數：
+
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_API_TOKEN`
+
+產圖指令：
+
+```bash
+curl -sS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/@cf/stabilityai/stable-diffusion-xl-base-1.0" \
+  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "你的英文描述", "width": 1024, "height": 576}' \
+  --output content/post/{slug}/featured.png
+```
+
+Prompt 撰寫原則：
+- 用英文描述
+- 風格統一：dark background、minimal、tech illustration
+- 描述文章主題的視覺意象，不要放文字
+- 保持簡短，一句話就好
+
 ## 寫作流程
 
-1. 確認主題和目標讀者
-2. 列出起承轉合的大綱
-3. 寫初稿
-4. 套用 Humanizer-zh 規則檢查 AI 痕跡
-5. 確認程式碼可讀、有註解
-6. 確認 frontmatter 格式正確
-7. `hugo server` 預覽確認排版正常
+1. 建立目錄 `content/post/{slug}/`
+2. 確認主題和目標讀者
+3. 列出起承轉合的大綱
+4. 寫初稿到 `index.md`
+5. 套用 Humanizer-zh 規則檢查 AI 痕跡
+6. 確認程式碼可讀、有註解
+7. 確認 frontmatter 格式正確
+8. 用 Cloudflare Workers AI 產封面圖
+9. `hugo server` 本地預覽確認排版正常
+10. commit 並 push 到 `main`，GitHub Actions 會自動部署
+
+## 部署驗證
+
+```bash
+# 本地預覽
+hugo server -D
+
+# 正式建置
+hugo --gc --minify
+
+# 確認文章數量
+find content/post -name "index.md" | wc -l
+```
