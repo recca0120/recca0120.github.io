@@ -2,7 +2,7 @@
 title: 'msw-fetch-mock：用 undici 風格的 API 寫 Fetch Mock，6 套方案完整比較'
 description: '比較 msw-fetch-mock、MSW、nock、fetch-mock 等 6 套 HTTP mock 方案的差異，說明 msw-fetch-mock 的架構優勢與適用場景。'
 slug: msw-fetch-mock
-date: '2026-03-03T14:00:00+08:00'
+date: '2026-03-03T06:00:00+08:00'
 image: featured.png
 categories:
   - Testing
