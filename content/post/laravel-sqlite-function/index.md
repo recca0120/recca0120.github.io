@@ -1,6 +1,6 @@
 ---
 title: '用 sqliteCreateFunction 讓 SQLite 支援 MySQL 專屬函式'
-description: 'SQLite 測試遇到 MySQL 專屬 function（如 FIELD）會噴 no such function 錯誤，透過 PDO 的 sqliteCreateFunction 自行補上，讓測試順利通過。'
+description: 'SQLite 測試遇到 MySQL 專屬 function 如 FIELD 會噴 no such function 錯誤，用 sqliteCreateFunction 自行補上即可。'
 slug: laravel-sqlite-function
 date: '2023-02-17T03:27:51+08:00'
 categories:

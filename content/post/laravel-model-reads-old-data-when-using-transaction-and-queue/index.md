@@ -1,6 +1,6 @@
 ---
 title: 'Laravel Queue Job 在 Transaction 內讀到舊資料的解法'
-description: 'Transaction 內 dispatch 的 Job 因 SerializesModels 會在 commit 前重新查 DB，讀到尚未提交的舊資料，加上 afterCommit() 讓 Job 等 commit 後再入列即可修復。'
+description: 'Transaction 內 dispatch 的 Job 因 SerializesModels 讀到舊資料，用 afterCommit() 讓 Job 等 commit 後再入列。'
 slug: laravel-model-reads-old-data-when-using-transaction-and-queue
 date: '2022-12-02T10:30:00+08:00'
 categories:

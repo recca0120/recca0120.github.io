@@ -1,6 +1,6 @@
 ---
 title: '修復 Laravel Migration 的 Unknown database type enum 錯誤'
-description: 'Doctrine DBAL 不認識 MySQL enum 型別，導致 migration 失敗。介紹 Type::addType 和 registerDoctrineTypeMapping 兩種解法及各自適用場景。'
+description: 'Doctrine DBAL 不認識 MySQL enum 型別導致 migration 失敗。介紹 Type::addType 與 registerDoctrineTypeMapping 兩種解法。'
 slug: laravel-how-to-fix-unknown-database-type-enum-requested
 date: '2022-12-13T06:16:19+08:00'
 categories:

@@ -1,6 +1,6 @@
 ---
 title: 'Use Laravel Container bind to Inject Any Third-Party Package'
-description: 'When a third-party class requires constructor parameters, Laravel cannot auto-resolve it. Register it via bind in a ServiceProvider to enable type-hint injection anywhere without a Laravel wrapper package.'
+description: 'When a third-party class requires constructor parameters, Laravel cannot auto-resolve it. Register it via bind in a ServiceProvider to enable type-hint injection anywhere.'
 slug: how-to-use-laravel-container-to-register-third-party-package
 date: '2023-01-06T01:46:18+08:00'
 categories:

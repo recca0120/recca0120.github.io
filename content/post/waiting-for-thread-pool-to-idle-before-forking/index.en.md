@@ -1,6 +1,6 @@
 ---
 title: 'Fix the gRPC "Waiting for thread pool to idle" Warning in PHPUnit'
-description: 'PHPUnit keeps printing "Waiting for thread pool to idle before forking" due to an incompatible gRPC extension version. Downgrade grpc to 1.49.0 to eliminate it.'
+description: 'PHPUnit keeps printing "Waiting for thread pool to idle before forking" because the gRPC extension version is too high. Downgrade the grpc extension to 1.49.0 to eliminate the warning entirely.'
 slug: waiting-for-thread-pool-to-idle-before-forking
 date: '2023-01-18T15:37:51+08:00'
 categories:

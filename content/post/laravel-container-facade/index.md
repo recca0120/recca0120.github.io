@@ -1,6 +1,6 @@
 ---
 title: 'Laravel Facade 底層如何透過 Container 取 instance'
-description: '說明 Facade 透過 getFacadeAccessor 從 Container 解析 instance 的機制，以及 bind 與 singleton 的差異，適合想自訂 Facade 的開發者。'
+description: 'Facade 透過 getFacadeAccessor 從 Container 解析 instance 的機制，以及 bind 與 singleton 的差異。'
 slug: laravel-container-facade
 date: '2023-01-12T05:34:12+08:00'
 categories:

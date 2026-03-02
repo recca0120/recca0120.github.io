@@ -1,6 +1,6 @@
 ---
 title: 'Laravel Vite 自訂 domain 載入失敗？設定 server.host 解決'
-description: 'Laravel Vite 預設指向 localhost，開發環境用自訂 domain 時 asset 會載入失敗。在 vite.config.js 設定 server.host，搭配 Valet HTTPS 則用 valetTls。'
+description: 'Laravel Vite 預設指向 localhost，自訂 domain 時 asset 載入失敗。設定 server.host 即可解決。'
 slug: laravel-vite-host
 date: '2023-03-20T07:08:10+08:00'
 categories:

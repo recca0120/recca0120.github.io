@@ -1,6 +1,6 @@
 ---
 title: '用 Mockery mock IteratorAggregate 讓 foreach 正常運作'
-description: '直接 mock 實作 IteratorAggregate 的物件，foreach 會無法迭代。讓 getIterator 回傳 ArrayObject，就能在測試中正常使用 foreach 迭代 mock 資料。'
+description: '直接 mock IteratorAggregate 物件會導致 foreach 無法迭代。讓 getIterator 回傳 ArrayObject，測試中即可正常迭代 mock 資料。'
 slug: how-to-use-mockery-to-mock-iteratoraggregate
 date: '2022-11-25T03:41:39+08:00'
 categories:

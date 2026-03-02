@@ -1,6 +1,6 @@
 ---
 title: 'Get Installed Package Versions at Runtime with Composer 2'
-description: 'Need to check a package version at runtime for backward compatibility or feature flags? Use Composer 2 built-in InstalledVersions::getVersion() — no lock file parsing.'
+description: 'Need to check a Composer package version at runtime for backward compatibility or feature flags? Use the built-in InstalledVersions::getVersion() from Composer 2 — no lock file parsing needed.'
 slug: php-third-package-version
 date: '2023-02-25T10:04:03+08:00'
 categories:

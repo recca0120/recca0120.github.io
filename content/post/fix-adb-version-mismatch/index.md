@@ -1,6 +1,6 @@
 ---
 title: '修復 adb server/client 版本不一致的問題'
-description: 'Mac 上 Homebrew 和 Android SDK 各裝了一份 adb，導致 server version 和 client version 對不上。移除 Homebrew 版並統一 PATH 指向 SDK 即可解決。'
+description: 'Mac 上 Homebrew 和 Android SDK 各裝一份 adb 導致版本衝突。移除 Homebrew 版並將 PATH 指向 SDK 即可解決。'
 slug: fix-adb-server-version-does-not-match-this-client-problem
 date: '2020-05-29T19:01:07+08:00'
 categories:

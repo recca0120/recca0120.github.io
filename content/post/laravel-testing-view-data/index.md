@@ -1,6 +1,6 @@
 ---
 title: 'Laravel 測試只驗 View Data，不碰 HTML'
-description: '複雜頁面直接測 HTML 很脆弱，用 viewData() 取出傳給 View 的變數做 assertion 更穩定。同時說明比較 Model 時要用 id 或 toArray() 而非直接 assertEquals 物件。'
+description: '複雜頁面測 HTML 很脆弱，改用 viewData() 直接驗 View 變數更穩定；比較 Model 時用 id 或 toArray() 而非直接 assertEquals 物件。'
 slug: laravel-testing-view-data
 date: '2022-11-29T15:58:53+08:00'
 categories:

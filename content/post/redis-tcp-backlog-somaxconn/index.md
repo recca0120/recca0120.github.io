@@ -1,6 +1,6 @@
 ---
 title: 修復 Redis TCP backlog 超過 somaxconn 的啟動警告
-description: 'Redis 啟動時警告 TCP backlog 511 超過 somaxconn 的 128，連線量大時會掉線，調整 /proc/sys/net/core/somaxconn 並寫入 sysctl.conf 永久生效。'
+description: 'Redis 警告 TCP backlog 511 超過 somaxconn 128，連線量大時會掉線。調高 somaxconn 並寫入 sysctl.conf 讓設定永久生效。'
 slug: redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128
 date: '2020-06-12T14:01:07+08:00'
 categories:

@@ -1,6 +1,6 @@
 ---
 title: 'Laravel Migration 3 個常見踩坑與 SQLite 自動驗證'
-description: '整理 migration rollback 常出錯的 3 種寫法：新增刪除欄位混用同一個 closure、索引和欄位同時刪、多欄位分開呼叫 dropColumn，以及用 SQLite in-memory 測試提前攔截錯誤。'
+description: '整理 migration rollback 常出錯的 3 種寫法：closure 混用、索引與欄位同時刪、多次 dropColumn，並用 SQLite in-memory 測試提前攔截。'
 slug: laravel-create-migration-precautions
 date: '2020-06-08T22:18:27+08:00'
 categories:

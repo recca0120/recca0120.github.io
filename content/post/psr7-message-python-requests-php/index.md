@@ -1,6 +1,6 @@
 ---
 title: '用 PSR-7 message 格式讓 Python requests 結果無縫傳給 PHP'
-description: 'Python 有好用的爬蟲套件但後續處理在 PHP 時，讓 Python 輸出 PSR-7 message 字串，PHP 用 Message::parseResponse 解析，免自己拆 header 和 body。'
+description: 'Python 爬蟲、PHP 後續處理的跨語言架構：讓 Python 輸出 PSR-7 message 字串，PHP 用 parseResponse 解析，免手動拆 header 和 body。'
 slug: psr7-message-python-requests-php
 date: '2022-12-26T06:34:26+08:00'
 categories:
