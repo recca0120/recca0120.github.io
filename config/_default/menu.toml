@@ -17,10 +17,28 @@
     icon = "archives"
 
 [[main]]
+  identifier = "categories"
+  name = "分類"
+  url = "/categories/"
+  weight = 30
+
+  [main.params]
+    icon = "categories"
+
+[[main]]
+  identifier = "tags"
+  name = "標籤"
+  url = "/tags/"
+  weight = 40
+
+  [main.params]
+    icon = "tag"
+
+[[main]]
   identifier = "search"
   name = "搜尋"
   url = "/search/"
-  weight = 30
+  weight = 50
 
   [main.params]
     icon = "search"
@@ -32,3 +50,11 @@
 
   [social.params]
     icon = "brand-github"
+
+[[social]]
+  identifier = "rss"
+  name = "RSS"
+  url = "/index.xml"
+
+  [social.params]
+    icon = "rss"

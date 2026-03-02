@@ -1,17 +1,23 @@
 mainSections = ["post"]
 rssFullContent = true
+favicon = "/favicon.ico"
 
 [footer]
   since = 2020
 
 [sidebar]
   subtitle = "Software Developer / 技術筆記"
+  avatar = "img/avatar.png"
+  emoji = "💻"
 
 [article]
   headingAnchor = true
   readingTime = true
+  math = true
+  toc = true
   [article.license]
-    enabled = false
+    enabled = true
+    default = "Licensed under CC BY-SA 4.0"
 
 [widgets]
   homepage = [
@@ -27,4 +33,21 @@ rssFullContent = true
   default = "dark"
 
 [comments]
-  enabled = false
+  enabled = true
+  provider = "giscus"
+
+[comments.giscus]
+  repo = "recca0120/recca0120.github.io"
+  repoId = "MDEwOlJlcG9zaXRvcnk4MDE5MjAyMg=="
+  category = "General"
+  categoryId = "DIC_kwDOBMeiFs4C3jU4"
+  mapping = "pathname"
+  reactionsEnabled = true
+  emitMetadata = false
+  theme = "dark_tritanopia"
+  lang = "zh-TW"
+  inputPosition = "top"
+
+[opengraph]
+  [opengraph.twitter]
+    card = "summary_large_image"
