@@ -6,6 +6,11 @@ defaultContentLanguage = "zh-hant-tw"
 hasCJKLanguage = true
 googleAnalytics = "G-7M40ZWYK6S"
 timeZone = "Asia/Taipei"
+enableRobotsTXT = true
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
 
 [pagination]
   pagerSize = 10
