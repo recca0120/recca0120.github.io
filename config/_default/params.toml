@@ -18,13 +18,15 @@ mainSections = ["posts"]
   showScrollToTop = true
 
 [homepage]
-  layout = "hero"
+  layout = "background"
+  homepageImage = "img/home.svg"
   showRecent = true
-  showRecentItems = 10
+  showRecentItems = 12
   showMoreLink = true
   showMoreLinkDest = "posts"
   cardView = true
-  cardViewScreenWidth = false
+  cardViewScreenWidth = true
+  layoutBackgroundBlur = true
 
 [article]
   showDate = true
@@ -49,7 +51,7 @@ mainSections = ["posts"]
   showCards = true
   groupByYear = true
   cardView = true
-  cardViewScreenWidth = false
+  cardViewScreenWidth = true
 
 [taxonomy]
   showTermCount = true
