@@ -4,6 +4,7 @@ theme = "hugo-theme-stack"
 languageCode = "zh-TW"
 defaultContentLanguage = "zh-hant-tw"
 hasCJKLanguage = true
+googleAnalytics = "G-7M40ZWYK6S"
 timeZone = "Asia/Taipei"
 
 [pagination]
