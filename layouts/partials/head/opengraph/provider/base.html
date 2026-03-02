@@ -13,9 +13,13 @@
     {{- end -}}
 '>
 
-{{- with .Params.locale -}}
-    <meta property='og:locale' content='{{ . }}'>
-{{- end -}}
+{{- $localeMap := dict "zh-hant-tw" "zh_TW" "en" "en_US" -}}
+{{- $locale := index $localeMap .Lang | default .Lang -}}
+<meta property='og:locale' content='{{ $locale }}'>
+{{ range .Translations }}
+{{- $altLocale := index $localeMap .Lang | default .Lang -}}
+<meta property='og:locale:alternate' content='{{ $altLocale }}'>
+{{ end -}}
 
 {{- if .IsPage -}}
     <meta property='article:section' content='{{ .Section | title }}' />
@@ -33,7 +37,7 @@
     {{- end -}}
 {{- else -}}
     {{- if not .Site.Lastmod.IsZero -}}
-        <meta property='og:updated_time' content='{{ .Site.Lastmod.Format " 2006-01-02T15:04:05-07:00 " | safeHTML }}'/>
+        <meta property='og:updated_time' content='{{ .Site.Lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}'/>
     {{- end -}}
 {{- end -}}
 

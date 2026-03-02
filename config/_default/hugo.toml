@@ -24,4 +24,4 @@ enableRobotsTXT = true
   category = "categories"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS"]

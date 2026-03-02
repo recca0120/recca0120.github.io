@@ -5,6 +5,11 @@ favicon = "/favicon.ico"
 
 [footer]
   since = 2020
+  customText = '<a href="https://github.com/recca0120" target="_blank" rel="noopener">recca0120</a> on GitHub'
+
+[dateFormat]
+  published   = "2006 年 1 月 2 日"
+  lastUpdated = "2006 年 1 月 2 日"
 
 [imageProcessing.cover]
   enabled = true
@@ -18,6 +23,8 @@ favicon = "/favicon.ico"
 
 [article]
   headingAnchor = true
+  [article.list]
+    showTags = true
   readingTime = true
   math = true
   toc = true
