@@ -5,7 +5,9 @@ languageCode = "zh-TW"
 defaultContentLanguage = "zh-tw"
 hasCJKLanguage = true
 timeZone = "Asia/Taipei"
-paginate = 10
+
+[pagination]
+  pagerSize = 10
 
 [permalinks]
   posts = "/:year/:month/:day/:slug/"
