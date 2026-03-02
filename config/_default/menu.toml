@@ -1,0 +1,7 @@
+[[social]]
+  identifier = "github"
+  name = "GitHub"
+  url = "https://github.com/recca0120"
+
+  [social.params]
+    icon = "brand-github"

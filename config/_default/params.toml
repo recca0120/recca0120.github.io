@@ -1,67 +1,30 @@
-colorScheme = "slate"
-defaultAppearance = "dark"
-autoSwitchAppearance = true
-
-enableSearch = true
-enableCodeCopy = true
-
-mainSections = ["posts"]
-
-[header]
-  layout = "fixed-fill-blur"
+mainSections = ["post"]
+rssFullContent = true
 
 [footer]
-  showMenu = true
-  showCopyright = true
-  showThemeAttribution = true
-  showAppearanceSwitcher = true
-  showScrollToTop = true
+  since = 2020
 
-[homepage]
-  layout = "background"
-  homepageImage = "img/home.svg"
-  showRecent = true
-  showRecentItems = 12
-  showMoreLink = true
-  showMoreLinkDest = "posts"
-  cardView = true
-  cardViewScreenWidth = true
-  layoutBackgroundBlur = true
+[sidebar]
+  subtitle = "Software Developer / 技術筆記"
 
 [article]
-  showDate = true
-  showDateUpdated = false
-  showAuthor = true
-  showBreadcrumbs = true
-  showDraftLabel = true
-  showHeadingAnchors = true
-  showPagination = true
-  showReadingTime = true
-  showTableOfContents = true
-  showRelatedContent = true
-  relatedContentLimit = 6
-  showTaxonomies = true
-  showWordCount = false
-  sharingLinks = ["twitter", "reddit", "facebook", "email"]
+  headingAnchor = true
+  readingTime = true
+  [article.license]
+    enabled = false
 
-[list]
-  showBreadcrumbs = false
-  showSummary = true
-  showTableOfContents = false
-  showCards = true
-  groupByYear = true
-  cardView = true
-  cardViewScreenWidth = true
+[widgets]
+  homepage = [
+    { type = "search" },
+    { type = "archives", params = { limit = 5 } },
+    { type = "categories", params = { limit = 10 } },
+    { type = "tag-cloud", params = { limit = 20 } },
+  ]
+  page = [{ type = "toc" }]
 
-[taxonomy]
-  showTermCount = true
-  showBreadcrumbs = false
-  showTableOfContents = false
-  cardView = false
+[colorScheme]
+  toggle = true
+  default = "dark"
 
-[term]
-  showBreadcrumbs = false
-  showTableOfContents = false
-  groupByYear = true
-  cardView = true
-  cardViewScreenWidth = false
+[comments]
+  enabled = false
