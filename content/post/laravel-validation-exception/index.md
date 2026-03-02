@@ -1,6 +1,6 @@
 ---
-title: 在 Laravel 如何手動丟出 Validation Exception
-description: '呼叫外部 API 出錯時，用 ValidationException::withMessages 包裝成 Laravel 標準驗證錯誤格式回傳前端。'
+title: 用 ValidationException::withMessages 手動丟出 Laravel 驗證錯誤
+description: '呼叫外部 API 出錯時，用 ValidationException::withMessages 把錯誤包裝成 Laravel 標準驗證格式，讓前端用同一套邏輯顯示錯誤訊息。'
 slug: how-to-throw-a-validation-exception-manually-in-laravel
 date: '2020-05-24T12:51:54+08:00'
 categories:

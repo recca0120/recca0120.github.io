@@ -1,6 +1,6 @@
 ---
-title: 'Handling Duplicate Blocks in Laravel Blade Templates'
-description: 'Three ways to eliminate duplicate HTML blocks in Blade: @include, Component, or ob_start for single-template reuse.'
+title: '3 Ways to Eliminate Duplicate HTML Blocks in Blade Templates'
+description: 'When Blade templates have repeating HTML blocks, choose from @include, Component, or ob_start. Each suits different scenarios; ob_start works without creating extra files.'
 slug: laravel-blade-template
 date: '2024-05-07T07:47:27+08:00'
 categories:

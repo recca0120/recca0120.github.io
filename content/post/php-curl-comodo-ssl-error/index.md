@@ -1,6 +1,6 @@
 ---
-title: PHP Curl 遇到 Comodo RSA Certification Authority SSL 錯誤
-description: 'PHP Curl 遇到 Comodo SSL certificate expired 錯誤，在 GuzzleHttp 用 verify 選項指定憑證路徑即可解決。'
+title: 'PHP Curl Comodo SSL 憑證過期錯誤：用 GuzzleHttp verify 解決'
+description: 'PHP Curl 在 Linux 上拋出 Comodo RSA SSL certificate expired 錯誤，因為系統缺少 Root CA。用 GuzzleHttp verify 指定憑證路徑，可全域或針對單一 Service 設定。'
 slug: how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php
 date: '2020-06-01T18:29:17+08:00'
 categories:

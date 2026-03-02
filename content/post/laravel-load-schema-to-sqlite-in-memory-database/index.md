@@ -1,6 +1,6 @@
 ---
-title: '[Laravel] load schema to sqlite in memory database'
-description: '用 PDO::exec 載入 schema dump 到 SQLite in-memory database，測試速度從 2 分多鐘降到 18 秒。'
+title: '用 PDO::exec 載入 Schema 讓 Laravel 測試快 7 倍'
+description: '透過 PDO::exec 把 schema dump 直接載入 SQLite in-memory database，跳過逐一跑 migration 的瓶頸，實測從 2 分 21 秒降到 18 秒。'
 slug: laravel-load-schema-to-sqlite-in-memory-database
 date: '2022-12-19T15:26:54+08:00'
 categories:

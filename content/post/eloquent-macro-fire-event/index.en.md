@@ -1,6 +1,6 @@
 ---
-title: 'Manually Firing Eloquent Events with a Builder Macro'
-description: 'After using saveQuietly(), manually fire specific Eloquent events by defining a fire method via Builder macro.'
+title: 'Eloquent Macro: Manually Fire Specific Events After saveQuietly'
+description: 'Save a model without any events using saveQuietly, then selectively dispatch created or other Eloquent events via a custom Builder macro fire method.'
 slug: eloquent-macro-fire-event
 date: '2023-01-20T10:00:00+08:00'
 categories:

@@ -1,6 +1,6 @@
 ---
-title: 'Install Docker CE on WSL2'
-description: 'Install Docker CE directly in WSL2 without Docker Desktop, and configure systemd for automatic startup.'
+title: Install Docker CE on WSL2 Instead of Docker Desktop
+description: 'Step-by-step guide to installing Docker CE directly in WSL2 without Docker Desktop, including adding yourself to the docker group and enabling systemd for auto-start.'
 slug: wsl2-install-docker-ce
 date: '2023-01-15T10:00:00+08:00'
 categories:

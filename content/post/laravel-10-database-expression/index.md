@@ -1,6 +1,6 @@
 ---
-title: 'Laravel 10 Database Expression 新功能'
-description: 'Laravel 10 的 Expression interface 可依 Grammar 類型產生不同 SQL，優雅處理 MySQL 和 SQLite 的語法差異。'
+title: 'Laravel 10 Database Expression 解決跨資料庫 SQL 差異'
+description: 'MySQL 的 IF() 在 SQLite 會報錯。Laravel 10 的 Expression interface 依 Grammar 類型產生不同 SQL，把跨資料庫差異封裝進 class，讓查詢程式碼保持乾淨。'
 slug: laravel-10-database-expression
 date: '2023-02-20T05:41:20+08:00'
 categories:

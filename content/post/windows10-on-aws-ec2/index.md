@@ -1,6 +1,6 @@
 ---
-title: 在 AWS EC2 上安裝 Windows 10
-description: '用 VirtualBox 建立 Windows 10 VHD，透過 AWS VM Import 匯入成 AMI，再啟動 EC2 執行個體的完整步驟。'
+title: 如何把 Windows 10 安裝到 AWS EC2 上
+description: '用 VirtualBox 建立 Windows 10 VHD 映像，透過 AWS VM Import 匯入成 AMI，再啟動 EC2 執行個體，完整涵蓋 IAM 角色設定和 RDP 連線步驟。'
 slug: running-windows10-on-aws-ec2
 date: '2020-07-04T11:34:00+08:00'
 categories:

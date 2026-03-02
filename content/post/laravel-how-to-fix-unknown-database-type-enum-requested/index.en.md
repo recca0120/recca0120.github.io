@@ -1,6 +1,6 @@
 ---
-title: '[Laravel] How to fix Unknown database type enum requested'
-description: 'Doctrine DBAL does not recognize MySQL enum type; register it as StringType or use registerDoctrineTypeMapping to fix migration errors.'
+title: 'Fix Laravel Migration Unknown Database Type Enum Error'
+description: 'Doctrine DBAL does not recognize MySQL enum type, causing migration failures. Covers Type::addType and registerDoctrineTypeMapping with when to use each fix.'
 slug: laravel-how-to-fix-unknown-database-type-enum-requested
 date: '2022-12-13T06:16:19+08:00'
 categories:

@@ -1,6 +1,6 @@
 ---
-title: 'PHP 取得 Third Package Version'
-description: '透過 Composer 2 內建的 InstalledVersions::getVersion() 即可在程式中取得任何已安裝套件的版本號。'
+title: '用 Composer InstalledVersions 在程式中取得套件版本號'
+description: '需要在執行期判斷 Composer 套件版本做向下相容或 feature flag 時，用 Composer 2 內建的 InstalledVersions::getVersion() 即可，不需要額外解析 composer.lock。'
 slug: php-third-package-version
 date: '2023-02-25T10:04:03+08:00'
 categories:

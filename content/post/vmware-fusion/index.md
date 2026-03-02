@@ -1,6 +1,6 @@
 ---
-title: 'VMware Fusion 個人免費版'
-description: 'VMware Fusion Player 提供個人免費授權，到官網申請帳號即可取得 License Key 和下載連結。'
+title: '免費取得 VMware Fusion Player 個人授權的申請步驟'
+description: 'VMware Fusion Player 提供個人免費授權，到官網建立帳號即可取得 License Key 和下載連結，附上表單驗證失敗時可用的備用填表資訊。'
 slug: vmware-fusion
 date: '2022-11-21T13:34:53+08:00'
 categories:

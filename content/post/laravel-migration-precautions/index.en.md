@@ -1,6 +1,6 @@
 ---
-title: Laravel Migration Precautions
-description: 'Common Laravel migration pitfalls: do not mix add/drop columns in one closure, drop multiple columns in a single call, and test with SQLite.'
+title: '3 Laravel Migration Pitfalls and How to Catch Them with SQLite'
+description: 'Covers 3 common migration mistakes: mixing add/drop in one closure, dropping index and column together, and calling dropColumn twice. Includes SQLite in-memory test setup to catch errors early.'
 slug: laravel-create-migration-precautions
 date: '2020-06-08T22:18:27+08:00'
 categories:

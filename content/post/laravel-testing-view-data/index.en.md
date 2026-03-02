@@ -1,6 +1,6 @@
 ---
-title: 'Laravel Testing: Test Only View Data'
-description: 'Use viewData() to retrieve variables passed to a View for assertions, avoiding the complexity of testing raw HTML output.'
+title: 'Laravel Testing: Assert View Data Without Parsing HTML'
+description: 'Testing complex pages via HTML is brittle. Use viewData() to assert variables passed to the View directly. Also covers why you should compare Model id or toArray() instead of the object itself.'
 slug: laravel-testing-view-data
 date: '2022-11-29T15:58:53+08:00'
 categories:

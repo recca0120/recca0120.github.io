@@ -1,6 +1,6 @@
 ---
-title: 'How to Use Mockery to Mock IteratorAggregate'
-description: 'Mock IteratorAggregate objects by returning an ArrayObject from getIterator to make foreach work correctly in tests.'
+title: 'Mock IteratorAggregate with Mockery So foreach Works in Tests'
+description: 'Mocking an IteratorAggregate object breaks foreach iteration in tests. Return an ArrayObject from the mocked getIterator method to make foreach iterate over your test data correctly.'
 slug: how-to-use-mockery-to-mock-iteratoraggregate
 date: '2022-11-25T03:41:39+08:00'
 categories:

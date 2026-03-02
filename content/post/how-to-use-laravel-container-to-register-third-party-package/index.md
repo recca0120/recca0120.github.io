@@ -1,6 +1,6 @@
 ---
-title: 'How to use Laravel Container to register third-party package'
-description: '第三方 class 的 constructor 需要參數時，在 ServiceProvider 用 bind 註冊就能讓 Laravel Container 自動注入。'
+title: '用 Laravel Container bind 解決第三方套件無法自動注入'
+description: '第三方 class 的 constructor 需要參數時，Laravel Container 無法自動 resolve。在 ServiceProvider 用 bind 註冊，任何地方都能 type-hint 注入，也不用找 Laravel 專屬封裝版。'
 slug: how-to-use-laravel-container-to-register-third-party-package
 date: '2023-01-06T01:46:18+08:00'
 categories:

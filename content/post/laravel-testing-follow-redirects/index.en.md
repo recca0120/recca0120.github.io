@@ -1,6 +1,6 @@
 ---
-title: How to Inspect RedirectResponse Results in Laravel Tests
-description: 'Use followingRedirects() in Laravel tests to automatically follow 302 redirects and assert on the final page content.'
+title: 'Laravel Testing: Assert Final Page Content After a Redirect'
+description: 'POST requests only return a 302, hiding the final page. Use followingRedirects() to automatically follow redirects and assert on the destination page content.'
 slug: laravel-testing-what-happens-after-a-redirect
 date: '2020-06-25T12:04:22+08:00'
 categories:

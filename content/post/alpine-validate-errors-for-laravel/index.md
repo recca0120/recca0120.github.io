@@ -1,6 +1,6 @@
 ---
-title: 'Alpine Validate Errors For Laravel'
-description: '為 Alpine.js 寫了一個 errors plugin，讓 AJAX 表單也能用類似 Laravel MessageBag 的 API 顯示驗證錯誤。'
+title: '用 Alpine.js 處理 Laravel AJAX 驗證錯誤'
+description: '為 Alpine.js 寫 errors plugin，仿照 Laravel MessageBag API，讓 AJAX 表單的 422 驗證錯誤也能像 @error directive 一樣簡單顯示。'
 slug: alpine-validate-errors-for-laravel
 date: '2024-04-19T09:30:26+08:00'
 categories:

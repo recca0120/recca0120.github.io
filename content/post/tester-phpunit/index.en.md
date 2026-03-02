@@ -1,6 +1,6 @@
 ---
-title: 'tester-phpunit (https://github.com/recca0120/tester-phpunit)'
-description: 'An Atom editor package for running PHPUnit tests directly inside the editor.'
+title: 'tester-phpunit: Run PHPUnit Tests Inside Atom Without Switching Terminals'
+description: 'An Atom editor package that lets you run PHPUnit tests directly inside the editor, so you never have to switch to a terminal window to execute PHP unit tests.'
 slug: tester-phpunit
 date: '2017-07-23T12:36:38+08:00'
 categories:

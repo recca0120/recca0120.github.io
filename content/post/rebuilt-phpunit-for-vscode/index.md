@@ -1,6 +1,6 @@
 ---
-title: 'Rebuilt PHPUnit for VSCode (New Version 3.0)'
-description: 'PHPUnit for VSCode 3.0 重寫版，整合 Testing API、即時回報測試結果，並支援 Docker 和 SSH 執行環境。'
+title: 'PHPUnit for VSCode 3.0：整合 Testing API 與 Docker 支援'
+description: '從頭重寫 PHPUnit for VSCode，整合 VS Code Testing API 讓測試結果即時顯示在側邊欄，新增 Docker 和 SSH 遠端執行環境支援。'
 slug: rebuilt-phpunit-for-vscode
 date: '2022-12-06T05:57:57+08:00'
 categories:

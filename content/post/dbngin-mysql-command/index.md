@@ -1,6 +1,6 @@
 ---
-title: '在 DBngin 找不到 mysql command 的解決方案'
-description: 'DBngin 支援多版本 MySQL 但不會自動加 PATH，在 .bashrc 加入最新版路徑即可使用 mysql 指令。'
+title: '修復 DBngin 找不到 mysql 指令的問題'
+description: 'DBngin 支援多版本 MySQL 但不會自動加 PATH，一行指令把最新版路徑寫進 .bashrc，終端機就能直接使用 mysql 指令。'
 slug: dbngin-mysql-command
 date: '2022-11-08T03:16:32+08:00'
 categories:

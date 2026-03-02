@@ -1,6 +1,6 @@
 ---
-title: 'Alpine Validate Errors For Laravel'
-description: 'An Alpine.js errors plugin that provides a Laravel MessageBag-like API for displaying AJAX validation errors in the frontend.'
+title: 'Alpine.js Plugin for Laravel AJAX Validation Errors'
+description: 'Build an Alpine.js errors plugin that mirrors Laravel MessageBag API, so 422 AJAX validation errors display as easily as the @error directive.'
 slug: alpine-validate-errors-for-laravel
 date: '2024-04-19T09:30:26+08:00'
 categories:

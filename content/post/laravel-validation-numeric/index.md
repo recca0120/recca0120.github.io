@@ -1,6 +1,6 @@
 ---
-title: 'Laravel Validation 檢查數字時務必加上 numeric'
-description: 'Laravel 的 min/max 規則對 string 是比較長度而非數值，驗證數字時務必加上 numeric 規則才會正確比較。'
+title: 'Laravel min/max 驗證數字為何失效？加上 numeric 就解決了'
+description: 'Laravel 的 min/max 規則預設比較字串長度而非數值，導致 0 通過驗證。加上 numeric 規則後才會做數值比較，避免驗證邏輯出錯。'
 slug: laravel-validation-numeric
 date: '2022-11-23T08:30:00+08:00'
 categories:

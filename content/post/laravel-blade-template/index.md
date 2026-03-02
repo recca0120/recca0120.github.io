@@ -1,6 +1,6 @@
 ---
-title: 'Laravel Blade Template 遇到重覆區塊的解決方'
-description: 'Blade 出現重覆 HTML 區塊時，可用 @include、Component 或 ob_start 三種方式消除重覆程式碼。'
+title: 'Blade 重複 HTML 區塊的 3 種消除方法'
+description: 'Blade template 出現重複的 HTML 區塊時，可選 @include、Component 或 ob_start 三種做法，各有適用場景，其中 ob_start 不需要額外建立檔案。'
 slug: laravel-blade-template
 date: '2024-05-07T07:47:27+08:00'
 categories:

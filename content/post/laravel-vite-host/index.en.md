@@ -1,6 +1,6 @@
 ---
-title: 'Configuring Laravel Vite Host'
-description: 'Configure server.host in vite.config.js for custom domains; use valetTls for HTTPS with Laravel Valet.'
+title: 'Laravel Vite Assets Fail on Custom Domain? Set server.host'
+description: 'Laravel Vite defaults to localhost, causing asset load failures on custom dev domains. Set server.host in vite.config.js; use valetTls for HTTPS with Valet.'
 slug: laravel-vite-host
 date: '2023-03-20T07:08:10+08:00'
 categories:

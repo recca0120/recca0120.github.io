@@ -1,6 +1,6 @@
 ---
-title: 'VS Code PHPUnit & Pest Test Explorer: The Complete Guide'
-description: 'A comprehensive guide to the VS Code extension PHPUnit & Pest Test Explorer, supporting PHPUnit 7-12, Pest 1-4, Docker, SSH, Laravel Sail, and remote execution.'
+title: 'VS Code PHPUnit & Pest Test Explorer: Complete Setup Guide'
+description: 'Full configuration guide for PHPUnit & Pest Test Explorer: Docker Compose, Laravel Sail, SSH, Xdebug debugging, and support for PHPUnit 7-12 and Pest 1-4.'
 slug: vscode-phpunit
 date: '2026-03-03T05:00:00+08:00'
 image: featured.png

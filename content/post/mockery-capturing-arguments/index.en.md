@@ -1,6 +1,6 @@
 ---
-title: 'Testing Random Values with Mockery Capturing Arguments'
-description: 'Use Mockery::capture with passthru to grab intermediate values from methods with random output, enabling deterministic assertions.'
+title: 'Write Deterministic PHPUnit Assertions with Mockery::capture'
+description: 'When a method uses random_int internally, Mockery::capture with passthru captures the intermediate value so you can compute the expected result and assert it.'
 slug: mockery-capturing-arguments
 date: '2022-11-22T14:21:07+08:00'
 categories:

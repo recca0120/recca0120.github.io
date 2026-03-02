@@ -1,6 +1,6 @@
 ---
-title: '在 WSL2 安裝 Docker CE'
-description: '不裝 Docker Desktop，直接在 WSL2 裡安裝 Docker CE，搭配 systemd 設定實現開機自動啟動。'
+title: 在 WSL2 安裝 Docker CE 取代 Docker Desktop
+description: '不用 Docker Desktop，直接在 WSL2 安裝 Docker CE 的完整步驟，包含加入 docker 群組免 sudo、啟用 systemd 讓 Docker 開機自動啟動。'
 slug: wsl2-install-docker-ce
 date: '2023-01-15T10:00:00+08:00'
 categories:

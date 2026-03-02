@@ -1,6 +1,6 @@
 ---
-title: 'VS Code PHPUnit & Pest Test Explorer 完整指南'
-description: '介紹我開發的 VS Code 擴充套件 PHPUnit & Pest Test Explorer，支援 PHPUnit 7-12、Pest 1-4、Docker、SSH、Laravel Sail 等遠端執行環境。'
+title: 'VS Code PHPUnit & Pest Test Explorer 完整設定指南'
+description: '介紹 PHPUnit & Pest Test Explorer 的完整設定方式，涵蓋 Docker Compose、Laravel Sail、SSH、Xdebug 除錯，支援 PHPUnit 7-12 與 Pest 1-4。'
 slug: vscode-phpunit
 date: '2026-03-03T05:00:00+08:00'
 image: featured.png

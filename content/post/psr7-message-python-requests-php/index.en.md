@@ -1,6 +1,6 @@
 ---
-title: 'Passing Python Requests Responses to PHP via PSR-7 Messages'
-description: 'Output Python HTTP responses as PSR-7 message strings and parse them in PHP with Message::parseResponse for cross-language data transfer.'
+title: 'Bridge Python requests and PHP Using PSR-7 Message Format'
+description: 'When Python scrapes data but PHP handles processing, output the response as a PSR-7 message string and parse it with Message::parseResponse — no manual header splitting.'
 slug: psr7-message-python-requests-php
 date: '2022-12-26T06:34:26+08:00'
 categories:

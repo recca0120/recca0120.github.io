@@ -1,6 +1,6 @@
 ---
-title: 'PHPUnit 寫測試時遇到 sleep 時該怎麼辦？'
-description: '程式有 sleep 導致測試很慢，可抽出 Clock class 用 mock 替換，或用 php-mock 直接 mock 內建 sleep 函式。'
+title: 'PHPUnit 測試含 sleep() 的程式：2 種 mock 解法比較'
+description: '程式裡有 sleep() 讓每次測試都要多等幾秒，可抽出 Clock class 用 Mockery spy 替換，或用 php-mock 直接 mock 內建函式，無需改動原始碼。'
 slug: phpunit-sleep
 date: '2023-01-06T08:55:58+08:00'
 categories:

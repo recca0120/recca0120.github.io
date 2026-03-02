@@ -1,6 +1,6 @@
 ---
-title: Fixing Comodo RSA Certification Authority SSL Error in PHP Curl
-description: 'Fix Comodo SSL certificate expired error in PHP Curl by specifying the certificate path via GuzzleHttp verify option.'
+title: 'Fix PHP Curl Comodo SSL Expired Error with GuzzleHttp verify'
+description: 'PHP Curl throws Comodo RSA SSL certificate expired on Linux because the Root CA is missing. Use GuzzleHttp verify to specify the cert path globally or per service.'
 slug: how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php
 date: '2020-06-01T18:29:17+08:00'
 categories:

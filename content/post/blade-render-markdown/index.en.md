@@ -1,6 +1,6 @@
 ---
-title: Rendering Markdown with Blade
-description: 'Use Blade addExtension to process .md files with Blade syntax, then convert the output to HTML with CommonMark.'
+title: Render Markdown with Blade and Embed Dynamic Syntax
+description: 'Use Blade addExtension to make .md files support @include and variables, then convert the output to HTML with CommonMark for dynamic documentation.'
 slug: render-markdown-by-blade-template-engine
 date: '2020-07-14T09:49:36+08:00'
 categories:

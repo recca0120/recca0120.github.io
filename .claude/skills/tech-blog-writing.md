@@ -351,6 +351,22 @@ with open('content/post/{slug}/featured.png','wb') as f: f.write(img)
 - Docker 文章：`Stacked translucent shipping containers floating in a digital void, each containing miniature server racks, isometric view, neon blue and cyan, dark background`
 - Laravel 文章：`An elegant red phoenix rising from lines of code, cinematic lighting, 4k wallpaper style, deep red and orange gradients against dark background`
 
+## 執行規範
+
+### Agent 使用規則
+
+- 批次處理文章（改寫、翻譯、更新 frontmatter）時，使用 Agent tool 並行處理
+- Agent 的 model 參數**至少指定 `sonnet`**，不要用 `haiku`（品質不夠）
+- 每個 agent 處理 10-15 篇為一批
+
+### 語言規則
+
+每篇文章**必須同時產出繁體中文和英文兩個版本**：
+- 繁體中文：`index.md`（預設語言）
+- 英文：`index.en.md`
+- 英文版的 `title` 和 `description` 翻譯成英文，其餘 frontmatter 不變
+- 英文版的內文是完整翻譯，不是摘要
+
 ## 寫作流程
 
 1. 建立目錄 `content/post/{slug}/`
@@ -358,14 +374,14 @@ with open('content/post/{slug}/featured.png','wb') as f: f.write(img)
 3. 想一個帶數字或具體成果的標題
 4. 寫 3 句 hook 開場（痛點、數據或場景）
 5. 列出起承轉合的大綱
-6. 寫初稿到 `index.md`（目標 1,500-2,500 字）
+6. 寫繁體中文初稿 `index.md`（目標 1,500-2,500 字）
 7. 套用 Humanizer-zh 規則檢查 AI 痕跡
 8. 確認程式碼可讀、有註解、可複製貼上
 9. 加入相關文章的內部連結
 10. 確認 frontmatter 格式正確（description、date 時區、tags 大小寫）
-11. 用 Cloudflare Workers AI 產封面圖
-12. `hugo server` 本地預覽確認排版正常
-13. 寫英文版 `index.en.md`
+11. 寫英文版 `index.en.md`（完整翻譯，不是摘要）
+12. 用 Cloudflare Workers AI 產封面圖
+13. `hugo --gc --minify` 確認建置無錯誤
 14. commit 並 push 到 `main`，GitHub Actions 會自動部署
 
 ## 部署驗證

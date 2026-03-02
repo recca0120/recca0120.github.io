@@ -1,6 +1,6 @@
 ---
-title: 'Gotcha with GuzzleHttp PSR-7 Response getContents'
-description: 'Casting GuzzleHttp Response to string auto-seeks to 0, but getContents() does not, returning empty on the second call.'
+title: 'Why GuzzleHttp getContents() Returns Empty on the Second Call'
+description: 'Casting a GuzzleHttp Response to string auto-seeks to 0 each time, but getContents() never resets the stream pointer, so the second call returns an empty string.'
 slug: guzzlehttp-psr7-response-get-contents-notice
 date: '2020-08-05T13:12:49+08:00'
 categories:

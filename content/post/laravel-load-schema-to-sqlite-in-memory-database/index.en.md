@@ -1,6 +1,6 @@
 ---
-title: '[Laravel] Load Schema to SQLite In-Memory Database'
-description: 'Load schema dump into SQLite in-memory database using PDO::exec to speed up tests from 2+ minutes to 18 seconds.'
+title: 'How I Made Laravel Tests 7x Faster with PDO::exec Schema Load'
+description: 'Load schema dump directly into SQLite in-memory database via PDO::exec, bypassing the slow per-file migration bottleneck. Test time drops from 2:21 to 18 seconds.'
 slug: laravel-load-schema-to-sqlite-in-memory-database
 date: '2022-12-19T15:26:54+08:00'
 categories:

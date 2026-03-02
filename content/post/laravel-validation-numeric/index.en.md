@@ -1,6 +1,6 @@
 ---
-title: 'Always Add numeric When Validating Numbers in Laravel'
-description: 'Laravel min/max rules compare string length by default; always add the numeric rule when validating numbers to compare values.'
+title: 'Why Laravel min/max Fails on Numbers: Add the numeric Rule'
+description: 'Laravel min/max rules compare string length by default, letting 0 pass validation. Add the numeric rule to switch to value comparison and fix the bug.'
 slug: laravel-validation-numeric
 date: '2022-11-23T08:30:00+08:00'
 categories:

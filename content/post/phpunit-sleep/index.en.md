@@ -1,6 +1,6 @@
 ---
-title: 'How to Handle sleep() in PHPUnit Tests'
-description: 'Avoid slow tests caused by sleep() by extracting a Clock class for mocking, or use php-mock to mock the built-in sleep function.'
+title: 'PHPUnit Tests with sleep(): 2 Ways to Mock It Without Waiting'
+description: 'When sleep() slows down your PHPUnit tests, extract a Clock class and use Mockery spy to replace it, or use php-mock to mock the built-in function without any code changes.'
 slug: phpunit-sleep
 date: '2023-01-06T08:55:58+08:00'
 categories:
