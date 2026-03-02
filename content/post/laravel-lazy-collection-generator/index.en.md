@@ -58,4 +58,4 @@ $this->assertEquals(6, LazyCollection::make(function () {
 
 This way only the first iteration runs before stopping -- that's true lazy loading.
 
-Read the docs carefully. A small difference in how you wrap things makes a huge difference.
+The distinction is whether you pass the Generator itself or a Closure that produces one.

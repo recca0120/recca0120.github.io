@@ -105,7 +105,7 @@ class ExampleTest extends TestCase
             ->assertOk()
             ->assertSee('foo');
 
-        // 驗證 sleep 執行次數
+        // verify sleep was called the expected number of times
         $clock->shouldHaveReceived('sleep')->times(3);
     }
 }
@@ -116,6 +116,10 @@ The advantage of this approach is that you can use the spy to verify how many ti
 ## Approach 2: Mock the Built-in Function with php-mock
 
 If you don't want to modify the original code, use [php-mock](https://github.com/php-mock/php-mock). The controller stays untouched — only the test changes:
+
+```bash
+composer require --dev php-mock/php-mock
+```
 
 ```php
 namespace Tests\Feature;
@@ -129,7 +133,7 @@ class ExampleTest extends TestCase
     {
         parent::setUp();
         $builder = new SleepEnvironmentBuilder();
-        // sleep 所在的 namespace
+        // namespace where sleep() is called
         $builder->addNamespace('App\Http\Controllers');
         $this->environment = $builder->build();
         $this->environment->enable();

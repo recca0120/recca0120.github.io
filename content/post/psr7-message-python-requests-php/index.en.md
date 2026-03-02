@@ -18,6 +18,10 @@ Sometimes Python already has a great package for scraping web data, but all the 
 
 ![Python → PSR-7 HTTP Message → PHP data flow](psr7-data-flow.png)
 
+```bash
+composer require guzzlehttp/psr7 symfony/process
+```
+
 ## Why PSR-7 Message Format
 
 HTTP messages are a plain-text protocol, and PSR-7 defines a standard message interface. As long as the Python side outputs the response as an HTTP message string, PHP can parse it directly into a `ResponseInterface` using [`GuzzleHttp\Psr7`](https://github.com/guzzle/psr7)'s `Message::parseResponse` — no manual header/body splitting needed.

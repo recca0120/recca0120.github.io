@@ -18,13 +18,13 @@ When exporting CSV from Excel, numeric fields are often converted to scientific 
 The most straightforward approach is using `sprintf` to convert scientific notation back to a float:
 
 ```php
-echo sprintf('%f', '8.90E-05'); // 輸出 0.000089
+echo sprintf('%f', '8.90E-05'); // outputs 0.000089
 ```
 
 But it breaks when the decimal places exceed 6:
 
 ```php
-echo sprintf('%f', '8.90E-12'); // 輸出 0.000000
+echo sprintf('%f', '8.90E-12'); // outputs 0.000000
 ```
 
 `%f` defaults to 6 decimal places, and anything beyond that gets truncated.
@@ -44,7 +44,7 @@ function toFloat($number) {
     return sprintf('%f', $number);
 }
 
-echo toFloat('8.90E-12'); // 輸出 0.0000000000089
+echo toFloat('8.90E-12'); // outputs 0.0000000000089
 ```
 
 This correctly converts the number regardless of how many decimal places it has.

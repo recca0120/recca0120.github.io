@@ -27,7 +27,7 @@ adb server version (41) doesn't match this client (40)
 先移除 Homebrew 裝的那份：
 
 ```bash
-brew cask uninstall android-platform-tools
+brew uninstall --cask android-platform-tools
 ```
 
 然後在 `~/.bashrc` 加上 Android SDK 的路徑，讓系統統一用 SDK 裡的 adb：

@@ -49,6 +49,10 @@ This verifies the argument, but if `executeCallback` never calls `$callback`, th
 
 According to this [PR](https://github.com/mockery/mockery/pull/712), Mockery supports spying on closures directly:
 
+```bash
+composer require --dev mockery/mockery
+```
+
 ```php
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -76,4 +80,4 @@ If the callback is never called, `shouldHaveBeenCalled()` will fail the test. Yo
 $callback->shouldHaveBeenCalled()->with('foo')->twice();
 ```
 
-Beyond verifying whether the callback was called and its arguments, you can also verify call count. The test structure follows the 3A pattern (Arrange-Act-Assert), which is more readable than embedding assertions inside the closure.
+The test structure follows the 3A pattern (Arrange-Act-Assert), which is more readable than embedding assertions inside the closure -- and correctly catches the case where the callback is never called at all.

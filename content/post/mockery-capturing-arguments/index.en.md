@@ -58,7 +58,7 @@ class RandomHashTest extends TestCase
         $hash = new Hash();
         $randomHash = new RandomHash($hash);
 
-        // 很難驗證是否正確
+        // no way to write a definitive assertion here
         $actual = $randomHash->hash();
     }
 }
@@ -67,6 +67,10 @@ class RandomHashTest extends TestCase
 ## Use Mockery::capture to Extract the Intermediate Value
 
 Mockery's [Capturing Arguments](http://docs.mockery.io/en/latest/reference/argument_validation.html#capturing-arguments) can store the arguments passed to a method call. Combined with `passthru()` to let the original method execute normally, we can capture both the intermediate value and the final result:
+
+```bash
+composer require --dev mockery/mockery
+```
 
 ```php
 class RandomHashTest extends TestCase
@@ -77,13 +81,13 @@ class RandomHashTest extends TestCase
     public function test_mockery_capturing_arguments(): void
     {
         $hash = Mockery::spy(new Hash());
-        // 用 Mockery::capture 把 random 抓出來，passthru 讓 make 真的執行
+        // capture the intermediate value; passthru lets make() execute normally
         $hash->allows('make')->with(Mockery::capture($random))->passthru();
         $randomHash = new RandomHash($hash);
 
         $actual = $randomHash->hash();
 
-        // 拿到 $random 後就能算出確定的 expected
+        // now $random is known, so we can compute the expected value
         self::assertEquals((new Hash)->make($random), $actual);
     }
 }

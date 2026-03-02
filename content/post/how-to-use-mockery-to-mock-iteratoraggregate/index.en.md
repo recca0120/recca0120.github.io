@@ -19,7 +19,7 @@ While developing Google Firebase-related code, I needed to mock `QuerySnapshot`,
 
 ## What is IteratorAggregate
 
-[IteratorAggregate](https://www.php.net/manual/en/class.iteratoraggregate.php) is a built-in PHP interface. By implementing it and providing a `getIterator()` method, an object becomes iterable with `foreach`:
+[IteratorAggregate](https://www.php.net/manual/en/class.iteratoraggregate.php) is a built-in PHP interface. By implementing it and providing a `getIterator()` method, an object becomes iterable with `foreach`. The key point: `foreach` iterates over whatever `getIterator()` returns, not the object itself -- which is exactly what makes it mockable:
 
 ```php
 class myData implements IteratorAggregate {
@@ -47,6 +47,10 @@ foreach($obj as $key => $value) {
 ## How to Mock It
 
 Just mock `getIterator()` to return an `ArrayObject`:
+
+```bash
+composer require --dev mockery/mockery
+```
 
 ```php
 use ArrayObject;

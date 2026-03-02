@@ -18,6 +18,10 @@ draft: false
 
 ![Python → PSR-7 HTTP Message → PHP 的資料流](psr7-data-flow.png)
 
+```bash
+composer require guzzlehttp/psr7 symfony/process
+```
+
 ## 為什麼用 PSR7 message 格式
 
 HTTP message 本身就是純文字協定，PSR7 定義了標準的 message interface。只要 Python 端把 response 輸出成 HTTP message 格式的字串，PHP 端用 [`GuzzleHttp\Psr7`](https://github.com/guzzle/psr7) 的 `Message::parseResponse` 就能直接解析回 `ResponseInterface`，不需要自己拆 header 和 body。

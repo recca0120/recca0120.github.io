@@ -49,6 +49,10 @@ class ExampleTest extends TestCase
 
 根據這個 [PR](https://github.com/mockery/mockery/pull/712)，Mockery 支援直接對 closure 做 spy：
 
+```bash
+composer require --dev mockery/mockery
+```
+
 ```php
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase;
@@ -76,4 +80,4 @@ class ExampleTest extends TestCase
 $callback->shouldHaveBeenCalled()->with('foo')->twice();
 ```
 
-除了驗證是否被呼叫、參數是否正確，還能驗呼叫次數，而且整個測試結構符合 3A pattern (Arrange-Act-Assert)，比在 closure 裡面塞 assertion 更好讀。
+整個測試結構符合 3A pattern (Arrange-Act-Assert)，比在 closure 裡面塞 assertion 更好讀，也能正確偵測 callback 從未被呼叫的情況。

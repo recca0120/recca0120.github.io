@@ -436,4 +436,4 @@ public function handleProfileUpdate($event)
 - 不需要 Vue，想要最簡單的 reactive UI → **Livewire**
 - 前端團隊獨立開發，需要完整 SPA 控制權 → **Inertia.js**
 
-LiVue 的版本目前是 v1.4.8，還算是早期階段。如果是新專案想嘗試 server-driven + Vue 的組合，可以試試看。Production 環境的話，要自己評估一下穩定度的風險。
+LiVue 目前是 v1.4.8，屬於早期專案。新專案可以嘗試，但在 production 使用前要自行評估成熟度。

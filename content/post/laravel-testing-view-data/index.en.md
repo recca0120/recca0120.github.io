@@ -87,4 +87,4 @@ self::assertEquals($user->id, $response->viewData('user')->id);
 self::assertEquals($user->toArray(), $response->viewData('user')->toArray());
 ```
 
-Note that `viewData` only verifies that data was correctly passed to the View. It cannot test whether JavaScript, CSS, or Blade templates render the variables correctly on the frontend.
+`viewData` only verifies that data was correctly passed to the View. It cannot test whether JavaScript, CSS, or Blade templates render the variables correctly on the frontend.

@@ -87,4 +87,4 @@ self::assertEquals($user->id, $response->viewData('user')->id);
 self::assertEquals($user->toArray(), $response->viewData('user')->toArray());
 ```
 
-要注意的是，`viewData` 只能驗資料有沒有正確傳到 View，前端的 JavaScript、CSS 以及 Blade template 有沒有正確輸出變數，這個方法是測不到的。
+`viewData` 只能驗資料有沒有正確傳到 View，前端的 JavaScript、CSS 以及 Blade template 有沒有正確輸出變數，這個方法是測不到的。

@@ -27,7 +27,7 @@ It turned out that I had previously installed `android-platform-tools` via Homeb
 First, remove the Homebrew-installed copy:
 
 ```bash
-brew cask uninstall android-platform-tools
+brew uninstall --cask android-platform-tools
 ```
 
 Then add the Android SDK path to `~/.bashrc` so the system uses a single adb:

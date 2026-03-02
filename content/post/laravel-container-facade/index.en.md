@@ -1,6 +1,6 @@
 ---
 title: 'How Laravel Facade Resolves Instances from the Container'
-description: 'Learn how Laravel Facade uses getFacadeAccessor to resolve instances from the Container, and the difference between bind and singleton for custom Facades.'
+description: 'Laravel Facade uses getFacadeAccessor to resolve instances from the Container. This post shows the difference between bind and singleton and how custom Facades work.'
 slug: laravel-container-facade
 date: '2023-01-12T05:34:12+08:00'
 categories:

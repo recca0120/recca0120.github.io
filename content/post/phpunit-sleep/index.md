@@ -117,6 +117,10 @@ class ExampleTest extends TestCase
 
 如果不想改動原本的程式碼，可以用 [php-mock](https://github.com/php-mock/php-mock) 這個 package。Controller 完全不用動，只改測試：
 
+```bash
+composer require --dev php-mock/php-mock
+```
+
 ```php
 namespace Tests\Feature;
 

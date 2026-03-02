@@ -42,13 +42,13 @@ Set up your Access Key, Secret Key, and default Region. Note that P2 instances a
 Create an S3 bucket (the name must be globally unique):
 
 ```bash
-aws s3 mb s3://你的bucket名稱 --region eu-central-1
+aws s3 mb s3://your-bucket-name --region eu-central-1
 ```
 
 Upload the VHD file:
 
 ```bash
-aws s3 cp codexaws.vhd s3://你的bucket名稱 --region eu-central-1
+aws s3 cp codexaws.vhd s3://your-bucket-name --region eu-central-1
 ```
 
 ## Set Up IAM Role
@@ -75,7 +75,7 @@ Create the role:
 aws iam create-role --role-name vmimport --assume-role-policy-document file://trust-policy.json
 ```
 
-Create `role-policy.json`, replacing `你的BUCKET名稱` with your actual bucket name:
+Create `role-policy.json`, replacing `YOUR-BUCKET-NAME` with your actual bucket name (same one used above):
 
 ```json
 {
@@ -84,12 +84,12 @@ Create `role-policy.json`, replacing `你的BUCKET名稱` with your actual bucke
       {
          "Effect": "Allow",
          "Action": ["s3:ListBucket", "s3:GetBucketLocation"],
-         "Resource": ["arn:aws:s3:::你的BUCKET名稱"]
+         "Resource": ["arn:aws:s3:::YOUR-BUCKET-NAME"]
       },
       {
          "Effect": "Allow",
          "Action": ["s3:GetObject"],
-         "Resource": ["arn:aws:s3:::你的BUCKET名稱/*"]
+         "Resource": ["arn:aws:s3:::YOUR-BUCKET-NAME/*"]
       },
       {
          "Effect": "Allow",
@@ -115,7 +115,7 @@ Create `containers.json`:
   "Description": "Windows 10 Base Install",
   "Format": "vhd",
   "UserBucket": {
-    "S3Bucket": "你的bucket名稱",
+    "S3Bucket": "your-bucket-name",
     "S3Key": "codexaws.vhd"
   }
 }]

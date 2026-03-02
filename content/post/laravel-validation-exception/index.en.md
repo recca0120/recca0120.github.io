@@ -23,7 +23,7 @@ When calling an external API and receiving an error response, I want to wrap the
 use Illuminate\Validation\ValidationException;
 
 try {
-    // 呼叫外部 API
+    // call external API
 } catch (Exception $e) {
     throw ValidationException::withMessages([
         'field' => [$e->getMessage()],

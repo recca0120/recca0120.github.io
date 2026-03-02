@@ -14,9 +14,7 @@ draft: false
 image: featured.png
 ---
 
-## 前言
-
-最近用 `migration:rollback` 的時候踩了不少坑。紀錄一下幾個容易出錯的寫法，以及怎麼用測試來提早抓出問題。
+最近用 `migration:rollback` 的時候踩了不少坑，整理幾個容易出錯的寫法，以及怎麼用測試提早攔截。
 
 ## 容易出錯的寫法
 

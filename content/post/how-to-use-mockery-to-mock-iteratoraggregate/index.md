@@ -19,7 +19,7 @@ draft: false
 
 ## IteratorAggregate 是什麼
 
-[IteratorAggregate](https://www.php.net/manual/en/class.iteratoraggregate.php) 是 PHP 內建的 interface，只要 implement 它並實作 `getIterator()`，物件就可以用 `foreach` 迭代：
+[IteratorAggregate](https://www.php.net/manual/en/class.iteratoraggregate.php) 是 PHP 內建的 interface，只要 implement 它並實作 `getIterator()`，物件就可以用 `foreach` 迭代。`getIterator()` 要回傳一個 `Traversable`，`foreach` 實際上是對它迭代：
 
 ```php
 class myData implements IteratorAggregate {
@@ -47,6 +47,10 @@ foreach($obj as $key => $value) {
 ## Mock 的方式
 
 只要 mock `getIterator()` 回傳 `ArrayObject` 就行了：
+
+```bash
+composer require --dev mockery/mockery
+```
 
 ```php
 use ArrayObject;

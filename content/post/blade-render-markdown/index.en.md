@@ -30,10 +30,11 @@ composer require league/commonmark
 
 ### Controller
 
+The example below uses league/commonmark v2 (v1 has a different API):
+
 ```php
 use Illuminate\View\Factory;
-use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
+use League\CommonMark\GithubFlavoredMarkdownConverter;
 
 class DocsController extends Controller
 {
@@ -47,13 +48,12 @@ class DocsController extends Controller
     }
 
     public function index() {
-        $environment = Environment::createGFMEnvironment();
-        $converter = new CommonMarkConverter([
+        $converter = new GithubFlavoredMarkdownConverter([
             'allow_unsafe_links' => false,
-        ], $environment);
+        ]);
 
         // First compile through Blade, then convert to HTML
-        return $converter->convertToHtml($this->viewFactory->make('demo.md'));
+        return $converter->convert($this->viewFactory->make('demo.md'));
     }
 }
 ```

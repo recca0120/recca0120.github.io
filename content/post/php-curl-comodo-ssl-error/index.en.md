@@ -35,7 +35,7 @@ Specify the certificate path directly in GuzzleHttp:
 ```php
 use GuzzleHttp\Client;
 
-$client = new Client(['verify' => '憑證路徑']);
+$client = new Client(['verify' => '/path/to/cert.pem']);
 $client->get('https://xx.xx.xx');
 ```
 
@@ -52,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(Client::class, function () {
-            return new Client(['verify' => '憑證路徑']);
+            return new Client(['verify' => '/path/to/cert.pem']);
         });
     }
 }
@@ -72,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(GitHubService::class)
             ->needs(Client::class)
             ->give(function () {
-                return new Client(['verify' => '憑證路徑']);
+                return new Client(['verify' => '/path/to/cert.pem']);
             });
     }
 }

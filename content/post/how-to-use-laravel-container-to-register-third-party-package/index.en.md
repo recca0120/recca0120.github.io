@@ -99,4 +99,4 @@ class ExampleTest extends TestCase
 }
 ```
 
-Once you know this pattern, you don't need to look for Laravel-specific wrappers for third-party packages. It also makes Laravel version upgrades smoother since you won't be blocked by those wrapper packages.
+This also removes the dependency on Laravel-specific wrapper packages, which means one fewer thing to worry about during version upgrades.

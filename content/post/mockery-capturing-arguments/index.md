@@ -68,6 +68,10 @@ class RandomHashTest extends TestCase
 
 Mockery 的 [Capturing Arguments](http://docs.mockery.io/en/latest/reference/argument_validation.html#capturing-arguments) 可以在方法被呼叫時，把傳入的參數存到變數裡。搭配 `passthru()` 讓原本的方法照常執行，我們就能同時拿到中間值和最終結果：
 
+```bash
+composer require --dev mockery/mockery
+```
+
 ```php
 class RandomHashTest extends TestCase
 {

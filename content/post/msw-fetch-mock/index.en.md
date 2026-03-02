@@ -66,6 +66,10 @@ The key is the **single catch-all handler**. MSW's standard approach registers o
 
 ## Quick Start API
 
+```bash
+npm install msw-fetch-mock --save-dev
+```
+
 ### Basic Setup
 
 ```typescript
@@ -187,7 +191,7 @@ The interception level determines how closely mock behavior matches production:
 
 ## The Real Advantages of msw-fetch-mock
 
-After reviewing the comparison tables, msw-fetch-mock's advantages boil down to three points:
+msw-fetch-mock has three concrete advantages over the alternatives:
 
 ### 1. One API, Three Environments
 

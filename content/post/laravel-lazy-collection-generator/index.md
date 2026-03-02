@@ -58,4 +58,4 @@ $this->assertEquals(6, LazyCollection::make(function () {
 
 這樣只會執行第一輪迴圈就停了，才是真正的延遲載入。
 
-文件要仔細看，一個包裝方式的差異就差這麼多。
+差別只在於傳進去的是 Generator 本身，還是產生 Generator 的 Closure。

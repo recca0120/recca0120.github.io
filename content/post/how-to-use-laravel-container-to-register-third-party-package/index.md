@@ -99,4 +99,4 @@ class ExampleTest extends TestCase
 }
 ```
 
-知道這個用法後，就不必刻意去找專門為 Laravel 封裝的 third-party package 了。升級 Laravel 版本時也比較不會被這些 package 卡住。
+這個做法也讓你不必依賴為 Laravel 特別封裝的 third-party package，升版時少一個卡點。

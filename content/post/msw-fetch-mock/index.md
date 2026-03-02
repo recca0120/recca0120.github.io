@@ -66,6 +66,10 @@ msw-fetch-mock 不是從頭造一個 mock 引擎，而是站在 MSW 的肩膀上
 
 ## API 快速上手
 
+```bash
+npm install msw-fetch-mock --save-dev
+```
+
 ### 基本用法
 
 ```typescript
@@ -188,7 +192,7 @@ fetchMock.enableNetConnect(/\.internal$/);  // 允許符合 regex 的 host
 
 ## msw-fetch-mock 的真正優勢
 
-看完對照表，msw-fetch-mock 的優勢可以歸納成三點：
+msw-fetch-mock 相較於其他方案有三個具體優勢：
 
 ### 1. 一套 API，三個環境
 

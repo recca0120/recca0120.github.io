@@ -11,19 +11,17 @@ draft: false
 image: featured.png
 ---
 
-## Introduction
-
-Running Windows 10 on a machine with only 1GB of RAM (e.g., a small AWS EC2 instance) means memory is maxed out right after boot. Here are several services you can disable -- run all commands in PowerShell as Administrator.
+Running Windows 10 on a machine with only 1GB of RAM (e.g., a small AWS EC2 instance) means memory is maxed out right after boot. The following services can be disabled to reduce usage — run all commands in PowerShell as Administrator.
 
 ## Memory Compression
 
 Windows 10 compresses memory to save space, but the compression itself consumes CPU and memory. On small machines, disabling it actually improves performance.
 
 ```powershell
-# 停用
+# Disable
 Disable-MMAgent -mc
 
-# 啟用
+# Enable
 Enable-MMAgent -mc
 ```
 
@@ -32,10 +30,10 @@ Enable-MMAgent -mc
 Superfetch preloads frequently used programs into memory. On memory-constrained machines, this does more harm than good.
 
 ```powershell
-# 停用
+# Disable
 Stop-Service -Force -Name "SysMain"; Set-Service -Name "SysMain" -StartupType Disabled
 
-# 啟用
+# Enable
 Stop-Service -Force -Name "SysMain"
 ```
 
@@ -44,7 +42,7 @@ Stop-Service -Force -Name "SysMain"
 Real-time protection continuously scans in the background, consuming significant memory and CPU. If you're in an isolated environment, consider disabling it.
 
 ```powershell
-# 停用
+# Disable
 Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableRealtimeMonitoring $true -DisableScriptScanning $true -EnableControlledFolderAccess Disabled -EnableNetworkProtection AuditMode -Force -MAPSReporting Disabled -SubmitSamplesConsent NeverSend
 ```
 
@@ -53,10 +51,10 @@ Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection 
 This service tracks network traffic. Disabling it frees up a bit of memory.
 
 ```powershell
-# 停用
+# Disable
 Set-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\Ndu\" -Name Start -Value 4
 
-# 啟用
+# Enable
 Set-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\Ndu\" -Name Start -Value 2
 ```
 
@@ -65,12 +63,12 @@ Set-ItemProperty -Path "HKLM:\SYSTEM\ControlSet001\Services\Ndu\" -Name Start -V
 If you don't need cloud sync, hide OneDrive from File Explorer:
 
 ```powershell
-# 停用
+# Disable
 $regkey1 = 'Registry::HKEY_CLASSES_ROOT\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}'
 $regkey2 = 'Registry::HKEY_CLASSES_ROOT\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}'
 Set-ItemProperty -Path $regkey1, $regkey2 -Name System.IsPinnedToNameSpaceTree -Value 0
 
-# 啟用
+# Enable
 Set-ItemProperty -Path $regkey1, $regkey2 -Name System.IsPinnedToNameSpaceTree -Value 1
 ```
 

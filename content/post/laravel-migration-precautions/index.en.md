@@ -14,9 +14,7 @@ draft: false
 image: featured.png
 ---
 
-## Introduction
-
-I recently hit several pitfalls when using `migration:rollback`. Here are some common mistakes and how to catch them early with tests.
+I recently hit several pitfalls when using `migration:rollback`. Here are the common mistakes and how to catch them early with tests.
 
 ## Common Mistakes
 

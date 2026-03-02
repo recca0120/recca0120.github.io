@@ -13,9 +13,7 @@ draft: false
 image: featured.png
 ---
 
-## Introduction
-
-When the Raspberry Pi doesn't have a desktop environment, pairing Bluetooth devices can only be done via the command line. `bluetoothctl` is all you need.
+When the Raspberry Pi has no desktop environment, pairing Bluetooth devices requires the command line. `bluetoothctl` handles it.
 
 ## Steps
 
