@@ -17,6 +17,8 @@ draft: false
 
 ## 為什麼 Job 拿到舊資料
 
+![Transaction 與 Queue Job 的時序競爭](transaction-job-timing.png)
+
 先準備環境：Laravel 連接真實資料庫、Queue Driver 使用 Redis、資料庫裡已有一筆 User、執行 `php artisan queue:work`。
 
 以下程式碼中，Job 延遲 3 秒執行，Transaction 在 5 秒後才 commit：

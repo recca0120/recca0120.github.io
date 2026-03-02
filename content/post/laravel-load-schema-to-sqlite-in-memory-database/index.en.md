@@ -15,6 +15,8 @@ draft: false
 
 As migration files pile up, test speed keeps getting slower -- even with SQLite In-Memory Database, because migrations run one file at a time.
 
+![Migration step-by-step vs Schema Dump single load speed comparison](migration-vs-schema-dump.png)
+
 ## schema:dump Doesn't Support In-Memory Database
 
 Laravel 8 introduced `php artisan schema:dump`, which merges all migrations into a single SQL file. However, after checking the [source code](https://github.com/laravel/framework/blob/b9203fca96960ef9cd8860cb4ec99d1279353a8d/src/Illuminate/Database/Schema/SqliteSchemaState.php#L62-L68), SQLite In-Memory Database doesn't support this command.

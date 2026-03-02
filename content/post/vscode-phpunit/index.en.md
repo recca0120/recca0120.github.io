@@ -93,6 +93,8 @@ In real-world development, PHP environments often run inside Docker containers. 
 
 The core concept: `phpunit.command` defines how to execute the test command, and `phpunit.paths` maps local paths to container paths.
 
+![Path mapping between VS Code and Docker container](vscode-docker-path-mapping.png)
+
 ### Docker Compose
 
 The most common scenario. Assuming your `docker-compose.yml` has an `app` service with code mounted at `/app`:

@@ -120,6 +120,8 @@ class FacadeTest extends TestCase
 
 A Facade uses the key returned by `getFacadeAccessor` to resolve an instance from the Container, then forwards static method calls to instance methods.
 
+![Facade → Container → Instance resolution flow](facade-container-resolution.png)
+
 ## getFacadeAccessor Can Be Any String
 
 For example, Laravel's built-in `DB` Facade returns the string `'db'` instead of a class name:

@@ -16,6 +16,8 @@ When dispatching a Job to a Queue inside a Transaction, the Job reads stale data
 
 ## Why the Job Gets Old Data
 
+![Transaction and Queue Job timing race condition](transaction-job-timing.png)
+
 Setup: Laravel connected to a real database, Queue Driver using Redis, one User already in the database, `php artisan queue:work` running.
 
 In the following code, the Job is delayed by 3 seconds, but the Transaction doesn't commit until 5 seconds later:

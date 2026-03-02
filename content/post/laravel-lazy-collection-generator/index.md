@@ -42,6 +42,8 @@ protected function getArrayableItems($items)
 
 延遲載入的效果完全沒了。
 
+![Eager vs Lazy Generator 執行差異](lazy-vs-eager.png)
+
 ## 正確寫法
 
 用 Closure 包一層，讓 LazyCollection 拿到的是一個「能產生 Generator 的函式」，而不是已經開始跑的 Generator：

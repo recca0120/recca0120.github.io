@@ -23,6 +23,8 @@ The TCP backlog setting of 511 cannot be enforced because
 
 Redis defaults to a TCP backlog of 511, but the Linux kernel's `somaxconn` is only 128, so Redis can't use the queue length it wants. Under heavy connection load, this can cause dropped connections.
 
+![TCP backlog limited by somaxconn](tcp-backlog-somaxconn.png)
+
 ## Solution
 
 Increase `somaxconn` with root privileges:

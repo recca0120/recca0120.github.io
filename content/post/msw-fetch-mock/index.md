@@ -60,6 +60,8 @@ msw-fetch-mock 不是從頭造一個 mock 引擎，而是站在 MSW 的肩膀上
 └─────────────────────────────────────┘
 ```
 
+![msw-fetch-mock 三層架構圖](msw-fetch-mock-architecture.png)
+
 重點是那個**單一 catch-all handler**。MSW 的標準用法是每個 endpoint 註冊一個 handler，但在瀏覽器環境這會造成 Service Worker 的 timing issue（每次 `worker.use()` 都要跟 SW 通訊）。msw-fetch-mock 只註冊一個 `http.all('*', ...)` catch-all，所有 matching 邏輯都在主線程裡跑，避免了 Service Worker 的來回延遲。
 
 ## API 快速上手

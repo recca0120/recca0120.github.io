@@ -17,6 +17,8 @@ draft: false
 
 隨著 migration 檔案越來越多，測試速度越來越慢，即使用 SQLite In-Memory Database 也一樣，因為 migration 是一個檔案一個檔案跑的。
 
+![Migration 逐步執行 vs Schema Dump 一次載入的速度差異](migration-vs-schema-dump.png)
+
 ## schema:dump 不支援 In-Memory Database
 
 Laravel 8 提供了 `php artisan schema:dump` 指令，能把所有 migration 合併成一個 SQL 檔案。但查看[原始碼](https://github.com/laravel/framework/blob/b9203fca96960ef9cd8860cb4ec99d1279353a8d/src/Illuminate/Database/Schema/SqliteSchemaState.php#L62-L68)後發現，SQLite In-Memory Database 不支援這個指令。

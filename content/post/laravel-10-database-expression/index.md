@@ -57,6 +57,8 @@ class ExampleTest extends TestCase
 
 Laravel 10 的 `Expression` interface 有一個 `getValue(Grammar $grammar)` method，可以根據 Grammar 類型產生對應的 SQL。根據這個 [PR](https://github.com/laravel/framework/pull/44784) 的描述，這正是它設計的用途：
 
+![Expression 透過 Grammar 分流產生不同 SQL](expression-grammar-branching.png)
+
 ```php
 namespace Tests\Feature;
 

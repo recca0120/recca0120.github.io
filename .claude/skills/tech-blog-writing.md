@@ -269,7 +269,7 @@ draft: false
 
 ### 分類與標籤規則
 
-`categories` 只選一個主分類，從以下固定清單選：
+`categories` 可選一到多個分類，從以下固定清單選（大部分文章 1-2 個，有跨領域時可多選）：
 
 | 分類 | 適用範圍 |
 |------|----------|
@@ -295,7 +295,7 @@ draft: false
 
 原則：
 - tag 用英文，保留官方大小寫（`PHPUnit` 不是 `phpunit`）
-- 一篇文章通常 1-4 個 tags
+- 一篇文章通常 2-5 個 tags
 - 只標文章**實際用到**的技術，不要為了 SEO 亂標
 
 ## 封面圖產生
@@ -350,6 +350,50 @@ with open('content/post/{slug}/featured.png','wb') as f: f.write(img)
 - Redis 文章：`A network of glowing red crystal nodes connected by light beams in a dark server room, cinematic lighting, 4k wallpaper style, warm red and amber tones`
 - Docker 文章：`Stacked translucent shipping containers floating in a digital void, each containing miniature server racks, isometric view, neon blue and cyan, dark background`
 - Laravel 文章：`An elegant red phoenix rising from lines of code, cinematic lighting, 4k wallpaper style, deep red and orange gradients against dark background`
+
+## 文章內容插圖
+
+文章內容中如果需要插圖（架構圖、概念圖、流程示意圖等），也可以用 Cloudflare Workers AI 產生。
+
+### 產圖指令
+
+跟封面圖一樣的 API，只是檔名和尺寸不同：
+
+```bash
+response=$(curl -sS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/@cf/black-forest-labs/flux-1-schnell" \
+  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "英文描述", "width": 1024, "height": 576}' \
+  --max-time 60)
+
+echo "$response" | python3 -c "
+import json,sys,base64
+d=json.load(sys.stdin)
+img=base64.b64decode(d['result']['image'])
+with open('content/post/{slug}/image-name.png','wb') as f: f.write(img)
+"
+```
+
+### 在 Markdown 中引用
+
+圖片放在同一個 Page Bundle 目錄下，用相對路徑引用：
+
+```markdown
+![說明文字](image-name.png)
+```
+
+### 使用時機
+
+- 需要視覺化解釋架構或流程時
+- 純文字難以表達的概念（例如：資料流向、系統架構、前後差異）
+- 不要為了「好看」而硬塞圖片，圖片必須有資訊增益
+
+### Prompt 原則
+
+跟封面圖相同的 prompt 結構公式，但內容更聚焦：
+- 描述要具體到能對應文章段落的概念
+- 避免放文字和人臉
+- 如果是架構圖，用 `isometric view`、`diagram style`、`technical illustration` 等風格詞
 
 ## 執行規範
 

@@ -31,6 +31,8 @@ LiVue 的請求週期分五步：
 
 同一個 tick 內的多個 server call 會自動合併成一個 HTTP 請求（request pooling），減少網路往返。
 
+![LiVue 請求週期架構圖](livue-architecture.png)
+
 ## 安裝
 
 ```bash

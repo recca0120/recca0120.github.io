@@ -122,6 +122,8 @@ class FacadeTest extends TestCase
 
 Facade 就是透過 `getFacadeAccessor` 回傳的 key 去 Container 取 instance，再用 static method 轉呼叫 instance method。
 
+![Facade → Container → 實體的解析流程](facade-container-resolution.png)
+
 ## getFacadeAccessor 可以是任意字串
 
 像 Laravel 內建的 `DB` Facade，`getFacadeAccessor` 回傳的是字串 `'db'` 而不是 class name：

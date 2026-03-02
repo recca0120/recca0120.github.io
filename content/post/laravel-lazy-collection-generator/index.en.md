@@ -40,6 +40,8 @@ protected function getArrayableItems($items)
 
 The lazy loading effect is completely lost.
 
+![Eager vs Lazy Generator execution difference](lazy-vs-eager.png)
+
 ## The Correct Approach
 
 Wrap it in a Closure so that LazyCollection receives "a function that produces a Generator" rather than an already-running Generator:

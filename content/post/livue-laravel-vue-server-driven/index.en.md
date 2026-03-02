@@ -28,6 +28,8 @@ LiVue's request lifecycle has five steps:
 
 Multiple server calls within the same tick are automatically pooled into a single HTTP request, reducing network round trips.
 
+![LiVue request cycle architecture](livue-architecture.png)
+
 ## Installation
 
 ```bash
