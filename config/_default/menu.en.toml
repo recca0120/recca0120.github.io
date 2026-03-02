@@ -1,7 +1,7 @@
-# 正體中文選單
+# English menu
 [[main]]
   identifier = "home"
-  name = "首頁"
+  name = "Home"
   url = "/"
   weight = 10
 
@@ -10,7 +10,7 @@
 
 [[main]]
   identifier = "archives"
-  name = "彙整"
+  name = "Archives"
   url = "/archives/"
   weight = 20
 
@@ -19,7 +19,7 @@
 
 [[main]]
   identifier = "categories"
-  name = "分類"
+  name = "Categories"
   url = "/categories/"
   weight = 30
 
@@ -28,7 +28,7 @@
 
 [[main]]
   identifier = "tags"
-  name = "標籤"
+  name = "Tags"
   url = "/tags/"
   weight = 40
 
@@ -37,7 +37,7 @@
 
 [[main]]
   identifier = "search"
-  name = "搜尋"
+  name = "Search"
   url = "/search/"
   weight = 50
 
