@@ -4,10 +4,12 @@ description: 'Step-by-step guide to installing Docker CE directly in WSL2 withou
 slug: wsl2-install-docker-ce
 date: '2023-01-15T10:00:00+08:00'
 categories:
-- DevOps
+  - DevOps
+  - Windows
 tags:
-- Docker
-- WSL2
+  - Docker
+  - WSL2
+  - Linux
 image: featured.png
 draft: false
 ---

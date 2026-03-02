@@ -4,11 +4,12 @@ description: 'PHP Curl 在 Linux 拋出 Comodo SSL 過期錯誤，原因是系�
 slug: how-to-fix-comodo-rsa-certification-authority-ssl-error-in-php
 date: '2020-06-01T18:29:17+08:00'
 categories:
-- PHP
+  - PHP
+  - Laravel
 tags:
-- PHP
-- Guzzle
-- Laravel
+  - PHP
+  - Guzzle
+  - Laravel
 draft: false
 image: featured.png
 ---

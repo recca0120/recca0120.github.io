@@ -4,9 +4,11 @@ description: 'macOS artisan tinker 用 Guzzle 噴 NSCFConstantString 錯誤，�
 slug: php-objc86150-nscfconstantstring-initialize-may-have-been-in-progress-in-another-thread
 date: '2022-12-26T08:41:00+08:00'
 categories:
-- macOS
+  - macOS
+  - PHP
 tags:
-- PHP
+  - PHP
+  - Guzzle
 image: featured.png
 draft: false
 ---

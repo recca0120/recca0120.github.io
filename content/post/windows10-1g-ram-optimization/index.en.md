@@ -4,9 +4,9 @@ description: 'Running Windows 10 on just 1GB of RAM is possible with the right t
 slug: windows-10-running-in-1g-ram
 date: '2020-07-06T10:36:37+08:00'
 categories:
-- Windows
+  - Windows
 tags:
-- Windows
+  - Windows
 draft: false
 image: featured.png
 ---

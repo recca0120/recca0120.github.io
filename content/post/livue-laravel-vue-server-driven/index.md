@@ -6,9 +6,12 @@ date: '2026-03-03T12:00:00+08:00'
 image: featured.png
 categories:
   - Laravel
+  - Frontend
 tags:
   - Laravel
   - Vue.js
+  - Blade
+  - Alpine.js
 draft: false
 ---
 

@@ -4,11 +4,14 @@ description: '從頭重寫 PHPUnit for VSCode，整合 VS Code Testing API 讓�
 slug: rebuilt-phpunit-for-vscode
 date: '2022-12-06T05:57:57+08:00'
 categories:
-- Testing
+  - Testing
+  - PHP
 tags:
-- PHPUnit
-- VS Code
-- Docker
+  - PHPUnit
+  - PHP
+  - VS Code
+  - Docker
+  - Testing
 image: featured.png
 draft: false
 ---

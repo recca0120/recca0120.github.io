@@ -4,10 +4,10 @@ description: '用 Composer 2 的 InstalledVersions::getVersion() 在執行期取
 slug: php-third-package-version
 date: '2023-02-25T10:04:03+08:00'
 categories:
-- PHP
+  - PHP
 tags:
-- PHP
-- Composer
+  - PHP
+  - Composer
 image: featured.png
 draft: false
 ---

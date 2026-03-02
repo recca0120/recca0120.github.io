@@ -4,11 +4,12 @@ description: 'IAM 缺少 s3:ListBucket 時，S3 對不存在的檔案回傳 403 
 slug: leagueflysystemunabletocheckfileexistence
 date: '2023-01-19T03:12:27+08:00'
 categories:
-- PHP
+  - Laravel
+  - DevOps
 tags:
-- Flysystem
-- Laravel
-- AWS
+  - Laravel
+  - Flysystem
+  - AWS
 image: featured.png
 draft: false
 ---

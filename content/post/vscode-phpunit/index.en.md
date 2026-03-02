@@ -6,8 +6,10 @@ date: '2026-03-03T05:00:00+08:00'
 image: featured.png
 categories:
   - Testing
+  - PHP
 tags:
   - PHPUnit
+  - Pest
   - VS Code
   - Docker
   - Testing

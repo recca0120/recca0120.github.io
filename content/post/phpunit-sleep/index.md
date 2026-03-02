@@ -4,10 +4,13 @@ description: '程式裡有 sleep() 讓每次測試都要多等幾秒，可抽出
 slug: phpunit-sleep
 date: '2023-01-06T08:55:58+08:00'
 categories:
-- Testing
+  - Testing
+  - PHP
 tags:
-- PHPUnit
-- PHP
+  - PHP
+  - PHPUnit
+  - Mockery
+  - Testing
 image: featured.png
 draft: false
 ---

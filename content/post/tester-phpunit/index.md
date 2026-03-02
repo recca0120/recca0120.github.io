@@ -4,10 +4,12 @@ description: '為 Atom 編輯器開發的 PHPUnit 套件 tester-phpunit，讓你
 slug: tester-phpunit
 date: '2017-07-23T12:36:38+08:00'
 categories:
-- Testing
+  - Testing
+  - PHP
 tags:
-- PHPUnit
-- PHP
+  - PHPUnit
+  - PHP
+  - Testing
 image: featured.png
 draft: false
 ---

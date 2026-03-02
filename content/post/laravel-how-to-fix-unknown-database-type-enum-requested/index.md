@@ -5,6 +5,7 @@ slug: laravel-how-to-fix-unknown-database-type-enum-requested
 date: '2022-12-13T06:16:19+08:00'
 categories:
 - Laravel
+- Database
 tags:
 - Laravel
 - Migration

@@ -4,10 +4,11 @@ description: 'PHPUnit keeps printing "Waiting for thread pool to idle before for
 slug: waiting-for-thread-pool-to-idle-before-forking
 date: '2023-01-18T15:37:51+08:00'
 categories:
-- PHP
+  - PHP
+  - Testing
 tags:
-- PHP
-- PHPUnit
+  - PHP
+  - PHPUnit
 image: featured.png
 draft: false
 ---

@@ -5,9 +5,12 @@ slug: how-to-test-closure-in-phpunit
 date: '2022-11-26T09:31:24+08:00'
 categories:
 - Testing
+- PHP
 tags:
 - PHPUnit
+- Mockery
 - PHP
+- Testing
 image: featured.png
 draft: false
 ---

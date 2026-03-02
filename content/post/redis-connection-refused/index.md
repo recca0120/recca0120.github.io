@@ -4,9 +4,9 @@ description: '升級 Redis 到 6.0 後出現 Connection refused，原因是 bind
 slug: redis-connection-refused
 date: '2020-07-21T14:40:39+08:00'
 categories:
-- Database
+  - Database
 tags:
-- Redis
+  - Redis
 draft: false
 image: featured.png
 ---

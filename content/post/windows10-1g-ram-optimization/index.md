@@ -4,9 +4,9 @@ description: '1GB 記憶體跑 Windows 10，關閉 Memory Compression、Superfet
 slug: windows-10-running-in-1g-ram
 date: '2020-07-06T10:36:37+08:00'
 categories:
-- Windows
+  - Windows
 tags:
-- Windows
+  - Windows
 draft: false
 image: featured.png
 ---

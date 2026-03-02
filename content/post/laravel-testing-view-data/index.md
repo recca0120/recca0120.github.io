@@ -4,10 +4,12 @@ description: '複雜頁面測 HTML 很脆弱，改用 viewData() 直接驗 View 
 slug: laravel-testing-view-data
 date: '2022-11-29T15:58:53+08:00'
 categories:
+- Laravel
 - Testing
 tags:
 - Laravel
 - Testing
+- Blade
 image: featured.png
 draft: false
 ---

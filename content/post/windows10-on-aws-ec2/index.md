@@ -4,10 +4,11 @@ description: '用 VirtualBox 建立 Windows 10 VHD 映像，透過 AWS VM Import
 slug: running-windows10-on-aws-ec2
 date: '2020-07-04T11:34:00+08:00'
 categories:
-- Windows
+  - Windows
+  - DevOps
 tags:
-- Windows
-- AWS
+  - Windows
+  - AWS
 draft: false
 image: featured.png
 ---

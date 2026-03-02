@@ -4,10 +4,12 @@ description: '測試 IP 限制等依賴 $_SERVER 的邏輯時，可透過 get/po
 slug: how-to-mock_$\_SERVER-in-laravel-feature-testing
 date: '2020-06-23T12:18:59+08:00'
 categories:
+- Laravel
 - Testing
 tags:
 - Laravel
 - Testing
+- PHPUnit
 draft: false
 image: featured.png
 ---

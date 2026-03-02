@@ -4,10 +4,10 @@ description: "Redis warns that the TCP backlog setting of 511 exceeds somaxconn'
 slug: redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/net/core/somaxconn-is-set-to-the-lower-value-of-128
 date: '2020-06-12T14:01:07+08:00'
 categories:
-- Database
+  - Database
 tags:
-- Redis
-- Linux
+  - Redis
+  - Linux
 draft: false
 image: featured.png
 ---

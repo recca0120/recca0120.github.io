@@ -4,10 +4,11 @@ description: 'Laravel Vite 預設指向 localhost，自訂 domain 時 asset 載�
 slug: laravel-vite-host
 date: '2023-03-20T07:08:10+08:00'
 categories:
-- Laravel
+  - Laravel
+  - Frontend
 tags:
-- Laravel
-- Vite
+  - Laravel
+  - Vite
 image: featured.png
 draft: false
 ---

@@ -4,9 +4,9 @@ description: 'Excel 匯出 CSV 時會把小數轉成 8.90E-05 這類指數格式
 slug: php-csv
 date: '2024-07-16T06:05:35+08:00'
 categories:
-- PHP
+  - PHP
 tags:
-- PHP
+  - PHP
 image: featured.png
 draft: false
 ---

@@ -4,10 +4,12 @@ description: 'An Atom editor package that lets you run PHPUnit tests directly in
 slug: tester-phpunit
 date: '2017-07-23T12:36:38+08:00'
 categories:
-- Testing
+  - Testing
+  - PHP
 tags:
-- PHPUnit
-- PHP
+  - PHPUnit
+  - PHP
+  - Testing
 image: featured.png
 draft: false
 ---

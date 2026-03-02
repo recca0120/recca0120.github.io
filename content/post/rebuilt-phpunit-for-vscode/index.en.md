@@ -4,11 +4,14 @@ description: 'A full rewrite of PHPUnit for VSCode integrating the VS Code Testi
 slug: rebuilt-phpunit-for-vscode
 date: '2022-12-06T05:57:57+08:00'
 categories:
-- Testing
+  - Testing
+  - PHP
 tags:
-- PHPUnit
-- VS Code
-- Docker
+  - PHPUnit
+  - PHP
+  - VS Code
+  - Docker
+  - Testing
 image: featured.png
 draft: false
 ---

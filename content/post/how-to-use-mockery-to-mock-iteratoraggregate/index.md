@@ -5,9 +5,12 @@ slug: how-to-use-mockery-to-mock-iteratoraggregate
 date: '2022-11-25T03:41:39+08:00'
 categories:
 - Testing
+- PHP
 tags:
 - Mockery
+- PHPUnit
 - PHP
+- Testing
 image: featured.png
 draft: false
 ---

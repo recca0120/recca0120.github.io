@@ -4,9 +4,9 @@ description: 'Redis 6.0 changed the defaults for bind and protected-mode, causin
 slug: redis-connection-refused
 date: '2020-07-21T14:40:39+08:00'
 categories:
-- Database
+  - Database
 tags:
-- Redis
+  - Redis
 draft: false
 image: featured.png
 ---

@@ -6,10 +6,11 @@ date: '2026-03-03T14:00:00+08:00'
 image: featured.png
 categories:
   - Testing
+  - Frontend
 tags:
   - Testing
   - MSW
-  - Vue.js
+  - JavaScript
 draft: false
 ---
 

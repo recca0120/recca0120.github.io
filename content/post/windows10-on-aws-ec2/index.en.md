@@ -4,10 +4,11 @@ description: 'Build a Windows 10 VHD in VirtualBox, import it to AWS as an AMI u
 slug: running-windows10-on-aws-ec2
 date: '2020-07-04T11:34:00+08:00'
 categories:
-- Windows
+  - Windows
+  - DevOps
 tags:
-- Windows
-- AWS
+  - Windows
+  - AWS
 draft: false
 image: featured.png
 ---

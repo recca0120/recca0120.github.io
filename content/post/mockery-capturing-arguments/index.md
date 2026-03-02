@@ -4,10 +4,13 @@ description: '方法內部有 random_int 導致回傳值不固定時，用 Mocke
 slug: mockery-capturing-arguments
 date: '2022-11-22T14:21:07+08:00'
 categories:
-- Testing
+  - Testing
+  - PHP
 tags:
-- Mockery
-- PHP
+  - PHP
+  - Mockery
+  - PHPUnit
+  - Testing
 image: featured.png
 draft: false
 ---

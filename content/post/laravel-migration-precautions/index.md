@@ -5,9 +5,11 @@ slug: laravel-create-migration-precautions
 date: '2020-06-08T22:18:27+08:00'
 categories:
 - Laravel
+- Database
 tags:
 - Laravel
 - Migration
+- SQLite
 draft: false
 image: featured.png
 ---

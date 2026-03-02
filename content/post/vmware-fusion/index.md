@@ -4,9 +4,9 @@ description: 'VMware Fusion Player 提供個人免費授權，到官網建立帳
 slug: vmware-fusion
 date: '2022-11-21T13:34:53+08:00'
 categories:
-- macOS
+  - macOS
 tags:
-- VMware
+  - VMware
 image: featured.png
 draft: false
 ---

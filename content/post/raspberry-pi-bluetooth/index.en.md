@@ -4,10 +4,11 @@ description: 'Use bluetoothctl commands (scan, pair, trust, connect) to pair Blu
 slug: raspberry-pi-connect-bluetooth-using-command
 date: '2020-07-21T14:48:18+08:00'
 categories:
-- DevOps
+  - DevOps
 tags:
-- Raspberry Pi
-- Bluetooth
+  - Raspberry Pi
+  - Bluetooth
+  - Linux
 draft: false
 image: featured.png
 ---

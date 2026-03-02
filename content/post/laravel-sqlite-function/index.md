@@ -4,10 +4,12 @@ description: 'SQLite 測試遇到 MySQL 專屬 function 如 FIELD 會噴 no such
 slug: laravel-sqlite-function
 date: '2023-02-17T03:27:51+08:00'
 categories:
+- Laravel
 - Database
 tags:
-- SQLite
 - Laravel
+- SQLite
+- Testing
 image: featured.png
 draft: false
 ---

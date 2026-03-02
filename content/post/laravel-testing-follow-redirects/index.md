@@ -4,6 +4,7 @@ description: 'POST 後只拿到 302 看不到最終頁面，用 followingRedirec
 slug: laravel-testing-what-happens-after-a-redirect
 date: '2020-06-25T12:04:22+08:00'
 categories:
+- Laravel
 - Testing
 tags:
 - Laravel

@@ -5,10 +5,12 @@ slug: alpine-validate-errors-for-laravel
 date: '2024-04-19T09:30:26+08:00'
 categories:
 - Frontend
+- Laravel
 tags:
 - Alpine.js
 - Laravel
 - JavaScript
+- Validation
 image: featured.png
 draft: false
 ---

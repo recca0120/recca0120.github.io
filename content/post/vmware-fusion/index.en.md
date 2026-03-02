@@ -4,9 +4,9 @@ description: 'VMware Fusion Player offers a free personal license. Create an acc
 slug: vmware-fusion
 date: '2022-11-21T13:34:53+08:00'
 categories:
-- macOS
+  - macOS
 tags:
-- VMware
+  - VMware
 image: featured.png
 draft: false
 ---

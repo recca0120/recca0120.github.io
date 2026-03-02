@@ -5,8 +5,10 @@ slug: laravel-container-facade
 date: '2023-01-12T05:34:12+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
+- PHP
 image: featured.png
 draft: false
 ---
