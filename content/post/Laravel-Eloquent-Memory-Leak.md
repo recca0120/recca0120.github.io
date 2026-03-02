@@ -9,16 +9,25 @@ tags:
 - eloquent
 draft: false
 ---
-從[這篇討論串](https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak)可以看出 Eloquent 用 property 去取得 relation 時是會造成 memory leak 的這在大型資料運算的時候會給系統造成很大負擔的，不得不小心，但在這討論串中有找出解決方案，所以直接節錄解決方案
+
+## 問題
+
+在處理大量資料時，用 Eloquent 的 property 取 relation 會造成記憶體不斷攀升。原因是每個 Model 實例會把載入過的 relation 快取在自己身上，跑完一輪迴圈後這些物件都還留在記憶體裡。
+
+這個問題在 [Laracasts 討論串](https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak)有人回報過，也有人找到了解法。
+
+## 解法
+
+用完 relation 之後，手動呼叫 `setRelations([])` 把快取清掉：
 
 ```php
 $users = User::with('posts')->get();
 
 foreach ($users as $user) {
     $posts = $user->posts;
-    // 增加這行即可
+    // 清除 relation 快取，釋放記憶體
     $user->setRelations([]);
-    // 討論串有提到這一行，但提問者測試好像無效
-    // $user->setRelation('posts', null);
 }
 ```
+
+討論串裡也有人提到用 `$user->setRelation('posts', null)` 只清單一 relation，但實測效果不太穩定，建議直接清全部比較保險。

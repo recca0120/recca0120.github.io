@@ -9,26 +9,34 @@ tags:
 - testing
 draft: false
 ---
-在 Laravel 遇到以下的程式碼時
+
+## 情境
+
+Controller 建完資料後做了 redirect：
 
 ```php
 class UserController extends Controller {
     public function create(Request $request) {
         $user = User::create($request->all());
-        
+
         return redirect(uri('users.show', ['id' => $user->id]));
     }
 }
 ```
 
-在測試的時候想要看到轉址的結果，我們能怎麼做呢？
+寫測試時想驗證轉址後的頁面內容，但 `$this->post(...)` 只會拿到 302 response，看不到最終頁面。
 
-`Laravel >= 5.5.19`
+## 解法
+
+加上 `followingRedirects()` 讓測試自動跟隨轉址：
+
+**Laravel >= 5.5.19**
+
 ```php
 class UserControllerTest extends TestCase {
     public function test_it_should_show_user_after_create_user() {
         $this
-            ->followingRedirects() // 加這行即可
+            ->followingRedirects()
             ->post('user', [
                 'name' => 'foo'
             ]);
@@ -36,15 +44,10 @@ class UserControllerTest extends TestCase {
 }
 ```
 
-`Laravel < 5.4.12:`
+**Laravel < 5.4.12**
+
+舊版的方法名稱少一個 `ing`：
+
 ```php
-class UserControllerTest extends TestCase {
-    public function test_it_should_show_user_after_create_user() {
-        $this
-            ->followRedirects() // 加這行即可
-            ->post('user', [
-                'name' => 'foo'
-            ]);
-    }
-}
+$this->followRedirects()->post('user', ['name' => 'foo']);
 ```
