@@ -2,7 +2,7 @@
 title: 'sql.js + IndexedDB: Building an Offline-First Web App'
 description: 'Persist sql.js SQLite databases in the browser using IndexedDB to build offline-first web applications that work without a backend.'
 slug: sql-js-offline-web-app
-date: '2026-03-03T08:32:00+08:00'
+date: '2026-03-05T09:00:00+08:00'
 image: featured.png
 categories:
 - Frontend

@@ -2,7 +2,7 @@
 title: '瀏覽器端儲存方案比較：sql.js vs IndexedDB vs localStorage'
 description: '比較 sql.js、IndexedDB、localStorage 等瀏覽器端儲存方案的容量、查詢能力、效能與適用場景，附完整比較表格。'
 slug: browser-storage-comparison
-date: '2026-03-03T08:34:00+08:00'
+date: '2026-03-06T09:00:00+08:00'
 image: featured.png
 categories:
 - Frontend
