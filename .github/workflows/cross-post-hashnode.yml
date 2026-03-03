@@ -84,7 +84,7 @@ jobs:
           query($host: String!, $after: String) {
             publication(host: $host) {
               posts(first: 50, after: $after) {
-                edges { node { originalArticleURL } cursor }
+                edges { node { canonicalUrl } cursor }
                 pageInfo { hasNextPage endCursor }
               }
             }
@@ -95,7 +95,7 @@ jobs:
               _, resp = gql(query_posts, {"host": "recca0120.hashnode.dev", "after": after})
               posts = resp.get("data", {}).get("publication", {}).get("posts", {})
               for edge in posts.get("edges", []):
-                  u = edge["node"].get("originalArticleURL") or ""
+                  u = edge["node"].get("canonicalUrl") or ""
                   if u:
                       existing_urls.add(u)
               if not posts.get("pageInfo", {}).get("hasNextPage"):
