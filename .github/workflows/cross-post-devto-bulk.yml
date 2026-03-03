@@ -1,0 +1,152 @@
+name: Bulk cross-post to dev.to
+
+on:
+  workflow_dispatch:
+
+jobs:
+  bulk-cross-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Bulk cross-post all English articles to dev.to
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          SITE_URL: https://recca0120.github.io
+        run: |
+          set -euo pipefail
+
+          now_ts=$(date +%s)
+          published=0
+          skipped=0
+          failed=0
+
+          # 先抓 dev.to 上已有的文章 canonical URLs
+          echo "Fetching existing articles from dev.to..."
+          page=1
+          existing_urls=""
+          while true; do
+            batch=$(curl -s -H "api-key: $DEVTO_API_KEY" \
+              "https://dev.to/api/articles/me?per_page=100&page=$page")
+            count=$(echo "$batch" | python3 -c "import json,sys; print(len(json.load(sys.stdin)))" 2>/dev/null || echo "0")
+            if [ "$count" = "0" ]; then
+              break
+            fi
+            urls=$(echo "$batch" | python3 -c "
+          import json, sys
+          for a in json.load(sys.stdin):
+              u = a.get('canonical_url') or ''
+              if u:
+                  print(u)
+          ")
+            existing_urls="$existing_urls
+          $urls"
+            page=$((page + 1))
+          done
+          echo "Found $(echo "$existing_urls" | grep -c 'http' || echo 0) existing articles on dev.to"
+
+          # 遍歷所有英文文章
+          for file in $(find content/post -name "index.en.md" | sort); do
+            # 解析 frontmatter
+            frontmatter=$(sed -n '/^---$/,/^---$/p' "$file" | sed '1d;$d')
+
+            title=$(echo "$frontmatter" | grep '^title:' | sed "s/^title: *//;s/^['\"]//;s/['\"]$//")
+            slug=$(echo "$frontmatter" | grep '^slug:' | sed "s/^slug: *//;s/^['\"]//;s/['\"]$//")
+            date_str=$(echo "$frontmatter" | grep '^date:' | sed "s/^date: *//;s/^['\"]//;s/['\"]$//")
+            description=$(echo "$frontmatter" | grep '^description:' | sed "s/^description: *//;s/^['\"]//;s/['\"]$//")
+            draft=$(echo "$frontmatter" | grep '^draft:' | sed "s/^draft: *//")
+
+            # 跳過草稿
+            if [ "$draft" = "true" ]; then
+              echo "SKIP (draft): $title"
+              skipped=$((skipped + 1))
+              continue
+            fi
+
+            # 跳過未來文章
+            article_ts=$(date -d "$date_str" +%s 2>/dev/null || echo "0")
+            if [ "$article_ts" -gt "$now_ts" ]; then
+              echo "SKIP (future): $title"
+              skipped=$((skipped + 1))
+              continue
+            fi
+
+            # 組 canonical URL
+            year=$(echo "$date_str" | cut -c1-4)
+            month=$(echo "$date_str" | cut -c6-7)
+            day=$(echo "$date_str" | cut -c9-10)
+            canonical_url="${SITE_URL}/en/${year}/${month}/${day}/${slug}/"
+
+            # 跳過已存在的
+            if echo "$existing_urls" | grep -qF "$canonical_url"; then
+              echo "SKIP (exists): $title"
+              skipped=$((skipped + 1))
+              continue
+            fi
+
+            # tags
+            tags=$(echo "$frontmatter" | sed -n '/^tags:/,/^[^ -]/p' | grep '^- ' | sed 's/^- //' | tr '\n' ',' | sed 's/,$//')
+
+            # 文章內容
+            body=$(sed '1{/^---$/!q}; 1,/^---$/d' "$file")
+            body=$(printf "*Originally published at [recca0120.github.io](%s)*\n\n%s" "$canonical_url" "$body")
+
+            # 組 JSON payload
+            payload=$(python3 << PYEOF
+          import json, sys
+
+          with open("$file", "r") as f:
+              content = f.read()
+          # 去掉 frontmatter
+          parts = content.split("---", 2)
+          if len(parts) >= 3:
+              md = parts[2].strip()
+          else:
+              md = content
+
+          md = f"*Originally published at [recca0120.github.io]($canonical_url)*\n\n" + md
+
+          article = {
+              "article": {
+                  "title": "$title",
+                  "body_markdown": md,
+                  "published": True,
+                  "canonical_url": "$canonical_url",
+                  "tags": [t.strip().lower() for t in "$tags".split(",") if t.strip()][:4],
+                  "description": "$description"
+              }
+          }
+          print(json.dumps(article))
+          PYEOF
+            )
+
+            # 發布
+            response=$(curl -s -w "\n%{http_code}" -X POST \
+              -H "Content-Type: application/json" \
+              -H "api-key: $DEVTO_API_KEY" \
+              -d "$payload" \
+              "https://dev.to/api/articles")
+
+            http_code=$(echo "$response" | tail -1)
+            body_resp=$(echo "$response" | sed '$d')
+
+            if [ "$http_code" = "201" ]; then
+              devto_url=$(echo "$body_resp" | python3 -c "import json,sys; print(json.load(sys.stdin).get('url',''))")
+              echo "OK: $title -> $devto_url"
+              published=$((published + 1))
+            else
+              echo "FAIL ($http_code): $title"
+              echo "  $body_resp" | head -1
+              failed=$((failed + 1))
+            fi
+
+            # rate limit: 每 4 秒發一篇（安全間隔）
+            sleep 4
+          done
+
+          echo ""
+          echo "=== Summary ==="
+          echo "Published: $published"
+          echo "Skipped:   $skipped"
+          echo "Failed:    $failed"
