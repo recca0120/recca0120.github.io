@@ -143,6 +143,10 @@ jobs:
                   print(f"SKIP (bad date): {title}")
                   continue
 
+              # Clean slug for Hashnode: lowercase, alphanumeric and dashes only, max 250 chars
+              hashnode_slug = re.sub(r'[^a-z0-9-]', '-', slug.lower())
+              hashnode_slug = re.sub(r'-+', '-', hashnode_slug).strip('-')[:250]
+
               canonical_url = f"{SITE_URL}/en/{year}/{month}/{day}/{slug}/"
 
               if canonical_url in existing_urls:
@@ -163,7 +167,7 @@ jobs:
                       "contentMarkdown": md,
                       "publicationId": PUB_ID,
                       "originalArticleURL": canonical_url,
-                      "slug": slug,
+                      "slug": hashnode_slug,
                       "tags": hashnode_tags,
                       "metaTags": {"description": description},
                   }
