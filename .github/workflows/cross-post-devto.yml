@@ -20,98 +20,148 @@ jobs:
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           SITE_URL: https://recca0120.github.io
         run: |
-          set -euo pipefail
-
-          # 找出這次 push 新增或修改的英文文章
-          changed_files=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'content/post/*/index.en.md' || true)
-
-          if [ -z "$changed_files" ]; then
-            echo "No new English articles found, skipping."
+          # 找出新增或修改的英文文章
+          changed=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'content/post/*/index.en.md' || true)
+          if [ -z "$changed" ]; then
+            echo "No new English articles found."
             exit 0
           fi
+          echo "$changed" > /tmp/changed_files.txt
 
-          for file in $changed_files; do
-            echo "Processing: $file"
+          python3 << 'SCRIPT'
+          import os, json, re, time, urllib.request, urllib.error
+          from datetime import datetime, timezone
 
-            # 解析 frontmatter
-            frontmatter=$(sed -n '/^---$/,/^---$/p' "$file" | sed '1d;$d')
+          API_KEY = os.environ["DEVTO_API_KEY"]
+          SITE_URL = os.environ["SITE_URL"]
+          HEADERS = {"api-key": API_KEY, "Content-Type": "application/json"}
 
-            title=$(echo "$frontmatter" | grep '^title:' | sed "s/^title: *//;s/^['\"]//;s/['\"]$//")
-            slug=$(echo "$frontmatter" | grep '^slug:' | sed "s/^slug: *//;s/^['\"]//;s/['\"]$//")
-            date_str=$(echo "$frontmatter" | grep '^date:' | sed "s/^date: *//;s/^['\"]//;s/['\"]$//")
-            description=$(echo "$frontmatter" | grep '^description:' | sed "s/^description: *//;s/^['\"]//;s/['\"]$//")
+          def api_get(url):
+              req = urllib.request.Request(url, headers=HEADERS)
+              with urllib.request.urlopen(req) as resp:
+                  return json.loads(resp.read())
 
-            # 取得 tags（從 tags: 區塊解析 YAML list）
-            tags=$(echo "$frontmatter" | sed -n '/^tags:/,/^[^ -]/p' | grep '^- ' | sed 's/^- //' | tr '\n' ',' | sed 's/,$//')
+          def api_post(url, data):
+              body = json.dumps(data).encode()
+              req = urllib.request.Request(url, data=body, headers=HEADERS, method="POST")
+              try:
+                  with urllib.request.urlopen(req) as resp:
+                      return resp.status, json.loads(resp.read())
+              except urllib.error.HTTPError as e:
+                  return e.code, e.read().decode()
 
-            # 檢查日期是否為未來（未來的文章不發布）
-            article_ts=$(date -d "$date_str" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S%z" "$date_str" +%s 2>/dev/null || echo "0")
-            now_ts=$(date +%s)
+          def parse_frontmatter(filepath):
+              with open(filepath, "r", encoding="utf-8") as f:
+                  content = f.read()
+              parts = content.split("---", 2)
+              if len(parts) < 3:
+                  return None, content
+              fm_text = parts[1]
+              body = parts[2].strip()
+              fm = {}
+              current_key = None
+              list_values = []
+              for line in fm_text.strip().split("\n"):
+                  if line.startswith("- ") and current_key:
+                      list_values.append(line[2:].strip().strip("'\""))
+                  else:
+                      if current_key and list_values:
+                          fm[current_key] = list_values
+                          list_values = []
+                      if ":" in line:
+                          key, val = line.split(":", 1)
+                          key = key.strip()
+                          val = val.strip().strip("'\"")
+                          current_key = key
+                          if val:
+                              fm[key] = val
+                          else:
+                              list_values = []
+              if current_key and list_values:
+                  fm[current_key] = list_values
+              return fm, body
 
-            if [ "$article_ts" -gt "$now_ts" ]; then
-              echo "  Skipping (future date: $date_str)"
-              continue
-            fi
+          # 讀取變更檔案清單
+          with open("/tmp/changed_files.txt") as f:
+              files = [l.strip() for l in f if l.strip()]
 
-            # 從 slug 和 date 組出 canonical URL
-            year=$(echo "$date_str" | cut -c1-4)
-            month=$(echo "$date_str" | cut -c6-7)
-            day=$(echo "$date_str" | cut -c9-10)
-            canonical_url="${SITE_URL}/en/${year}/${month}/${day}/${slug}/"
+          now = datetime.now(timezone.utc)
 
-            # 取得文章內容（去掉 frontmatter）
-            body=$(sed '1{/^---$/!q}; 1,/^---$/d' "$file")
-
-            # 在文章開頭加上 canonical 提示
-            body=$(printf "*Originally published at [recca0120.github.io](%s)*\n\n%s" "$canonical_url" "$body")
-
-            # 檢查 dev.to 上是否已存在同 canonical_url 的文章
-            existing=$(curl -s -H "api-key: $DEVTO_API_KEY" \
-              "https://dev.to/api/articles/me?per_page=100" | \
-              python3 -c "
-          import json, sys
-          articles = json.load(sys.stdin)
-          for a in articles:
-              if a.get('canonical_url') == '$canonical_url':
-                  print(a['id'])
+          # 抓已有的 canonical URLs
+          existing_urls = set()
+          page = 1
+          while True:
+              try:
+                  articles = api_get(f"https://dev.to/api/articles/me?per_page=100&page={page}")
+                  if not isinstance(articles, list) or len(articles) == 0:
+                      break
+                  for a in articles:
+                      u = a.get("canonical_url") or ""
+                      if u:
+                          existing_urls.add(u)
+                  page += 1
+              except:
                   break
-          " 2>/dev/null || true)
 
-            if [ -n "$existing" ]; then
-              echo "  Already exists on dev.to (id: $existing), skipping."
-              continue
-            fi
+          for filepath in files:
+              fm, body = parse_frontmatter(filepath)
+              if not fm:
+                  continue
 
-            # 組 JSON payload
-            payload=$(python3 -c "
-          import json
-          article = {
-              'article': {
-                  'title': $(python3 -c "import json; print(json.dumps('$title'))"),
-                  'body_markdown': $(python3 -c "import json,sys; print(json.dumps(sys.stdin.read()))" < <(echo "$body")),
-                  'published': True,
-                  'canonical_url': '$canonical_url',
-                  'tags': [t.strip() for t in '$tags'.lower().split(',') if t.strip()][:4],
-                  'description': $(python3 -c "import json; print(json.dumps('$description'))")
+              title = fm.get("title", "")
+              slug = fm.get("slug", "")
+              date_str = fm.get("date", "")
+              description = fm.get("description", "")
+              draft = fm.get("draft", "false")
+              tags = fm.get("tags", [])
+              if isinstance(tags, str):
+                  tags = [tags]
+
+              if draft == "true":
+                  print(f"SKIP (draft): {title}")
+                  continue
+
+              try:
+                  dt = datetime.fromisoformat(date_str)
+                  if dt > now:
+                      print(f"SKIP (future): {title}")
+                      continue
+                  year, month, day = dt.strftime("%Y"), dt.strftime("%m"), dt.strftime("%d")
+              except:
+                  print(f"SKIP (bad date): {title}")
+                  continue
+
+              canonical_url = f"{SITE_URL}/en/{year}/{month}/{day}/{slug}/"
+
+              if canonical_url in existing_urls:
+                  print(f"SKIP (exists): {title}")
+                  continue
+
+              devto_tags = []
+              for t in tags[:4]:
+                  tag = re.sub(r'[^a-z0-9]', '', t.lower())
+                  if tag:
+                      devto_tags.append(tag)
+
+              md = f"*Originally published at [recca0120.github.io]({canonical_url})*\n\n{body}"
+
+              payload = {
+                  "article": {
+                      "title": title,
+                      "body_markdown": md,
+                      "published": True,
+                      "canonical_url": canonical_url,
+                      "tags": devto_tags,
+                      "description": description,
+                  }
               }
-          }
-          print(json.dumps(article))
-          ")
 
-            # 發布到 dev.to
-            response=$(curl -s -w "\n%{http_code}" -X POST \
-              -H "Content-Type: application/json" \
-              -H "api-key: $DEVTO_API_KEY" \
-              -d "$payload" \
-              "https://dev.to/api/articles")
+              status, resp = api_post("https://dev.to/api/articles", payload)
+              if status == 201:
+                  url = resp.get("url", "") if isinstance(resp, dict) else ""
+                  print(f"OK: {title} -> {url}")
+              else:
+                  print(f"FAIL ({status}): {title} - {str(resp)[:200]}")
 
-            http_code=$(echo "$response" | tail -1)
-            body_resp=$(echo "$response" | sed '$d')
-
-            if [ "$http_code" = "201" ]; then
-              devto_url=$(echo "$body_resp" | python3 -c "import json,sys; print(json.load(sys.stdin).get('url',''))")
-              echo "  Published: $devto_url"
-            else
-              echo "  Failed (HTTP $http_code): $body_resp"
-            fi
-          done
+              time.sleep(4)
+          SCRIPT

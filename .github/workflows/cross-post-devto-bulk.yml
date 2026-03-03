@@ -15,138 +15,178 @@ jobs:
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           SITE_URL: https://recca0120.github.io
         run: |
-          set -euo pipefail
+          python3 << 'SCRIPT'
+          import os, json, glob, time, re, urllib.request, urllib.error
+          from datetime import datetime, timezone
 
-          now_ts=$(date +%s)
-          published=0
-          skipped=0
-          failed=0
+          API_KEY = os.environ["DEVTO_API_KEY"]
+          SITE_URL = os.environ["SITE_URL"]
+          HEADERS = {"api-key": API_KEY, "Content-Type": "application/json"}
 
-          # 先抓 dev.to 上已有的文章 canonical URLs
-          echo "Fetching existing articles from dev.to..."
-          page=1
-          existing_urls=""
-          while true; do
-            batch=$(curl -s -H "api-key: $DEVTO_API_KEY" \
-              "https://dev.to/api/articles/me?per_page=100&page=$page")
-            count=$(echo "$batch" | python3 -c "import json,sys; print(len(json.load(sys.stdin)))" 2>/dev/null || echo "0")
-            if [ "$count" = "0" ]; then
-              break
-            fi
-            urls=$(echo "$batch" | python3 -c "
-          import json, sys
-          for a in json.load(sys.stdin):
-              u = a.get('canonical_url') or ''
-              if u:
-                  print(u)
-          ")
-            existing_urls="$existing_urls
-          $urls"
-            page=$((page + 1))
-          done
-          echo "Found $(echo "$existing_urls" | grep -c 'http' || echo 0) existing articles on dev.to"
+          def api_get(url):
+              req = urllib.request.Request(url, headers=HEADERS)
+              with urllib.request.urlopen(req) as resp:
+                  return json.loads(resp.read())
 
-          # 遍歷所有英文文章
-          for file in $(find content/post -name "index.en.md" | sort); do
-            # 解析 frontmatter
-            frontmatter=$(sed -n '/^---$/,/^---$/p' "$file" | sed '1d;$d')
+          def api_post(url, data):
+              body = json.dumps(data).encode()
+              req = urllib.request.Request(url, data=body, headers=HEADERS, method="POST")
+              try:
+                  with urllib.request.urlopen(req) as resp:
+                      return resp.status, json.loads(resp.read())
+              except urllib.error.HTTPError as e:
+                  return e.code, e.read().decode()
 
-            title=$(echo "$frontmatter" | grep '^title:' | sed "s/^title: *//;s/^['\"]//;s/['\"]$//")
-            slug=$(echo "$frontmatter" | grep '^slug:' | sed "s/^slug: *//;s/^['\"]//;s/['\"]$//")
-            date_str=$(echo "$frontmatter" | grep '^date:' | sed "s/^date: *//;s/^['\"]//;s/['\"]$//")
-            description=$(echo "$frontmatter" | grep '^description:' | sed "s/^description: *//;s/^['\"]//;s/['\"]$//")
-            draft=$(echo "$frontmatter" | grep '^draft:' | sed "s/^draft: *//")
+          # 驗證 API key
+          print("Verifying API key...")
+          try:
+              me = api_get("https://dev.to/api/users/me")
+              print(f"Authenticated as: {me.get('username', 'unknown')}")
+          except Exception as e:
+              print(f"ERROR: API key invalid or network error: {e}")
+              exit(1)
 
-            # 跳過草稿
-            if [ "$draft" = "true" ]; then
-              echo "SKIP (draft): $title"
-              skipped=$((skipped + 1))
-              continue
-            fi
+          # 抓已有文章的 canonical URLs
+          print("Fetching existing articles from dev.to...")
+          existing_urls = set()
+          page = 1
+          while True:
+              try:
+                  articles = api_get(f"https://dev.to/api/articles/me?per_page=100&page={page}")
+                  if not isinstance(articles, list) or len(articles) == 0:
+                      break
+                  for a in articles:
+                      url = a.get("canonical_url") or ""
+                      if url:
+                          existing_urls.add(url)
+                  page += 1
+              except Exception as e:
+                  print(f"Warning: failed to fetch page {page}: {e}")
+                  break
+          print(f"Found {len(existing_urls)} existing articles on dev.to")
 
-            # 跳過未來文章
-            article_ts=$(date -d "$date_str" +%s 2>/dev/null || echo "0")
-            if [ "$article_ts" -gt "$now_ts" ]; then
-              echo "SKIP (future): $title"
-              skipped=$((skipped + 1))
-              continue
-            fi
+          # 解析 frontmatter
+          def parse_frontmatter(filepath):
+              with open(filepath, "r", encoding="utf-8") as f:
+                  content = f.read()
+              parts = content.split("---", 2)
+              if len(parts) < 3:
+                  return None, content
+              fm_text = parts[1]
+              body = parts[2].strip()
+              fm = {}
+              current_key = None
+              list_values = []
+              for line in fm_text.strip().split("\n"):
+                  if line.startswith("- ") and current_key:
+                      list_values.append(line[2:].strip().strip("'\""))
+                  else:
+                      if current_key and list_values:
+                          fm[current_key] = list_values
+                          list_values = []
+                      if ":" in line:
+                          key, val = line.split(":", 1)
+                          key = key.strip()
+                          val = val.strip().strip("'\"")
+                          current_key = key
+                          if val:
+                              fm[key] = val
+                          else:
+                              list_values = []
+              if current_key and list_values:
+                  fm[current_key] = list_values
+              return fm, body
 
-            # 組 canonical URL
-            year=$(echo "$date_str" | cut -c1-4)
-            month=$(echo "$date_str" | cut -c6-7)
-            day=$(echo "$date_str" | cut -c9-10)
-            canonical_url="${SITE_URL}/en/${year}/${month}/${day}/${slug}/"
+          now = datetime.now(timezone.utc)
+          published = 0
+          skipped = 0
+          failed = 0
 
-            # 跳過已存在的
-            if echo "$existing_urls" | grep -qF "$canonical_url"; then
-              echo "SKIP (exists): $title"
-              skipped=$((skipped + 1))
-              continue
-            fi
+          files = sorted(glob.glob("content/post/*/index.en.md"))
+          print(f"Found {len(files)} English articles\n")
 
-            # tags
-            tags=$(echo "$frontmatter" | sed -n '/^tags:/,/^[^ -]/p' | grep '^- ' | sed 's/^- //' | tr '\n' ',' | sed 's/,$//')
+          for filepath in files:
+              fm, body = parse_frontmatter(filepath)
+              if not fm:
+                  print(f"SKIP (no frontmatter): {filepath}")
+                  skipped += 1
+                  continue
 
-            # 文章內容
-            body=$(sed '1{/^---$/!q}; 1,/^---$/d' "$file")
-            body=$(printf "*Originally published at [recca0120.github.io](%s)*\n\n%s" "$canonical_url" "$body")
+              title = fm.get("title", "")
+              slug = fm.get("slug", "")
+              date_str = fm.get("date", "")
+              description = fm.get("description", "")
+              draft = fm.get("draft", "false")
+              tags = fm.get("tags", [])
+              if isinstance(tags, str):
+                  tags = [tags]
 
-            # 組 JSON payload
-            payload=$(python3 << PYEOF
-          import json, sys
+              if draft == "true":
+                  print(f"SKIP (draft): {title}")
+                  skipped += 1
+                  continue
 
-          with open("$file", "r") as f:
-              content = f.read()
-          # 去掉 frontmatter
-          parts = content.split("---", 2)
-          if len(parts) >= 3:
-              md = parts[2].strip()
-          else:
-              md = content
+              # 解析日期
+              try:
+                  dt = datetime.fromisoformat(date_str)
+                  if dt > now:
+                      print(f"SKIP (future): {title}")
+                      skipped += 1
+                      continue
+                  year = dt.strftime("%Y")
+                  month = dt.strftime("%m")
+                  day = dt.strftime("%d")
+              except Exception:
+                  print(f"SKIP (bad date): {title} ({date_str})")
+                  skipped += 1
+                  continue
 
-          md = f"*Originally published at [recca0120.github.io]($canonical_url)*\n\n" + md
+              canonical_url = f"{SITE_URL}/en/{year}/{month}/{day}/{slug}/"
 
-          article = {
-              "article": {
-                  "title": "$title",
-                  "body_markdown": md,
-                  "published": True,
-                  "canonical_url": "$canonical_url",
-                  "tags": [t.strip().lower() for t in "$tags".split(",") if t.strip()][:4],
-                  "description": "$description"
+              if canonical_url in existing_urls:
+                  print(f"SKIP (exists): {title}")
+                  skipped += 1
+                  continue
+
+              # dev.to tags: 最多 4 個，小寫，只允許英數和 dash
+              devto_tags = []
+              for t in tags[:4]:
+                  tag = re.sub(r'[^a-z0-9]', '', t.lower())
+                  if tag:
+                      devto_tags.append(tag)
+
+              md = f"*Originally published at [recca0120.github.io]({canonical_url})*\n\n{body}"
+
+              payload = {
+                  "article": {
+                      "title": title,
+                      "body_markdown": md,
+                      "published": True,
+                      "canonical_url": canonical_url,
+                      "tags": devto_tags,
+                      "description": description,
+                  }
               }
-          }
-          print(json.dumps(article))
-          PYEOF
-            )
 
-            # 發布
-            response=$(curl -s -w "\n%{http_code}" -X POST \
-              -H "Content-Type: application/json" \
-              -H "api-key: $DEVTO_API_KEY" \
-              -d "$payload" \
-              "https://dev.to/api/articles")
+              status, resp = api_post("https://dev.to/api/articles", payload)
 
-            http_code=$(echo "$response" | tail -1)
-            body_resp=$(echo "$response" | sed '$d')
+              if status == 201:
+                  url = resp.get("url", "") if isinstance(resp, dict) else ""
+                  print(f"OK: {title} -> {url}")
+                  published += 1
+                  existing_urls.add(canonical_url)
+              else:
+                  print(f"FAIL ({status}): {title}")
+                  print(f"  {str(resp)[:200]}")
+                  failed += 1
 
-            if [ "$http_code" = "201" ]; then
-              devto_url=$(echo "$body_resp" | python3 -c "import json,sys; print(json.load(sys.stdin).get('url',''))")
-              echo "OK: $title -> $devto_url"
-              published=$((published + 1))
-            else
-              echo "FAIL ($http_code): $title"
-              echo "  $body_resp" | head -1
-              failed=$((failed + 1))
-            fi
+              time.sleep(4)
 
-            # rate limit: 每 4 秒發一篇（安全間隔）
-            sleep 4
-          done
+          print(f"\n=== Summary ===")
+          print(f"Published: {published}")
+          print(f"Skipped:   {skipped}")
+          print(f"Failed:    {failed}")
 
-          echo ""
-          echo "=== Summary ==="
-          echo "Published: $published"
-          echo "Skipped:   $skipped"
-          echo "Failed:    $failed"
+          if failed > 0:
+              exit(1)
+          SCRIPT
