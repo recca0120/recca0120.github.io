@@ -34,7 +34,7 @@ jobs:
 
           API_KEY = os.environ["DEVTO_API_KEY"]
           SITE_URL = os.environ["SITE_URL"]
-          HEADERS = {"api-key": API_KEY, "Content-Type": "application/json"}
+          HEADERS = {"api-key": API_KEY, "Content-Type": "application/json", "User-Agent": "recca0120-blog-crosspost/1.0"}
 
           def api_get(url):
               req = urllib.request.Request(url, headers=HEADERS)
