@@ -1,0 +1,117 @@
+name: Cross-post to dev.to
+
+on:
+  push:
+    branches: [main]
+    paths: ['content/post/**/index.en.md']
+  workflow_dispatch:
+
+jobs:
+  cross-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Cross-post new articles to dev.to
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          SITE_URL: https://recca0120.github.io
+        run: |
+          set -euo pipefail
+
+          # 找出這次 push 新增或修改的英文文章
+          changed_files=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'content/post/*/index.en.md' || true)
+
+          if [ -z "$changed_files" ]; then
+            echo "No new English articles found, skipping."
+            exit 0
+          fi
+
+          for file in $changed_files; do
+            echo "Processing: $file"
+
+            # 解析 frontmatter
+            frontmatter=$(sed -n '/^---$/,/^---$/p' "$file" | sed '1d;$d')
+
+            title=$(echo "$frontmatter" | grep '^title:' | sed "s/^title: *//;s/^['\"]//;s/['\"]$//")
+            slug=$(echo "$frontmatter" | grep '^slug:' | sed "s/^slug: *//;s/^['\"]//;s/['\"]$//")
+            date_str=$(echo "$frontmatter" | grep '^date:' | sed "s/^date: *//;s/^['\"]//;s/['\"]$//")
+            description=$(echo "$frontmatter" | grep '^description:' | sed "s/^description: *//;s/^['\"]//;s/['\"]$//")
+
+            # 取得 tags（從 tags: 區塊解析 YAML list）
+            tags=$(echo "$frontmatter" | sed -n '/^tags:/,/^[^ -]/p' | grep '^- ' | sed 's/^- //' | tr '\n' ',' | sed 's/,$//')
+
+            # 檢查日期是否為未來（未來的文章不發布）
+            article_ts=$(date -d "$date_str" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S%z" "$date_str" +%s 2>/dev/null || echo "0")
+            now_ts=$(date +%s)
+
+            if [ "$article_ts" -gt "$now_ts" ]; then
+              echo "  Skipping (future date: $date_str)"
+              continue
+            fi
+
+            # 從 slug 和 date 組出 canonical URL
+            year=$(echo "$date_str" | cut -c1-4)
+            month=$(echo "$date_str" | cut -c6-7)
+            day=$(echo "$date_str" | cut -c9-10)
+            canonical_url="${SITE_URL}/en/${year}/${month}/${day}/${slug}/"
+
+            # 取得文章內容（去掉 frontmatter）
+            body=$(sed '1{/^---$/!q}; 1,/^---$/d' "$file")
+
+            # 在文章開頭加上 canonical 提示
+            body=$(printf "*Originally published at [recca0120.github.io](%s)*\n\n%s" "$canonical_url" "$body")
+
+            # 檢查 dev.to 上是否已存在同 canonical_url 的文章
+            existing=$(curl -s -H "api-key: $DEVTO_API_KEY" \
+              "https://dev.to/api/articles/me?per_page=100" | \
+              python3 -c "
+          import json, sys
+          articles = json.load(sys.stdin)
+          for a in articles:
+              if a.get('canonical_url') == '$canonical_url':
+                  print(a['id'])
+                  break
+          " 2>/dev/null || true)
+
+            if [ -n "$existing" ]; then
+              echo "  Already exists on dev.to (id: $existing), skipping."
+              continue
+            fi
+
+            # 組 JSON payload
+            payload=$(python3 -c "
+          import json
+          article = {
+              'article': {
+                  'title': $(python3 -c "import json; print(json.dumps('$title'))"),
+                  'body_markdown': $(python3 -c "import json,sys; print(json.dumps(sys.stdin.read()))" < <(echo "$body")),
+                  'published': True,
+                  'canonical_url': '$canonical_url',
+                  'tags': [t.strip() for t in '$tags'.lower().split(',') if t.strip()][:4],
+                  'description': $(python3 -c "import json; print(json.dumps('$description'))")
+              }
+          }
+          print(json.dumps(article))
+          ")
+
+            # 發布到 dev.to
+            response=$(curl -s -w "\n%{http_code}" -X POST \
+              -H "Content-Type: application/json" \
+              -H "api-key: $DEVTO_API_KEY" \
+              -d "$payload" \
+              "https://dev.to/api/articles")
+
+            http_code=$(echo "$response" | tail -1)
+            body_resp=$(echo "$response" | sed '$d')
+
+            if [ "$http_code" = "201" ]; then
+              devto_url=$(echo "$body_resp" | python3 -c "import json,sys; print(json.load(sys.stdin).get('url',''))")
+              echo "  Published: $devto_url"
+            else
+              echo "  Failed (HTTP $http_code): $body_resp"
+            fi
+          done
