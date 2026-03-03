@@ -1,0 +1,204 @@
+name: Bulk cross-post to Hashnode
+
+on:
+  workflow_dispatch:
+
+jobs:
+  bulk-cross-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Bulk cross-post all English articles to Hashnode
+        env:
+          HASHNODE_API_KEY: ${{ secrets.HASHNODE_API_KEY }}
+          HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          SITE_URL: https://recca0120.github.io
+        run: |
+          python3 << 'SCRIPT'
+          import os, json, glob, time, re, urllib.request, urllib.error
+          from datetime import datetime, timezone
+
+          API_KEY = os.environ["HASHNODE_API_KEY"]
+          PUB_ID = os.environ["HASHNODE_PUBLICATION_ID"]
+          SITE_URL = os.environ["SITE_URL"]
+          GQL_URL = "https://gql.hashnode.com"
+          HEADERS = {"Content-Type": "application/json", "Authorization": API_KEY, "User-Agent": "recca0120-blog-crosspost/1.0"}
+
+          def gql(query, variables=None):
+              body = json.dumps({"query": query, "variables": variables or {}}).encode()
+              req = urllib.request.Request(GQL_URL, data=body, headers=HEADERS)
+              try:
+                  with urllib.request.urlopen(req) as resp:
+                      return resp.status, json.loads(resp.read())
+              except urllib.error.HTTPError as e:
+                  return e.code, json.loads(e.read().decode())
+
+          # Verify API key
+          print("Verifying API key...")
+          _, resp = gql("{ me { username } }")
+          me = resp.get("data", {}).get("me", {})
+          if not me:
+              print(f"ERROR: API key invalid - {resp}")
+              exit(1)
+          print(f"Authenticated as: {me.get('username', 'unknown')}")
+
+          # Fetch existing canonical URLs
+          print("Fetching existing articles from Hashnode...")
+          existing_urls = set()
+          query_posts = """
+          query($host: String!, $after: String) {
+            publication(host: $host) {
+              posts(first: 50, after: $after) {
+                edges { node { originalArticleURL } cursor }
+                pageInfo { hasNextPage endCursor }
+              }
+            }
+          }
+          """
+          after = None
+          while True:
+              _, resp = gql(query_posts, {"host": "recca0120.hashnode.dev", "after": after})
+              posts = resp.get("data", {}).get("publication", {}).get("posts", {})
+              for edge in posts.get("edges", []):
+                  u = edge["node"].get("originalArticleURL") or ""
+                  if u:
+                      existing_urls.add(u)
+              if not posts.get("pageInfo", {}).get("hasNextPage"):
+                  break
+              after = posts["pageInfo"]["endCursor"]
+          print(f"Found {len(existing_urls)} existing articles on Hashnode")
+
+          def parse_frontmatter(filepath):
+              with open(filepath, "r", encoding="utf-8") as f:
+                  content = f.read()
+              parts = content.split("---", 2)
+              if len(parts) < 3:
+                  return None, content
+              fm_text = parts[1]
+              body = parts[2].strip()
+              fm = {}
+              current_key = None
+              list_values = []
+              for line in fm_text.strip().split("\n"):
+                  if line.startswith("- ") and current_key:
+                      list_values.append(line[2:].strip().strip("'\""))
+                  else:
+                      if current_key and list_values:
+                          fm[current_key] = list_values
+                          list_values = []
+                      if ":" in line:
+                          key, val = line.split(":", 1)
+                          key = key.strip()
+                          val = val.strip().strip("'\"")
+                          current_key = key
+                          if val:
+                              fm[key] = val
+                          else:
+                              list_values = []
+              if current_key and list_values:
+                  fm[current_key] = list_values
+              return fm, body
+
+          now = datetime.now(timezone.utc)
+          published = 0
+          skipped = 0
+          failed = 0
+
+          publish_mutation = """
+          mutation PublishPost($input: PublishPostInput!) {
+            publishPost(input: $input) {
+              post { id url }
+            }
+          }
+          """
+
+          files = sorted(glob.glob("content/post/*/index.en.md"))
+          print(f"Found {len(files)} English articles\n")
+
+          for filepath in files:
+              fm, body = parse_frontmatter(filepath)
+              if not fm:
+                  print(f"SKIP (no frontmatter): {filepath}")
+                  skipped += 1
+                  continue
+
+              title = fm.get("title", "")
+              slug = fm.get("slug", "")
+              date_str = fm.get("date", "")
+              description = fm.get("description", "")
+              draft = fm.get("draft", "false")
+              tags = fm.get("tags", [])
+              if isinstance(tags, str):
+                  tags = [tags]
+
+              if draft == "true":
+                  print(f"SKIP (draft): {title}")
+                  skipped += 1
+                  continue
+
+              try:
+                  dt = datetime.fromisoformat(date_str)
+                  if dt > now:
+                      print(f"SKIP (future): {title}")
+                      skipped += 1
+                      continue
+                  year = dt.strftime("%Y")
+                  month = dt.strftime("%m")
+                  day = dt.strftime("%d")
+              except Exception:
+                  print(f"SKIP (bad date): {title} ({date_str})")
+                  skipped += 1
+                  continue
+
+              canonical_url = f"{SITE_URL}/en/{year}/{month}/{day}/{slug}/"
+
+              if canonical_url in existing_urls:
+                  print(f"SKIP (exists): {title}")
+                  skipped += 1
+                  continue
+
+              hashnode_tags = []
+              for t in tags[:5]:
+                  tag_slug = re.sub(r'[^a-z0-9-]', '', t.lower().replace(' ', '-'))
+                  if tag_slug:
+                      hashnode_tags.append({"slug": tag_slug, "name": t})
+
+              md = f"*Originally published at [recca0120.github.io]({canonical_url})*\n\n{body}"
+
+              variables = {
+                  "input": {
+                      "title": title,
+                      "contentMarkdown": md,
+                      "publicationId": PUB_ID,
+                      "originalArticleURL": canonical_url,
+                      "slug": slug,
+                      "tags": hashnode_tags,
+                      "metaTags": {"description": description},
+                  }
+              }
+
+              status, resp = gql(publish_mutation, variables)
+              post_data = resp.get("data", {}).get("publishPost", {}).get("post", {})
+              errors = resp.get("errors", [])
+
+              if post_data and post_data.get("url"):
+                  print(f"OK: {title} -> {post_data['url']}")
+                  published += 1
+                  existing_urls.add(canonical_url)
+              else:
+                  err_msg = errors[0]["message"] if errors else str(resp)[:200]
+                  print(f"FAIL ({status}): {title} - {err_msg}")
+                  failed += 1
+
+              time.sleep(5)
+
+          print(f"\n=== Summary ===")
+          print(f"Published: {published}")
+          print(f"Skipped:   {skipped}")
+          print(f"Failed:    {failed}")
+
+          if failed > 0:
+              exit(1)
+          SCRIPT
