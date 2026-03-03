@@ -1,15 +1,10 @@
 ---
 name: hugo-theme-stack
-description: |
-  Use when configuring Hugo Stack theme settings: sidebar, widgets, comments (Giscus),
-  color scheme, article options, custom CSS, or Stack-specific shortcodes.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
+description: >-
+  Provides Hugo Stack theme configuration reference including sidebar, widgets, comments (Giscus),
+  color scheme, article options, custom CSS, and Stack-specific shortcodes.
+  Use when configuring or troubleshooting Stack theme settings.
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
 # Hugo Stack Theme 參考

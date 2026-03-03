@@ -1,15 +1,10 @@
 ---
 name: hugo
-description: |
-  Use when modifying Hugo site configuration, creating templates/partials/shortcodes,
+description: >-
+  Provides Hugo static site generator reference for configuration, templates, content management,
+  and multilingual setup. Use when modifying Hugo site config, creating templates or shortcodes,
   managing content structure, or debugging Hugo build issues.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Glob
-  - Grep
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---
 
 # Hugo 靜態網站產生器參考
