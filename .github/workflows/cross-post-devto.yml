@@ -163,5 +163,5 @@ jobs:
               else:
                   print(f"FAIL ({status}): {title} - {str(resp)[:200]}")
 
-              time.sleep(4)
+              time.sleep(15)
           SCRIPT

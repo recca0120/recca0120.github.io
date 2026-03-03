@@ -180,7 +180,7 @@ jobs:
                   print(f"  {str(resp)[:200]}")
                   failed += 1
 
-              time.sleep(4)
+              time.sleep(15)
 
           print(f"\n=== Summary ===")
           print(f"Published: {published}")
