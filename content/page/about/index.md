@@ -41,4 +41,3 @@ menu:
 ## 聯絡方式
 
 - GitHub: [recca0120](https://github.com/recca0120)
-- Medium: [@reccatsai](https://medium.com/@reccatsai)
