@@ -41,3 +41,4 @@ I primarily work with PHP and Laravel, with a particular interest in testing too
 ## Contact
 
 - GitHub: [recca0120](https://github.com/recca0120)
+- Medium: [@reccatsai](https://medium.com/@reccatsai)
