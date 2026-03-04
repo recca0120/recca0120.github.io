@@ -3,3 +3,6 @@ resources/
 .hugo_build.lock
 medium-export-*.zip
 scripts/medium-auth.json
+node_modules/
+package.json
+package-lock.json
