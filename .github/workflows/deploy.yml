@@ -5,6 +5,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+  schedule:
+    # Run daily at 09:05 Asia/Taipei (01:05 UTC) to publish scheduled articles
+    - cron: '5 1 * * *'
 
 permissions:
   contents: read
