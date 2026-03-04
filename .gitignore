@@ -2,3 +2,4 @@ public/
 resources/
 .hugo_build.lock
 medium-export-*.zip
+scripts/medium-auth.json
