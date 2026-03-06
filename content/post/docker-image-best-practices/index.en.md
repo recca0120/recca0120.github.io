@@ -1,295 +1,225 @@
 ---
-title: 'Docker Image Best Practices: From 1.2GB to 10MB in Nine Steps'
+title: 'Docker Image Diet: Find the Problem With dive Before Trying to Fix It'
 date: '2026-03-29T09:00:00+08:00'
 slug: docker-image-best-practices
-description: 'Large Docker images slow down CI/CD and increase attack surface. Nine techniques — base image selection, multi-stage builds, layer cache ordering, .dockerignore, distroless — to shrink a Node.js image from 1.2GB to 10MB.'
+description: "Don't guess why your Docker image is large — use docker image history and dive to see exactly where the weight is. Fix what's actually broken. A real 1.25GB → 139MB walkthrough."
 categories:
   - DevOps
 tags:
   - docker
   - dockerfile
   - devops
-  - ci-cd
+  - dive
   - optimization
 ---
 
-`docker build` finishes. `docker images` shows 1.2GB.
-Every CI/CD deploy waits minutes for a pull. Production servers fill up.
-Here's how to fix it, step by step.
+Your Docker image is large and you don't know why.
+Guessing and applying a checklist of tips might not cut much.
+Find out what's actually causing the size, then fix that specifically.
 
-## Where Does 1.2GB Come From
+## The Tools: docker image history + dive
 
-A typical Node.js Dockerfile written by someone new to Docker:
+Two tools, different purposes.
+
+**`docker image history`** is built into Docker. It shows how much space each layer takes:
+
+```bash
+docker image history <image-name>
+```
+
+**`dive`** is a third-party tool. It lets you browse each layer's contents interactively and reports how much space is being wasted:
+
+```bash
+# Install
+brew install dive          # macOS
+apt install dive           # Ubuntu (requires adding repo first)
+
+# Analyze interactively
+dive <image-name>
+
+# CI mode (report only, no interactive UI)
+CI=true dive <image-name>
+```
+
+## Starting With a Fat Image
+
+A typical Node.js Dockerfile with no optimizations:
 
 ```dockerfile
 FROM node:latest
 
 WORKDIR /app
-COPY . .
+COPY package*.json ./
 RUN npm install
-
-CMD ["node", "server.js"]
-```
-
-`node:latest` is based on full Debian — over 1GB decompressed. Add `node_modules` including devDependencies and 1.2GB is easy to hit.
-
-Here's how to tear it down.
-
----
-
-## 1. Switch the Base Image
-
-`node:latest` carries hundreds of tools you'll never use.
-
-```dockerfile
-# 1.2GB → ~300MB
-FROM node:20-alpine
-```
-
-Alpine Linux is 5MB. `node:20-alpine` comes in around 180MB. One line change, 70% gone.
-
-Or use the slim variant:
-
-```dockerfile
-FROM node:20-slim   # Trimmed Debian, ~250MB, better compatibility than Alpine
-```
-
-Alpine occasionally breaks native addons (musl vs glibc). If you hit issues, switch to slim.
-
-Never use `latest` — pin a version:
-
-```dockerfile
-FROM node:20-alpine   # ✓ predictable
-FROM node:latest      # ✗ unpredictable
-```
-
----
-
-## 2. Multi-Stage Builds: Leave Build Tools Behind
-
-The biggest win. Build tools — TypeScript compiler, test runner, devDependencies — should never enter the production image.
-
-```dockerfile
-# ── Stage 1: Build ──────────────────────────────
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-
-# Copy package.json first to leverage layer caching
-COPY package*.json ./
-RUN npm ci                    # includes devDependencies
-
 COPY . .
-RUN npm run build             # compile TypeScript
-
-# ── Stage 2: Production ─────────────────────────
-FROM node:20-alpine AS production
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci --omit=dev         # production dependencies only
-
-# Copy only compiled output, not src
-COPY --from=builder /app/dist ./dist
-
-CMD ["node", "dist/server.js"]
+CMD ["node", "index.js"]
 ```
 
-`--from=builder` pulls only what you specify from the build stage. TypeScript, jest, `src/` — none of it enters the production image.
+`package.json` has a few devDependencies: jest, typescript, @types/express.
 
----
+After `docker build`, `docker images` shows:
 
-## 3. .dockerignore: Stop Sending Garbage
+```
+REPOSITORY   TAG       IMAGE ID       SIZE
+demo-app     latest    ddb21d14ccef   1.25GB
+```
 
-Without `.dockerignore`, `COPY . .` sends everything to the Docker build context — including `node_modules`, `.git`, test fixtures.
+1.25GB. Don't touch the Dockerfile yet — find out where the weight is.
+
+## Step 1: docker image history
+
+```bash
+docker image history demo-app
+```
+
+Output (relevant lines):
+
+```
+CREATED BY                                          SIZE
+CMD ["node" "index.js"]                             0B
+COPY . .                                            49.3MB
+RUN npm install                                     61MB
+COPY package*.json ./                               166kB
+WORKDIR /app                                        0B
+RUN ... (node binary install)                       199MB
+RUN ... (apt-get build-essential etc.)              561MB
+RUN ... (apt-get base packages)                     184MB
+# debian bookworm base                              139MB
+```
+
+Three things stand out immediately:
+
+1. **561MB apt-get layer**: `build-essential`, `python3`, `gcc` — build tools that aren't needed at runtime, but they're stuck in the image
+2. **61MB npm install**: includes devDependencies (jest, typescript) that production doesn't use
+3. **49.3MB COPY . .**: `node_modules` got copied in (no `.dockerignore`)
+
+## Step 2: dive to Find the Waste
+
+`docker image history` shows layer sizes. `dive` shows what's actually inside each layer:
+
+```bash
+CI=true dive demo-app
+```
+
+Output:
+
+```
+efficiency: 95.49 %
+wastedBytes: 107 MB
+userWastedPercent: 9.68 %
+
+Inefficient Files:
+Count  Wasted Space  File Path
+    2       18 MB    /app/node_modules/typescript/lib/typescript.js
+    2       12 MB    /app/node_modules/typescript/lib/_tsc.js
+    2      3.7 MB    /app/node_modules/typescript/lib/lib.dom.d.ts
+    2      2.9 MB    /app/node_modules/@babel/parser/lib/index.js.map
+    ...
+```
+
+**107MB wasted.** dive names the culprits directly: `typescript`, `@babel/parser` — all devDependencies that serve no purpose in a production image.
+
+"Count: 2" means the same file appears in two layers — once from `npm install`, once from `COPY . .`. That's what happens without a `.dockerignore`: `node_modules` gets installed, then copied in again on top.
+
+## Fix What's Actually Broken
+
+Problems identified. Fix each one:
+
+**Problem 1: node_modules copied twice**
+→ Add `.dockerignore`
 
 ```dockerignore
-# .dockerignore
 node_modules
 .git
-.gitignore
-*.md
 .env
-.env.*
-dist
-coverage
-.nyc_output
-Dockerfile
-.dockerignore
 *.log
-.DS_Store
 ```
 
-`.dockerignore` affects two things: the size of the build context sent to the Docker daemon, and what `COPY` brings in.
+**Problem 2: devDependencies in production image**
+→ Multi-stage build, production stage uses `--omit=dev`
 
----
+**Problem 3: Base image is too heavy (Debian + build tools)**
+→ Switch to `node:20-alpine`
 
-## 4. Layer Cache Order Matters
-
-Every Dockerfile instruction creates a layer. If a layer hasn't changed, Docker uses the cache. `COPY . .` before `npm install` means any source file change invalidates the install layer.
-
-```dockerfile
-# ✗ Any src change re-runs npm install
-COPY . .
-RUN npm ci
-
-# ✓ npm install only re-runs when package.json changes
-COPY package*.json ./
-RUN npm ci
-COPY . .
-```
-
-Put stable things first, volatile things last. `package.json` changes far less often than source files.
-
----
-
-## 5. Combine RUN Instructions, Clean in the Same Layer
-
-Each `RUN` is a layer. Even if a later layer deletes files, the earlier layer still exists in the image and contributes to the size.
+The fixed Dockerfile:
 
 ```dockerfile
-# ✗ Cache is still in the previous layer even though deleted
-RUN apt-get update
-RUN apt-get install -y curl
-RUN rm -rf /var/lib/apt/lists/*
-
-# ✓ Install and clean in one layer
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl && \
-    rm -rf /var/lib/apt/lists/*
-```
-
-`--no-install-recommends` skips packages recommended but not required.
-
----
-
-## 6. npm ci Instead of npm install
-
-```dockerfile
-RUN npm ci --omit=dev
-```
-
-`npm ci` installs from `package-lock.json` exactly — locked versions, faster, no lock file mutation. `npm install` can update the lock file, which is wrong in a build environment.
-
-`--omit=dev` skips devDependencies. They don't belong in production.
-
----
-
-## 7. Distroless: The Next Level
-
-[distroless](https://github.com/GoogleContainerTools/distroless) images from Google contain only the runtime — no shell, no package manager, nothing extra.
-
-```dockerfile
+# Stage 1: install everything (including devDeps for build)
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npm run build && npm prune --omit=dev
+# If you have TypeScript: RUN npm run build
 
-# distroless Node.js image, ~100MB
-FROM gcr.io/distroless/nodejs20-debian12
+# Stage 2: production dependencies only
+FROM node:20-alpine AS production
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev        # no jest, no typescript
+COPY --from=builder /app/index.js ./
+CMD ["node", "index.js"]
+```
 
+Rebuild and compare:
+
+```bash
+docker build -t demo-app-fixed .
+docker images | grep demo
+```
+
+```
+REPOSITORY       SIZE
+demo-app-fixed   139MB    ← down from 1.25GB
+demo-app         1.25GB
+```
+
+Run dive again to confirm:
+
+```
+efficiency: 99.96 %
+wastedBytes: 75 kB    ← down from 107MB
+```
+
+## Can You Go Further?
+
+The 139MB floor is mostly the Node.js runtime inside `node:20-alpine`. To go lower, switch to distroless:
+
+```dockerfile
+FROM gcr.io/distroless/nodejs20-debian12 AS production
 WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-
-CMD ["dist/server.js"]
+COPY --from=builder /app/index.js ./
+CMD ["index.js"]
 ```
 
-No shell means CMD must use array form:
+That gets you to around 100MB. Beyond that, the gains are small — unless you switch to Go.
 
-```dockerfile
-CMD ["dist/server.js"]    # ✓
-CMD "node dist/server.js" # ✗ no shell to parse this
-```
+## Go: A Different Story
 
-| Base image | Size |
-|---|---|
-| node:20 | ~1.1GB |
-| node:20-slim | ~250MB |
-| node:20-alpine | ~180MB |
-| distroless/nodejs20 | ~100MB |
-
----
-
-## 8. Run as Non-Root
-
-```dockerfile
-FROM node:20-alpine
-
-WORKDIR /app
-COPY --chown=node:node . .
-
-# node:alpine ships with a built-in node user
-USER node
-
-CMD ["node", "server.js"]
-```
-
-Running as root inside a container is a security risk. If the application is compromised, the attacker gets root. Most official images ship a non-root user — use it.
-
----
-
-## 9. Go and Python
-
-**Go: best case for multi-stage**
-
-Go compiles to static binaries. Use `scratch` — a completely empty image:
+Go compiles to a static binary. Use `scratch` — a completely empty base image:
 
 ```dockerfile
 FROM golang:1.22-alpine AS builder
 WORKDIR /app
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o server .
+RUN CGO_ENABLED=0 go build -o server .
 
-# scratch = 0 byte base image
 FROM scratch
 COPY --from=builder /app/server /server
 ENTRYPOINT ["/server"]
 ```
 
-Final image is just the binary. A few MB to a few dozen MB depending on binary size.
+Final image is just the binary. A few MB to a few dozen MB. At this point dive has little to tell you — there's almost nothing to optimize.
 
-**Python: slim + clean install**
+## Summary
 
-```dockerfile
-FROM python:3.12-slim AS builder
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+**Workflow**: `docker image history` to find the heavy layers → `dive` to see what's inside them → fix the actual problem.
 
-FROM python:3.12-slim
-WORKDIR /app
-COPY --from=builder /install /usr/local
-COPY . .
-USER nobody
-CMD ["python", "app.py"]
-```
+The common culprits:
 
----
+- **Bloated base image**: `node:latest` (Debian) → `node:20-alpine`
+- **devDependencies in production**: multi-stage build + `--omit=dev`
+- **Duplicate node_modules**: add `.dockerignore`
 
-## Results
-
-| Version | Size | Technique |
-|---|---|---|
-| `node:latest` + everything | ~1.2GB | nothing |
-| `node:20-alpine` | ~350MB | switch base image |
-| `node:20-alpine` + multi-stage | ~180MB | remove devDeps and src |
-| distroless + multi-stage | ~110MB | switch runtime image |
-| Go scratch build | ~10MB | static binary |
-
----
-
-## Checklist
-
-- [ ] Use `node:X-alpine` or `node:X-slim`, never `latest`
-- [ ] `.dockerignore` excludes `node_modules`, `.git`, `.env`
-- [ ] Copy `package*.json` first, then `npm ci`, then copy src
-- [ ] Multi-stage build, production stage uses `--omit=dev`
-- [ ] Combine `RUN` instructions, clean apt cache in the same layer
-- [ ] `USER node` or `USER nobody` — don't run as root
-- [ ] Consider distroless (Node, Python, Java) or scratch (Go)
-
-You don't need to do all of these at once. Switching the base image and adding `.dockerignore` alone cuts most images in half.
+Use tools to diagnose, make targeted fixes, then verify with tools again. More effective than guessing.
