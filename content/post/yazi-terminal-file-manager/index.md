@@ -2,7 +2,7 @@
 title: 'yazi：Rust 寫的終端機檔案管理器，vim 鍵位、圖片預覽、Alacritty 解法'
 date: '2026-03-26T09:00:00+08:00'
 slug: yazi-terminal-file-manager
-description: 'yazi 是 Rust 寫的非同步終端機檔案管理器，vim 鍵位、圖片預覽、Lua 外掛、整合 fzf/zoxide。Alacritty 不支援圖片協議，用 Überzug++ 搭配 X11/Wayland 解決。'
+description: 'yazi 是 Rust 寫的非同步終端機檔案管理器，vim 鍵位、圖片預覽、Lua 外掛、整合 fzf/zoxide。Alacritty 不支援圖片協議，macOS 用 Chafa，Linux 用 Überzug++ 搭配 X11/Wayland。'
 categories:
   - 工具
 tags:
@@ -118,64 +118,72 @@ yazi --debug 2>&1 | grep Adapter
 | kitty | Kitty unicode placeholders（最佳） |
 | iTerm2 / WezTerm / Ghostty | Inline images protocol |
 | foot / Windows Terminal | Sixel |
-| **Alacritty** | **不支援，需 Überzug++** |
+| **Alacritty** | **不支援原生協議（見下方）** |
 
-## Alacritty 圖片預覽：用 Überzug++
+## Alacritty 圖片預覽
 
-Alacritty 不支援任何終端圖片協議（kitty protocol、Sixel 都沒有），所以 yazi 在 Alacritty 裡預設看不到圖片。解法是用 [Überzug++](https://github.com/jstkdng/ueberzugpp)，透過 X11 或 Wayland 直接把圖片疊在終端視窗上。
+Alacritty 不支援任何終端圖片協議（kitty protocol、Sixel 都沒有），yazi 預設在 Alacritty 裡看不到圖片。解法依平台不同：
 
-### 安裝 Überzug++
+### macOS：用 Chafa
+
+macOS 上 Überzug++ 的 X11/Wayland backend 被停用，所以沒辦法疊圖。yazi 會自動 fallback 到 [Chafa](https://hpjansson.org/chafa/)，用 ASCII/Unicode 字符在 terminal 裡模擬圖片。
+
+Chafa 通常裝 yazi 時已一起裝，確認：
 
 ```bash
-# macOS
-brew install jstkdng/programs/ueberzugpp
+which chafa  # /opt/homebrew/bin/chafa
+```
 
+沒裝的話：
+
+```bash
+brew install chafa
+```
+
+確認 yazi 偵測到 Chafa：
+
+```bash
+yazi --debug 2>&1 | grep Adapter
+# Adapter.matches: Chafa
+```
+
+看到 `Chafa` 就代表圖片預覽已啟用，直接開 yazi 就能看到效果。畫質是字符模擬，不是真正的像素圖，但在 terminal 裡已經夠用。
+
+### Linux：用 Überzug++
+
+Linux 有 X11 或 Wayland，可以用 [Überzug++](https://github.com/jstkdng/ueberzugpp) 把真正的圖片疊在 terminal 視窗上，畫質比 Chafa 好很多。
+
+```bash
 # Arch
 pacman -S ueberzugpp
 
-# Ubuntu（從 openSUSE 套件庫）
-# 參考 https://github.com/jstkdng/ueberzugpp 的安裝說明
-
-# 確認安裝
-ueberzug --version
+# Ubuntu（從 openSUSE 套件庫，參考 https://github.com/jstkdng/ueberzugpp）
 ```
 
-### 確認 yazi 有偵測到
+裝完後 yazi 自動偵測：
 
 ```bash
-yazi --debug 2>&1 | grep -i "adapter\|ueberzug"
-# Adapter.matches: X11   ← 代表會用 X11 + Überzug++
+yazi --debug 2>&1 | grep Adapter
+# Adapter.matches: X11
+# 或
 # Adapter.matches: Wayland
 ```
 
-Überzug++ 安裝後，yazi 會自動偵測到 X11/Wayland，不需要額外設定。
+**微調圖片位置（選用）**
 
-### 微調圖片位置（選用）
-
-Überzug++ 用 overlay 方式疊圖，有時候位置或大小會有一點偏移，在 `~/.config/yazi/yazi.toml` 調整：
+Überzug++ 用 overlay 方式疊圖，位置或大小有時會偏，在 `~/.config/yazi/yazi.toml` 調整：
 
 ```toml
 [preview]
-# 圖片解析度（增大可以看得更清楚，但 CPU 用量增加）
-max_width = 600
-max_height = 900
-
-# Überzug++ 縮放比例（> 1 放大，< 1 縮小）
-ueberzug_scale = 1.0
-
-# 位置微調，單位是字元格（x, y, width, height）
-ueberzug_offset = [0, 0, 0, 0]
+ueberzug_scale = 1.0           # > 1 放大，< 1 縮小
+ueberzug_offset = [0, 0, 0, 0] # 位置微調，單位字元格（x, y, width, height）
 ```
 
-改完記得清快取：
-
-```bash
-yazi --clear-cache
-```
+改完清快取：`yazi --clear-cache`
 
 ### tmux 內的圖片預覽
 
-tmux 裡用 Überzug++ 還需要在 `~/.tmux.conf` 加：
+不論 Chafa 或 Überzug++，tmux 裡需要在 `~/.tmux.conf` 加：
 
 ```bash
 set -g allow-passthrough on
@@ -209,4 +217,4 @@ ya pack -a yazi-rs/plugins#git
 
 yazi 比起 ranger 或 lf，速度快很多，主要是非同步架構的差異。vim 鍵位習慣之後，大部分的檔案操作都不需要離開終端。
 
-Alacritty 使用者要多裝 Überzug++，但設定完之後跟其他終端一樣順。圖片大小不對的話調 `ueberzug_scale` 和 `ueberzug_offset`，幾個數字試出來就好。
+Alacritty 使用者：macOS 裝 Chafa 就夠，yazi 自動偵測。Linux 用 Überzug++ 效果更好，畫質是真正的圖片而不是字符模擬。兩者都不需要額外設定，裝完開 yazi 就能看到圖片預覽。

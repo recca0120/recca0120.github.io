@@ -2,7 +2,7 @@
 title: 'yazi: Rust Terminal File Manager with Image Preview — Alacritty Fix Included'
 date: '2026-03-26T09:00:00+08:00'
 slug: yazi-terminal-file-manager
-description: 'yazi is an async Rust terminal file manager with vim keybindings, image preview, Lua plugins, and fzf/zoxide integration. Alacritty has no native image protocol — use Überzug++ with X11/Wayland as the fix.'
+description: 'yazi is an async Rust terminal file manager with vim keybindings, image preview, Lua plugins, and fzf/zoxide integration. Alacritty has no native image protocol — macOS uses Chafa, Linux uses Überzug++ with X11/Wayland.'
 categories:
   - Tools
 tags:
@@ -118,61 +118,72 @@ yazi --debug 2>&1 | grep Adapter
 | kitty | Kitty unicode placeholders (best) |
 | iTerm2 / WezTerm / Ghostty | Inline images protocol |
 | foot / Windows Terminal | Sixel |
-| **Alacritty** | **No native support — needs Überzug++** |
+| **Alacritty** | **No native protocol support (see below)** |
 
-## Alacritty Image Preview: Überzug++
+## Alacritty Image Preview
 
-Alacritty has no image protocol support at all — no kitty protocol, no Sixel. By default, yazi shows no images in Alacritty. The fix is [Überzug++](https://github.com/jstkdng/ueberzugpp), which overlays images directly on the terminal window via X11 or Wayland.
+Alacritty supports no image protocol — no kitty, no Sixel. yazi shows no images by default. The fix depends on your platform:
 
-### Install Überzug++
+### macOS: Chafa
+
+On macOS, Überzug++'s X11/Wayland backend is disabled at compile time, so it can't overlay images. yazi automatically falls back to [Chafa](https://hpjansson.org/chafa/), which renders images using Unicode block characters inside the terminal.
+
+Chafa is usually installed alongside yazi. Check:
 
 ```bash
-# macOS
-brew install jstkdng/programs/ueberzugpp
+which chafa  # /opt/homebrew/bin/chafa
+```
 
+If not installed:
+
+```bash
+brew install chafa
+```
+
+Verify yazi picks it up:
+
+```bash
+yazi --debug 2>&1 | grep Adapter
+# Adapter.matches: Chafa
+```
+
+`Chafa` in the output means image preview is active. Open yazi and you'll see it. Quality is character-based simulation rather than real pixels, but it works fine in a terminal.
+
+### Linux: Überzug++
+
+Linux has X11 or Wayland, so [Überzug++](https://github.com/jstkdng/ueberzugpp) can overlay actual images on top of the terminal window — much better quality than Chafa.
+
+```bash
 # Arch
 pacman -S ueberzugpp
 
-# Verify
-ueberzug --version
+# Ubuntu (via openSUSE repo — see https://github.com/jstkdng/ueberzugpp)
 ```
 
-### Verify yazi Detects It
+yazi auto-detects after installation:
 
 ```bash
-yazi --debug 2>&1 | grep -i "adapter\|ueberzug"
-# Adapter.matches: X11      ← X11 + Überzug++
+yazi --debug 2>&1 | grep Adapter
+# Adapter.matches: X11
+# or
 # Adapter.matches: Wayland
 ```
 
-Once Überzug++ is installed, yazi auto-detects X11/Wayland and uses it. No extra configuration required.
+**Fine-tuning (optional)**
 
-### Fine-tuning Image Position (Optional)
-
-Überzug++ overlays images externally, so positioning can be slightly off. Adjust in `~/.config/yazi/yazi.toml`:
+Überzug++ overlays externally, so positioning can drift slightly. Adjust in `~/.config/yazi/yazi.toml`:
 
 ```toml
 [preview]
-# Preview resolution (larger = sharper but more CPU)
-max_width = 600
-max_height = 900
-
-# Überzug++ scaling (> 1 enlarges, < 1 shrinks)
-ueberzug_scale = 1.0
-
-# Position offset in character cells [x, y, width, height]
-ueberzug_offset = [0, 0, 0, 0]
+ueberzug_scale = 1.0           # > 1 enlarges, < 1 shrinks
+ueberzug_offset = [0, 0, 0, 0] # position offset in character cells [x, y, w, h]
 ```
 
-Clear the cache after changes:
-
-```bash
-yazi --clear-cache
-```
+Then: `yazi --clear-cache`
 
 ### Image Preview Inside tmux
 
-Add to `~/.tmux.conf`:
+Works for both Chafa and Überzug++. Add to `~/.tmux.conf`:
 
 ```bash
 set -g allow-passthrough on
@@ -204,4 +215,4 @@ ya pack -a yazi-rs/plugins#git
 
 yazi is noticeably faster than ranger or lf, mainly because of the async architecture. Once you're used to the vim keybindings, most file operations happen without leaving the terminal.
 
-Alacritty users need Überzug++ as an extra step, but after that it works the same as any other terminal. If image sizing is off, tweak `ueberzug_scale` and `ueberzug_offset` until it looks right.
+Alacritty users: on macOS, install Chafa and yazi picks it up automatically. On Linux, Überzug++ gives real image quality instead of character simulation. Either way, no extra configuration — install the tool and open yazi.
