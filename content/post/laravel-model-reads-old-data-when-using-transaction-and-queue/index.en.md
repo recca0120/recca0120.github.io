@@ -9,7 +9,7 @@ tags:
 - Laravel
 - Queue
 - Redis
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

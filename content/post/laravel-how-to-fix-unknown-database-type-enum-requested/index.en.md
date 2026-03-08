@@ -10,7 +10,7 @@ tags:
 - Laravel
 - Migration
 - MySQL
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

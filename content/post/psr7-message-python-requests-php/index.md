@@ -10,7 +10,7 @@ tags:
   - PSR-7
   - Guzzle
   - Symfony
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

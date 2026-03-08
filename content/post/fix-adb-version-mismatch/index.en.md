@@ -9,7 +9,7 @@ tags:
 - Android
 - macOS
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## The Problem

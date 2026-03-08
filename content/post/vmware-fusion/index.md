@@ -7,7 +7,7 @@ categories:
   - macOS
 tags:
   - VMware
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

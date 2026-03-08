@@ -4,7 +4,7 @@ date: '2026-03-22T09:00:00+08:00'
 slug: fetch-concurrent-requests
 description: 'Promise.all 同時發出 100 個請求，server 很容易回 429 或直接掛掉。用 p-limit 搭配 fetch 限制同時執行的請求數量，只需要一行設定，不需要自己寫 semaphore。'
 categories:
-  - 前端
+  - Frontend
 tags:
   - fetch
   - javascript

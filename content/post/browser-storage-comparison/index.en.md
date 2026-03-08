@@ -3,7 +3,7 @@ title: 'Browser Storage Comparison: sql.js vs IndexedDB vs localStorage'
 description: 'Compare browser-side storage solutions including sql.js, IndexedDB, and localStorage by capacity, query capabilities, performance, and use cases.'
 slug: browser-storage-comparison
 date: '2026-03-06T09:00:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
 - Frontend
 tags:

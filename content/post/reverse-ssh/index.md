@@ -4,7 +4,7 @@ date: '2026-03-27T09:00:00+08:00'
 slug: reverse-ssh
 description: 'reverse_ssh 把 SSH 反向：目標機主動連回 server，operator 再用原生 SSH 語法連進去。支援 HTTP/WebSocket/TLS 多種 transport 穿防火牆，SCP/SFTP/port forwarding 全部可用。'
 categories:
-  - 工具
+  - Tools
 tags:
   - ssh
   - reverse-shell

@@ -10,7 +10,7 @@ tags:
 - Validation
 - PHP
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## Scenario

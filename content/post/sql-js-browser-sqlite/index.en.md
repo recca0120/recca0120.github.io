@@ -3,7 +3,7 @@ title: 'Run SQLite in the Browser with sql.js: A Complete Guide from Install to 
 description: 'Learn how to use sql.js to run SQLite entirely in the browser — from installation and initialization to CRUD operations, import/export, and Web Workers.'
 slug: sql-js-browser-sqlite
 date: '2026-03-04T09:00:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
 - Frontend
 tags:

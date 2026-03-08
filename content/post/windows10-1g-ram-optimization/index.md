@@ -8,7 +8,7 @@ categories:
 tags:
   - Windows
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 在只有 1GB 記憶體的機器上跑 Windows 10（例如 AWS 的小型 EC2），開機後記憶體就佔滿了。以下是幾個可以關掉的服務，全部用 PowerShell 以管理員身份執行。

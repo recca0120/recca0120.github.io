@@ -11,7 +11,7 @@ tags:
 - Guzzle
 - Laravel
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## Problem

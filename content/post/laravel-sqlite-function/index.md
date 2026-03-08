@@ -10,7 +10,7 @@ tags:
 - Laravel
 - SQLite
 - Testing
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

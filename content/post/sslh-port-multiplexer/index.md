@@ -4,7 +4,7 @@ date: '2026-03-28T09:00:00+08:00'
 slug: sslh-port-multiplexer
 description: 'sslh 是 protocol multiplexer，讓 SSH、HTTPS、OpenVPN 共用同一個 port。最常見的用途是把 SSH 藏在 443，穿透只開放 HTTP/HTTPS 的嚴格防火牆。'
 categories:
-  - 工具
+  - Tools
 tags:
   - sslh
   - ssh

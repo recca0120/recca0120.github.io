@@ -3,7 +3,7 @@ title: '用 sql.js-httpvfs 在 GitHub Pages 上查詢 SQLite 資料庫'
 description: '介紹 sql.js-httpvfs，透過 HTTP Range Request 在靜態網站上直接查詢 SQLite，不需要下載整個資料庫檔案。'
 slug: sql-js-httpvfs-static-hosting
 date: '2026-03-07T09:00:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
 - Frontend
 tags:

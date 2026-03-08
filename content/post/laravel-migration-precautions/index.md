@@ -11,7 +11,7 @@ tags:
 - Migration
 - SQLite
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 最近用 `migration:rollback` 的時候踩了不少坑，整理幾個容易出錯的寫法，以及怎麼用測試提早攔截。

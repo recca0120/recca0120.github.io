@@ -8,7 +8,7 @@ categories:
 tags:
 - Laravel
 - Eloquent
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

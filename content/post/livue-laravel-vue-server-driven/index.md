@@ -3,7 +3,7 @@ title: 'LiVue：用 Vue 3 取代 Alpine.js 的 Server-Driven 開發方式'
 description: '介紹 LiVue 套件，在 Blade 模板裡直接用 Vue 3 directive，不用寫 API 也不用拆 .vue 檔，兼具 Livewire 和 Vue 生態系的優勢。'
 slug: livue-laravel-vue-server-driven
 date: '2026-03-03T06:00:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
   - Laravel
   - Frontend

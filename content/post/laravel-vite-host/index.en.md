@@ -9,7 +9,7 @@ categories:
 tags:
 - Laravel
 - Vite
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

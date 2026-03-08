@@ -4,7 +4,7 @@ date: '2026-03-09T09:00:00+08:00'
 slug: mole-macos-cleaner
 description: 'Mole 是 38K stars 的 macOS 清理工具，mo clean 深度清除快取、mo uninstall 連殘留一起刪、mo purge 清 node_modules，乾淨又安全，支援 dry-run 先預覽。'
 categories:
-  - 工具
+  - Tools
 tags:
   - macos
   - mole

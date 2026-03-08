@@ -9,7 +9,7 @@ categories:
 tags:
 - Laravel
 - PHP
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

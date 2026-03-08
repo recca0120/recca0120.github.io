@@ -8,7 +8,7 @@ categories:
 tags:
   - PHP
   - Composer
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

@@ -7,7 +7,7 @@ categories:
 - PHP
 tags:
 - PHP
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

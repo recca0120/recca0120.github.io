@@ -3,7 +3,7 @@ title: 'Query SQLite on GitHub Pages with sql.js-httpvfs'
 description: 'Use sql.js-httpvfs to query SQLite databases hosted on static sites via HTTP Range Requests — no need to download the entire database file.'
 slug: sql-js-httpvfs-static-hosting
 date: '2026-03-07T09:00:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
 - Frontend
 tags:

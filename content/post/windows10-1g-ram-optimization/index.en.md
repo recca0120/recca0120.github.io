@@ -8,7 +8,7 @@ categories:
 tags:
   - Windows
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 Running Windows 10 on a machine with only 1GB of RAM (e.g., a small AWS EC2 instance) means memory is maxed out right after boot. The following services can be disabled to reduce usage — run all commands in PowerShell as Administrator.

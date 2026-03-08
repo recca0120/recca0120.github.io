@@ -4,7 +4,7 @@ date: '2026-03-24T09:00:00+08:00'
 slug: sql-null-join-unique
 description: '各資料庫對 NULL 的解釋不同，衍生兩個常見問題：JOIN 欄位都是 NULL 時資料撈不到，以及 UNIQUE 欄位允許多筆 NULL 導致限制失效。MySQL、PostgreSQL、SQLite、SQL Server 行為各不同。'
 categories:
-  - 後端
+  - Backend
 tags:
   - sql
   - null

@@ -4,7 +4,7 @@ date: '2026-03-08T09:00:00+08:00'
 slug: lefthook-git-hooks
 description: '用 Go 寫的 Lefthook 一個 YAML 搞定所有 Git hooks，平行執行省掉一半 commit 等待時間，支援 monorepo、跨語言、本地覆寫，比 Husky + lint-staged 更快更簡單。'
 categories:
-  - 工具
+  - Tools
 tags:
   - git
   - lefthook

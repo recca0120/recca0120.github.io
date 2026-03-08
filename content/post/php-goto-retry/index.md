@@ -4,7 +4,7 @@ date: '2026-03-18T09:00:00+08:00'
 slug: php-goto-retry
 description: 'PHP goto 語法在 retry 邏輯上比 while loop 更直覺：少一層縮排、流程更平坦、語意更精確。只有明確要重試才跳回去，成功直接 return，失敗次數用完才 throw。'
 categories:
-  - 後端
+  - Backend
 tags:
   - php
   - goto

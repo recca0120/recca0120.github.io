@@ -11,7 +11,7 @@ tags:
 - Laravel
 - JavaScript
 - Validation
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

@@ -11,7 +11,7 @@ tags:
 - Composer
 - CommonMark
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## The Idea

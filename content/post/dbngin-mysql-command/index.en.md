@@ -9,7 +9,7 @@ categories:
 tags:
 - MySQL
 - macOS
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

@@ -10,7 +10,7 @@ tags:
 - Laravel
 - PHP
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## 以為會動的寫法

@@ -10,7 +10,7 @@ tags:
 - PSR-7
 - PHP
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## Two Ways to Get the Body

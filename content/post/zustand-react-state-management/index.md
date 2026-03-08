@@ -4,7 +4,7 @@ date: '2026-03-13T09:00:00+08:00'
 slug: zustand-react-state-management
 description: 'Zustand 是 1KB 的 React 狀態管理庫，一個 create() 搞定 state 和 action，不需要 Provider 包裝，selector 自動避免多餘 re-render，內建 persist、devtools、immer middleware。'
 categories:
-  - 前端
+  - Frontend
 tags:
   - zustand
   - react

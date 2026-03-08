@@ -4,7 +4,7 @@ date: '2026-03-08T09:00:00+08:00'
 slug: openspec-sdd
 description: "OpenSpec is a spec-driven development framework. Before AI writes code, align on requirements first. Propose generates spec documents, apply implements by spec, archive records completed changes. Supports Claude Code, Cursor, Copilot, and 30+ tools."
 categories:
-  - DevTools
+  - Tools
 tags:
   - openspec
   - ai

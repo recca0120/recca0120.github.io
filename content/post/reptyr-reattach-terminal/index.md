@@ -4,7 +4,7 @@ date: '2026-03-25T09:00:00+08:00'
 slug: reptyr-reattach-terminal
 description: 'reptyr 用 ptrace 把已在執行的 process 重新附加到新的 terminal。SSH 忘開 tmux 就跑了長時間任務，或者想把 background process 移進 screen，reptyr 一個指令搞定。'
 categories:
-  - 工具
+  - Tools
 tags:
   - reptyr
   - linux

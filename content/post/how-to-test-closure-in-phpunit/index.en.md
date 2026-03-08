@@ -11,7 +11,7 @@ tags:
 - Mockery
 - PHP
 - Testing
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

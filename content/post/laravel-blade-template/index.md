@@ -8,7 +8,7 @@ categories:
 tags:
 - Laravel
 - Blade
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

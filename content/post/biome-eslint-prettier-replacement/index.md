@@ -4,7 +4,7 @@ date: '2026-03-10T09:00:00+08:00'
 slug: biome-eslint-prettier-replacement
 description: 'Biome 是用 Rust 寫的前端工具鏈，formatter 比 Prettier 快 35 倍，455 條 lint 規則涵蓋 ESLint + TypeScript ESLint，一個 biome.json 取代五個設定檔，支援自動遷移。'
 categories:
-  - 工具
+  - Tools
 tags:
   - biome
   - eslint

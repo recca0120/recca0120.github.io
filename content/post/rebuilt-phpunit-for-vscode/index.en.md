@@ -12,7 +12,7 @@ tags:
   - VS Code
   - Docker
   - Testing
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

@@ -10,7 +10,7 @@ tags:
   - Bluetooth
   - Linux
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 樹莓派沒有桌面環境的時候，配對藍芽裝置只能靠 command line。用 `bluetoothctl` 就能搞定。

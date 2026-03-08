@@ -10,7 +10,7 @@ tags:
   - Windows
   - AWS
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## Prerequisites

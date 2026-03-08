@@ -10,7 +10,7 @@ tags:
   - Docker
   - WSL2
   - Linux
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

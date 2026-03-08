@@ -11,7 +11,7 @@ tags:
 - SQLite
 - Testing
 - Migration
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

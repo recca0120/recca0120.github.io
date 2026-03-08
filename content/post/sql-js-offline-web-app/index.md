@@ -3,7 +3,7 @@ title: 'sql.js + IndexedDB：打造離線優先的 Web App'
 description: '用 sql.js 搭配 IndexedDB 實現瀏覽器端 SQLite 資料持久化，打造不需後端也能離線運作的 Web 應用。'
 slug: sql-js-offline-web-app
 date: '2026-03-05T09:00:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
 - Frontend
 tags:

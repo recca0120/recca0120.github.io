@@ -11,7 +11,7 @@ tags:
 - Testing
 - PHPUnit
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## 情境

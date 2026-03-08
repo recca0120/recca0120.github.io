@@ -4,7 +4,7 @@ date: '2026-03-12T09:00:00+08:00'
 slug: ky-http-client
 description: 'ky 是基於 fetch 的輕量 HTTP 客戶端，4KB gzip 零依賴，內建 retry 指數退避、timeout、hooks 攔截器、JSON 簡寫，比 axios 小 3 倍，比裸 fetch 少寫一半程式碼。'
 categories:
-  - 前端
+  - Frontend
 tags:
   - ky
   - fetch

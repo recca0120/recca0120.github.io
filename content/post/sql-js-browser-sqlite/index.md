@@ -3,7 +3,7 @@ title: '用 sql.js 在瀏覽器跑 SQLite：安裝到 CRUD 完整教學'
 description: '介紹 sql.js 套件，從安裝、初始化、CRUD 操作到匯入匯出 .db 檔案和 Web Worker 用法，在瀏覽器端直接使用 SQLite。'
 slug: sql-js-browser-sqlite
 date: '2026-03-04T09:00:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
 - Frontend
 tags:

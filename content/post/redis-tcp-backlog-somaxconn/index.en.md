@@ -9,7 +9,7 @@ tags:
   - Redis
   - Linux
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## Problem

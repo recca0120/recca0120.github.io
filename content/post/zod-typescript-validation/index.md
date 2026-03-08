@@ -4,7 +4,7 @@ date: '2026-03-11T09:00:00+08:00'
 slug: zod-typescript-validation
 description: 'Zod 是 TypeScript-first 的 schema 驗證庫，定義一次 schema 自動推斷型別，不用重複寫 interface。支援 parse/safeParse、transform、refine、discriminated union，2kb gzip，零依賴。'
 categories:
-  - 前端
+  - Frontend
 tags:
   - zod
   - typescript

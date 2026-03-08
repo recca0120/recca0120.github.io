@@ -4,7 +4,7 @@ date: '2026-03-23T09:00:00+08:00'
 slug: ky-concurrent-requests
 description: 'ky 處理單一請求的 retry、timeout、auth hook，p-limit 控制同時執行的數量。兩個工具各司其職，批次打 100 個 API 不怕 429 也不怕網路抖動。'
 categories:
-  - 前端
+  - Frontend
 tags:
   - ky
   - typescript

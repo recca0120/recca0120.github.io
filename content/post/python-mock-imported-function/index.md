@@ -4,7 +4,7 @@ date: '2026-03-19T09:00:00+08:00'
 slug: python-mock-imported-function
 description: 'Python unittest.mock.patch 的最常見誤區：mock utils.sum 但測試還是跑真的邏輯。原因是 from utils import sum 在被測模組建立了自己的 binding，patch 要指向被測模組的命名空間，不是函式的原始定義位置。'
 categories:
-  - 後端
+  - Backend
 tags:
   - python
   - testing

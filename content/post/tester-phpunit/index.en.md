@@ -11,7 +11,7 @@ tags:
   - PHP
   - Testing
   - Atom
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

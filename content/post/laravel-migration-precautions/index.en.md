@@ -11,7 +11,7 @@ tags:
 - Migration
 - SQLite
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 I recently hit several pitfalls when using `migration:rollback`. Here are the common mistakes and how to catch them early with tests.

@@ -11,7 +11,7 @@ tags:
 - PHPUnit
 - Mockery
 - Testing
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

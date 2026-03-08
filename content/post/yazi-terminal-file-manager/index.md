@@ -4,7 +4,7 @@ date: '2026-03-26T09:00:00+08:00'
 slug: yazi-terminal-file-manager
 description: 'yazi 是 Rust 寫的非同步終端機檔案管理器，vim 鍵位、圖片預覽、Lua 外掛、整合 fzf/zoxide。Alacritty 不支援圖片協議，macOS 用 Chafa，Linux 用 Überzug++ 搭配 X11/Wayland。'
 categories:
-  - 工具
+  - Tools
 tags:
   - yazi
   - terminal

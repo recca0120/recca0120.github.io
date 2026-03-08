@@ -10,7 +10,7 @@ tags:
   - Laravel
   - Flysystem
   - AWS
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

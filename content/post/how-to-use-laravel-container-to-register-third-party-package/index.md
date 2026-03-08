@@ -10,7 +10,7 @@ tags:
 - Laravel
 - PHP
 - Composer
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

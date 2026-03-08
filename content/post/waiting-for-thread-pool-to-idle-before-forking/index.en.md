@@ -9,7 +9,7 @@ categories:
 tags:
   - PHP
   - PHPUnit
-image: featured.png
+image: featured.jpg
 draft: false
 ---
 

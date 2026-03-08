@@ -3,7 +3,7 @@ title: 'msw-fetch-mock: Undici-Style Fetch Mocking for MSW'
 description: 'Compare msw-fetch-mock, MSW, nock, fetch-mock, and 3 other HTTP mocking libraries — with architecture analysis and concrete use-case recommendations for each.'
 slug: msw-fetch-mock
 date: '2026-03-03T06:00:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
   - Testing
   - Frontend

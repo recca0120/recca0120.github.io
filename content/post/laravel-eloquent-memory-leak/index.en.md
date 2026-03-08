@@ -10,7 +10,7 @@ tags:
 - Eloquent
 - PHP
 draft: false
-image: featured.png
+image: featured.jpg
 ---
 
 ## Problem
