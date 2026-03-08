@@ -4,7 +4,8 @@ date: '2026-03-20T09:00:00+08:00'
 slug: fish-valet-php-composer
 description: '用 fish shell alias 和 function 讓 php、composer、phpunit 自動跟著 Laravel Valet 的 PHP 版本走。解決舊專案需要 Composer v1 的問題，智慧判斷用 composer.phar 還是系統 composer。'
 categories:
-  - Backend
+  - PHP
+  - Tools
 tags:
   - fish
   - laravel

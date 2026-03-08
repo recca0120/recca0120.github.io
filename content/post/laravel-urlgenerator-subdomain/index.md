@@ -4,7 +4,8 @@ date: '2026-03-17T09:00:00+08:00'
 slug: laravel-urlgenerator-subdomain
 description: 'Laravel 在 subdomain route 裡呼叫 url() 或 route()，產出的網址會帶 subdomain。用 clone app(UrlGenerator::class) 再 useOrigin() 就能在不影響全域的情況下產出 root domain 網址。'
 categories:
-  - Backend
+  - Laravel
+  - PHP
 tags:
   - laravel
   - php

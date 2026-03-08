@@ -5,6 +5,7 @@ slug: redis-connection-refused
 date: '2020-07-21T14:40:39+08:00'
 categories:
   - Database
+  - DevOps
 tags:
   - Redis
 draft: false

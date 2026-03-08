@@ -5,6 +5,7 @@ slug: laravel-validation-numeric
 date: '2022-11-23T08:30:00+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
 - Validation

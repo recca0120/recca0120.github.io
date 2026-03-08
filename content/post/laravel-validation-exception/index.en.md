@@ -5,6 +5,7 @@ slug: how-to-throw-a-validation-exception-manually-in-laravel
 date: '2020-05-24T12:51:54+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
 - Validation

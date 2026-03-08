@@ -5,6 +5,7 @@ slug: biome-eslint-prettier-replacement
 description: 'Biome is a Rust-based frontend toolchain that formats 35x faster than Prettier, includes 455 lint rules covering ESLint + TypeScript ESLint, and replaces five config files with one biome.json. Auto-migration included.'
 categories:
   - Tools
+  - Frontend
 tags:
   - biome
   - eslint

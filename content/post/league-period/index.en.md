@@ -2,6 +2,7 @@
 title: 'League Period: A Swiss Army Knife for Time Intervals in PHP'
 date: '2026-04-06T09:00:00+08:00'
 slug: league-period
+image: cover.jpg
 description: "Comparing two time intervals for overlap with raw DateTime means writing a pile of if conditions. League Period wraps time intervals in immutable value objects with built-in overlap, containment, gap, and intersection operations."
 categories:
   - PHP

@@ -2,9 +2,11 @@
 title: 'pytest-mock：用 mocker fixture 讓 mock 更乾淨'
 date: '2026-04-03T09:00:00+08:00'
 slug: pytest-mock
+image: cover.jpg
 description: 'pytest-mock 提供 mocker fixture，把 unittest.mock.patch 整合進 pytest 的生命週期，不需要手動 start/stop，也不用 with 或 decorator。spy 保留原始行為同時追蹤呼叫，stub 測回調。'
 categories:
   - Python
+  - Testing
 tags:
   - pytest
   - mock

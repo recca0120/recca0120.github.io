@@ -4,7 +4,8 @@ date: '2026-03-21T09:00:00+08:00'
 slug: auto-venv-fish
 description: 'auto-venv is a Fish shell plugin that automatically activates and deactivates Python venvs on directory change. Supports .venv, venv, .env, env naming, uses git root for scope, and works with z, zoxide, and any other navigation tool.'
 categories:
-  - Backend
+  - Python
+  - Tools
 tags:
   - fish
   - python

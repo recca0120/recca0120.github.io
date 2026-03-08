@@ -2,9 +2,11 @@
 title: 'pytest: assert Is Enough, Forget self.assertEqual'
 date: '2026-03-30T09:00:00+08:00'
 slug: pytest-getting-started
+image: cover.jpg
 description: "The biggest difference between pytest and unittest isn't features — it's how comfortable it is to write. Plain assert works, failure messages expand automatically, and fixtures are far more flexible than setUp/tearDown."
 categories:
   - Python
+  - Testing
 tags:
   - pytest
   - testing

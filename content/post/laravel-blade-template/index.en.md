@@ -5,6 +5,7 @@ slug: laravel-blade-template
 date: '2024-05-07T07:47:27+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
 - Blade

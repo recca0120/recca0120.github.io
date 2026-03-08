@@ -4,7 +4,8 @@ date: '2026-03-17T09:00:00+08:00'
 slug: laravel-urlgenerator-subdomain
 description: 'Inside a Laravel subdomain route, url() and route() produce URLs with the subdomain. Clone app(UrlGenerator::class) and call useOrigin() to generate root domain URLs without affecting global state.'
 categories:
-  - Backend
+  - Laravel
+  - PHP
 tags:
   - laravel
   - php

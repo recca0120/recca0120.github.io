@@ -4,7 +4,8 @@ date: '2026-03-20T09:00:00+08:00'
 slug: fish-valet-php-composer
 description: 'Use fish shell aliases and functions to make php, composer, and phpunit automatically follow Laravel Valet PHP versions. Handles legacy projects requiring Composer v1 with smart composer.phar detection.'
 categories:
-  - Backend
+  - PHP
+  - Tools
 tags:
   - fish
   - laravel

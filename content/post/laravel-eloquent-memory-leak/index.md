@@ -5,6 +5,7 @@ slug: laravel-eloquent-memory-leak
 date: '2020-06-18T14:00:42+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
 - Eloquent

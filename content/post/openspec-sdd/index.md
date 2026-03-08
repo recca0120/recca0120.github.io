@@ -2,9 +2,11 @@
 title: 'OpenSpec：讓 AI Coding Assistant 照規格做事，不要亂寫'
 date: '2026-03-08T09:00:00+08:00'
 slug: openspec-sdd
+image: cover.jpg
 description: 'OpenSpec 是 spec-driven development 框架，在 AI 寫程式之前先對齊需求。propose 產出規格文件，apply 按規格實作，archive 歸檔完成的變更。支援 Claude Code、Cursor、Copilot 等 30+ 工具。'
 categories:
   - Tools
+  - DevOps
 tags:
   - openspec
   - ai

@@ -5,6 +5,7 @@ slug: laravel-model-reads-old-data-when-using-transaction-and-queue
 date: '2022-12-02T10:30:00+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
 - Queue

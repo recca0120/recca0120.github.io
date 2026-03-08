@@ -4,7 +4,7 @@ date: '2026-03-24T09:00:00+08:00'
 slug: sql-null-join-unique
 description: 'NULL behavior varies across databases and causes two common problems: JOIN on NULL columns returns no rows, and UNIQUE constraints allow multiple NULLs. Covers MySQL, PostgreSQL, SQLite, SQL Server with solutions for each.'
 categories:
-  - Backend
+  - Database
 tags:
   - sql
   - null

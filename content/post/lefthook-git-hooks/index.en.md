@@ -5,6 +5,7 @@ slug: lefthook-git-hooks
 description: 'Lefthook is a fast Git hooks manager written in Go. One YAML file replaces Husky + lint-staged, parallel execution cuts commit wait time in half, with built-in monorepo support and local config overrides.'
 categories:
   - Tools
+  - DevOps
 tags:
   - git
   - lefthook

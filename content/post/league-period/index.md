@@ -2,6 +2,7 @@
 title: 'League Period：PHP 時間區間處理的瑞士刀'
 date: '2026-04-06T09:00:00+08:00'
 slug: league-period
+image: cover.jpg
 description: '用原生 DateTime 比較兩個時間區間是否重疊，要寫一堆 if 判斷。League Period 用不可變物件封裝時間區間，內建重疊、包含、間隙、交集等操作，一行搞定。'
 categories:
   - PHP

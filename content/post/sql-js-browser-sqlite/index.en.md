@@ -6,6 +6,7 @@ date: '2026-03-04T09:00:00+08:00'
 image: featured.jpg
 categories:
 - Frontend
+- Database
 tags:
 - sql.js
 - SQLite

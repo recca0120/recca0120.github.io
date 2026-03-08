@@ -4,7 +4,7 @@ date: '2026-03-18T09:00:00+08:00'
 slug: php-goto-retry
 description: 'PHP goto makes retry logic more readable than while loops: one less nesting level, flatter structure, clearer intent. Only jumps back when explicitly retrying — success returns directly, exhausted retries throw.'
 categories:
-  - Backend
+  - PHP
 tags:
   - php
   - goto

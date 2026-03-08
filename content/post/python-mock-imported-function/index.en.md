@@ -4,7 +4,8 @@ date: '2026-03-19T09:00:00+08:00'
 slug: python-mock-imported-function
 description: "The most common Python mock mistake: patching utils.sum when the test still runs the real function. When you do `from utils import sum`, the importing module gets its own binding. Patch the importing module's namespace, not the original definition."
 categories:
-  - Backend
+  - Python
+  - Testing
 tags:
   - python
   - testing

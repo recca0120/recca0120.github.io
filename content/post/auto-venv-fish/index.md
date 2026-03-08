@@ -4,7 +4,8 @@ date: '2026-03-21T09:00:00+08:00'
 slug: auto-venv-fish
 description: 'auto-venv 是 Fish shell plugin，切換目錄時自動啟用和關閉 Python venv，支援 .venv、venv、.env、env 四種命名，用 git root 判斷範圍，相容 z、zoxide 等跳轉工具。'
 categories:
-  - Backend
+  - Python
+  - Tools
 tags:
   - fish
   - python

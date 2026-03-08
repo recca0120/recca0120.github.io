@@ -5,6 +5,7 @@ slug: redis-the-tcp-backlog-setting-of-511-cannot-be-enforced-because-/proc/sys/
 date: '2020-06-12T14:01:07+08:00'
 categories:
   - Database
+  - DevOps
 tags:
   - Redis
   - Linux

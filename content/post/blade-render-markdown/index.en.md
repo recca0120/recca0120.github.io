@@ -5,6 +5,7 @@ slug: render-markdown-by-blade-template-engine
 date: '2020-07-14T09:49:36+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
 - Blade

@@ -5,6 +5,7 @@ slug: eloquent-macro-fire-event
 date: '2023-01-20T10:00:00+08:00'
 categories:
 - Laravel
+- PHP
 tags:
 - Laravel
 - Eloquent

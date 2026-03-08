@@ -2,6 +2,7 @@
 title: "blinker: Python Signals for Decoupling Modules"
 date: '2026-04-01T09:00:00+08:00'
 slug: blinker-signal
+image: cover.jpg
 description: "blinker is a lightweight Python signal/event system — it's what Flask uses internally for request_started, request_finished, and other lifecycle events. Good fit for module decoupling, plugin architectures, and avoiding circular imports."
 categories:
   - Python
