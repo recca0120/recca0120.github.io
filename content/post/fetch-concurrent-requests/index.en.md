@@ -11,6 +11,8 @@ tags:
   - typescript
   - concurrency
   - p-limit
+  - api
+  - rate-limiting
 ---
 
 Batch-fetching 100 API endpoints with `Promise.all` is one line. All 100 requests fire simultaneously.

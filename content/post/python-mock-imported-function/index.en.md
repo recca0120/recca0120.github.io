@@ -10,6 +10,8 @@ tags:
   - testing
   - mock
   - unittest
+  - patch
+  - pytest
 ---
 
 `from utils import sum`, then `patch('utils.sum')` — and the mock never takes effect.

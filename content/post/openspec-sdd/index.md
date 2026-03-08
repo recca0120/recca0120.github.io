@@ -11,6 +11,8 @@ tags:
   - sdd
   - claude-code
   - cursor
+  - developer-tools
+  - workflow
 ---
 
 用 AI coding assistant 寫程式，最常見的問題不是它寫不出來，而是寫出來的東西跟你想的不一樣。

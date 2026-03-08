@@ -11,6 +11,8 @@ tags:
   - valet
   - php
   - composer
+  - shell
+  - version-manager
 ---
 
 用 Laravel Valet 管多個 PHP 版本，每個專案設定不同版本，進到目錄 `php -v` 卻還是跑全域的版本。

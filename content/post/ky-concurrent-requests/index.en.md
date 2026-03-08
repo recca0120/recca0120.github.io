@@ -11,6 +11,8 @@ tags:
   - javascript
   - concurrency
   - p-limit
+  - api
+  - rate-limiting
 ---
 
 Batch 100 API calls with `Promise.all` and the server returns `429`.

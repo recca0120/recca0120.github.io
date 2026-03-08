@@ -11,6 +11,8 @@ tags:
   - sdd
   - claude-code
   - cursor
+  - developer-tools
+  - workflow
 ---
 
 The most common problem with AI coding assistants isn't that they can't write code — it's that they write something different from what you had in mind.

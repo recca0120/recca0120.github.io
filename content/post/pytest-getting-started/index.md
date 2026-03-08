@@ -10,6 +10,8 @@ tags:
   - testing
   - python
   - fixture
+  - unit-testing
+  - parametrize
 ---
 
 從 unittest 切換到 pytest 之後，我最有感的不是哪個殺手級功能，而是不用再記一堆 `assertXxx`。

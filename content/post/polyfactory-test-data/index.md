@@ -11,6 +11,9 @@ tags:
   - testing
   - python
   - pydantic
+  - dataclass
+  - factory
+  - fixture
 ---
 
 寫測試的時候，準備假資料這件事本身就是一種負擔。

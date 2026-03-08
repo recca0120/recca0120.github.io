@@ -11,6 +11,8 @@ tags:
   - terminal
   - tmux
   - ssh
+  - process
+  - rescue
 ---
 
 You SSH'd in and started a job that will run for hours. No tmux. No nohup.

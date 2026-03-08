@@ -10,6 +10,8 @@ tags:
   - testing
   - mock
   - unittest
+  - patch
+  - pytest
 ---
 
 `from utils import sum` 然後 `patch('utils.sum')`，測試死活 mock 不到。

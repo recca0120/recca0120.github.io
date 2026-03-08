@@ -11,6 +11,8 @@ tags:
   - valet
   - php
   - composer
+  - shell
+  - version-manager
 ---
 
 Managing multiple PHP versions with Laravel Valet is great — until you type `php -v` and get the global version instead of the one Valet set for that directory.

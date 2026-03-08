@@ -10,6 +10,8 @@ tags:
   - python
   - venv
   - automation
+  - shell
+  - virtualenv
 ---
 
 每次 `cd` 進 Python 專案都要手動 `source .venv/bin/activate.fish`。

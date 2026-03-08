@@ -10,6 +10,9 @@ tags:
   - mock
   - testing
   - python
+  - spy
+  - stub
+  - unittest
 ---
 
 Using `unittest.mock.patch` directly has a few rough edges.

@@ -10,6 +10,9 @@ tags:
   - mock
   - testing
   - python
+  - spy
+  - stub
+  - unittest
 ---
 
 用 `unittest.mock.patch` 直接寫 mock，有幾個讓人不舒服的地方。

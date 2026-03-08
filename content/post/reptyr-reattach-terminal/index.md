@@ -11,6 +11,8 @@ tags:
   - terminal
   - tmux
   - ssh
+  - process
+  - rescue
 ---
 
 SSH 進去跑了一個要跑幾小時的任務，沒開 tmux。

@@ -10,6 +10,8 @@ tags:
   - cli
   - python
   - click
+  - argparse
+  - automation
 ---
 
 After accumulating scripts in a project, at some point you want to consolidate them into one CLI tool.

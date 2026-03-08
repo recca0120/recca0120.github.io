@@ -10,6 +10,8 @@ tags:
   - period
   - datetime
   - league
+  - scheduling
+  - immutable
 ---
 
 Have you ever written this kind of code — checking whether two time intervals overlap?

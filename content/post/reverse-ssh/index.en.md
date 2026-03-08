@@ -11,6 +11,8 @@ tags:
   - security
   - networking
   - golang
+  - firewall
+  - tunnel
 ---
 
 You need to connect to a machine behind NAT with no public IP and inbound traffic blocked.

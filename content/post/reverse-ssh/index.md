@@ -11,6 +11,8 @@ tags:
   - security
   - networking
   - golang
+  - firewall
+  - tunnel
 ---
 
 想連到一台在 NAT 後面的機器，沒有公開 IP，防火牆也擋了 inbound 連線。

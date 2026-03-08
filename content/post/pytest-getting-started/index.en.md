@@ -10,6 +10,8 @@ tags:
   - testing
   - python
   - fixture
+  - unit-testing
+  - parametrize
 ---
 
 After switching from unittest to pytest, the thing I noticed most wasn't some killer feature — it was not having to remember all the `assertXxx` methods.

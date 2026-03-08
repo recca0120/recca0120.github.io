@@ -11,6 +11,8 @@ tags:
   - devops
   - dive
   - optimization
+  - container
+  - multi-stage
 ---
 
 Your Docker image is large and you don't know why.

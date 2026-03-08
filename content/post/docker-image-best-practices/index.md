@@ -11,6 +11,8 @@ tags:
   - devops
   - dive
   - optimization
+  - container
+  - multi-stage
 ---
 
 Docker image 大，通常你不知道大在哪裡。

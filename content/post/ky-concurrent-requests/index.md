@@ -11,6 +11,8 @@ tags:
   - javascript
   - concurrency
   - p-limit
+  - api
+  - rate-limiting
 ---
 
 批次打 API，`Promise.all` 同時發 100 個請求，server 回 `429`。

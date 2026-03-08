@@ -11,6 +11,8 @@ tags:
   - typescript
   - concurrency
   - p-limit
+  - api
+  - rate-limiting
 ---
 
 要批次打 100 個 API，`Promise.all` 一行搞定，全部同時發出去。

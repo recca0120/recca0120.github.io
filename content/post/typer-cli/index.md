@@ -10,6 +10,8 @@ tags:
   - cli
   - python
   - click
+  - argparse
+  - automation
 ---
 
 在專案裡累積了幾個 Python script 之後，總有一天你會想把它們整理成一個 CLI 工具。

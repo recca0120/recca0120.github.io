@@ -11,6 +11,9 @@ tags:
   - testing
   - python
   - pydantic
+  - dataclass
+  - factory
+  - fixture
 ---
 
 Preparing fake data for tests is its own kind of overhead.

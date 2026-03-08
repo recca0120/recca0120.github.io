@@ -10,6 +10,8 @@ tags:
   - period
   - datetime
   - league
+  - scheduling
+  - immutable
 ---
 
 你有沒有寫過這種程式碼：判斷兩個時間區間是否重疊？
