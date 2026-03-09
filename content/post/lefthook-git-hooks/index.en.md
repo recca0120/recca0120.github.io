@@ -2,6 +2,7 @@
 title: 'Ditch Husky: Speed Up Git Hooks with Lefthook'
 date: '2026-03-08T09:00:00+08:00'
 slug: lefthook-git-hooks
+image: cover.jpg
 description: 'Lefthook is a fast Git hooks manager written in Go. One YAML file replaces Husky + lint-staged, parallel execution cuts commit wait time in half, with built-in monorepo support and local config overrides.'
 categories:
   - Tools

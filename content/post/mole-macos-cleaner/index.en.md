@@ -2,6 +2,7 @@
 title: 'Mole: Clear 95GB of macOS Junk with One Command'
 date: '2026-03-09T09:00:00+08:00'
 slug: mole-macos-cleaner
+image: cover.jpg
 description: 'Mole is a 38K-star macOS cleaner. mo clean removes caches deep in the system, mo uninstall removes apps plus all leftover files, mo purge clears node_modules and build artifacts. Free, open-source, dry-run safe.'
 categories:
   - Tools
