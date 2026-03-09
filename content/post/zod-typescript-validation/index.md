@@ -2,6 +2,7 @@
 title: 'Zod：TypeScript 最省力的資料驗證，Schema 即型別'
 date: '2026-03-11T09:00:00+08:00'
 slug: zod-typescript-validation
+image: featured.jpg
 description: 'Zod 是 TypeScript-first 的 schema 驗證庫，定義一次 schema 自動推斷型別，不用重複寫 interface。支援 parse/safeParse、transform、refine、discriminated union，2kb gzip，零依賴。'
 categories:
   - Frontend
@@ -299,3 +300,10 @@ schema 同時負責表單驗證和型別推斷，不用重複定義。
 ## 小結
 
 Zod 改變了一件事：型別定義和資料驗證從兩件事變成一件事。在 API 邊界、表單輸入、環境變數這些「資料從外部進來」的地方用它，之後的程式碼都能安全地假設資料的形狀是對的。
+
+## 參考資源
+
+- [Zod 官方文件](https://zod.dev/)
+- [Zod GitHub 專案頁面](https://github.com/colinhacks/zod)
+- [React Hook Form 官方文件](https://react-hook-form.com/)
+- [@hookform/resolvers（Zod 整合套件）](https://github.com/react-hook-form/resolvers)

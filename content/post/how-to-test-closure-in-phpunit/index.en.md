@@ -81,3 +81,10 @@ $callback->shouldHaveBeenCalled()->with('foo')->twice();
 ```
 
 The test structure follows the 3A pattern (Arrange-Act-Assert), which is more readable than embedding assertions inside the closure -- and correctly catches the case where the callback is never called at all.
+
+## References
+
+- [Mockery Official Documentation](https://docs.mockery.io/)
+- [Mockery GitHub Repository](https://github.com/mockery/mockery)
+- [Mockery Closure spy support PR #712](https://github.com/mockery/mockery/pull/712)
+- [PHPUnit Official Documentation](https://phpunit.de/documentation.html)

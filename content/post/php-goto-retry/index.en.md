@@ -2,6 +2,7 @@
 title: "PHP goto Isn't Evil: One Less Nesting Level for Retry Logic"
 date: '2026-03-18T09:00:00+08:00'
 slug: php-goto-retry
+image: featured.jpg
 description: 'PHP goto makes retry logic more readable than while loops: one less nesting level, flatter structure, clearer intent. Only jumps back when explicitly retrying — success returns directly, exhausted retries throw.'
 categories:
   - PHP
@@ -142,3 +143,9 @@ If the retry logic becomes more complex — exponential backoff, multiple except
 `goto` isn't untouchable — it just needs the right context. For retry logic with a clear backward jump, no cross-function leaps, and an obvious target, `goto` expresses the intent more directly than `while (true)` and saves a level of nesting.
 
 When you see `goto`, don't flinch. Look at where it jumps and why, then decide if it needs changing.
+
+## References
+
+- [PHP Manual: goto](https://www.php.net/manual/en/control-structures.goto.php) — goto syntax rules and constraints
+- [Dijkstra 1968: Go To Statement Considered Harmful](https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf) — The seminal paper critiquing arbitrary goto usage
+- [PHP Manual: Exceptions](https://www.php.net/manual/en/language.exceptions.php) — Complete guide to try/catch and exception handling

@@ -94,3 +94,10 @@ class RandomHashTest extends TestCase
 ```
 
 This way, even with internal randomness, the test can still make a definitive assertion.
+
+## References
+
+- [Mockery Docs: Capturing Arguments](http://docs.mockery.io/en/latest/reference/argument_validation.html#capturing-arguments)
+- [Mockery GitHub Repository](https://github.com/mockery/mockery)
+- [PHPUnit Official Documentation](https://phpunit.de/documentation.html)
+- [Mockery Docs: Spies](http://docs.mockery.io/en/latest/reference/spies.html)

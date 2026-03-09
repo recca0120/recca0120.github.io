@@ -106,4 +106,11 @@ abstract class TestCase extends BaseTestCase
         parent::setUpTraits();
     }
 }
+
+## 參考資源
+
+- [Laravel 官方文件：Database Testing](https://laravel.com/docs/database-testing)
+- [Laravel 原始碼：SqliteSchemaState](https://github.com/laravel/framework/blob/b9203fca96960ef9cd8860cb4ec99d1279353a8d/src/Illuminate/Database/Schema/SqliteSchemaState.php)
+- [PHP 官方文件：PDO::exec](https://www.php.net/manual/en/pdo.exec.php)
+- [Laravel 官方文件：schema:dump 指令](https://laravel.com/docs/migrations#squashing-migrations)
 ```

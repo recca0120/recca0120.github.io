@@ -100,3 +100,9 @@ class ExampleTest extends TestCase
 ```
 
 This also removes the dependency on Laravel-specific wrapper packages, which means one fewer thing to worry about during version upgrades.
+
+## References
+
+- [Laravel Service Container Official Documentation](https://laravel.com/docs/container)
+- [Laravel Service Providers Official Documentation](https://laravel.com/docs/providers)
+- [Laravel Automatic Injection Documentation](https://laravel.com/docs/container#automatic-injection)

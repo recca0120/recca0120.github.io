@@ -76,3 +76,9 @@ class MinNumberController extends Controller
 ```
 
 So for number-related validation rules (`min`, `max`, `between`), always add `numeric` first — otherwise Laravel compares string lengths.
+
+## References
+
+- [Laravel Docs: Validation Rules - numeric](https://laravel.com/docs/validation#rule-numeric)
+- [Laravel Docs: Validation Rules - min / max / between](https://laravel.com/docs/validation#rule-min)
+- [Laravel Docs: Validation - Available Validation Rules](https://laravel.com/docs/validation#available-validation-rules)

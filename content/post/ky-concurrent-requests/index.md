@@ -2,6 +2,7 @@
 title: 'ky + p-limit：並發控制加上內建 retry，批次請求的完整解法'
 date: '2026-03-23T09:00:00+08:00'
 slug: ky-concurrent-requests
+image: featured.jpg
 description: 'ky 處理單一請求的 retry、timeout、auth hook，p-limit 控制同時執行的數量。兩個工具各司其職，批次打 100 個 API 不怕 429 也不怕網路抖動。'
 categories:
   - Frontend
@@ -229,3 +230,10 @@ useEffect(() => {
 ## 小結
 
 ky 和 p-limit 解決的問題不重疊：ky 管「這個請求的生命週期」，p-limit 管「同時有幾個請求在跑」。批次呼叫 API 兩個問題都會遇到，組合起來用是最自然的做法。
+
+## 參考資源
+
+- [ky GitHub Repository](https://github.com/sindresorhus/ky)
+- [p-limit GitHub Repository](https://github.com/sindresorhus/p-limit)
+- [MDN Promise.allSettled 文件](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
+- [MDN Promise.all 文件](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)

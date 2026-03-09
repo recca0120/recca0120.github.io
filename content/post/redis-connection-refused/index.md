@@ -39,3 +39,9 @@ protected-mode no
 ## 補充
 
 如果只是開發環境這樣改沒問題。正式環境建議保留 `protected-mode yes`，改用密碼驗證或防火牆規則來控制存取。
+
+## 參考資源
+
+- [Redis 6.0 Release Notes — 安全性變更說明](https://raw.githubusercontent.com/redis/redis/6.0/00-RELEASENOTES)
+- [Redis 官方設定文件：bind 與 protected-mode](https://redis.io/docs/latest/operate/oss_and_stack/management/config/)
+- [Redis 安全性最佳實踐](https://redis.io/docs/latest/operate/oss_and_stack/management/security/)

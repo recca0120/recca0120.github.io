@@ -2,6 +2,7 @@
 title: 'reverse_ssh: Manage Reverse Shells With Native SSH Syntax, No VPN Required'
 date: '2026-03-27T09:00:00+08:00'
 slug: reverse-ssh
+image: featured.jpg
 description: 'reverse_ssh flips SSH: target machines connect back to your server, and you connect to them with standard SSH syntax. HTTP/WebSocket/TLS transports punch through firewalls. SCP, SFTP, and port forwarding all work.'
 categories:
   - Tools
@@ -188,3 +189,9 @@ systemctl enable --now rssh
 reverse_ssh's core value: use the SSH tools you already know to work with reverse connections. Once a target is connected, everything is standard SSH — `-J` jump host handles the rest.
 
 Multiple transports mean it works even in restrictive environments. HTTP polling gets out of almost any network that has internet access at all.
+
+## References
+
+- [reverse_ssh GitHub Repository](https://github.com/NHAS/reverse_ssh)
+- [OpenSSH ProxyJump Documentation](https://man.openbsd.org/ssh_config#ProxyJump)
+- [OpenSSH Manual Pages](https://www.openssh.com/manual.html)

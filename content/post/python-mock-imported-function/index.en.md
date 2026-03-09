@@ -2,6 +2,7 @@
 title: 'Python Mock Pitfall: Patch Where It Is Used, Not Where It Is Defined'
 date: '2026-03-19T09:00:00+08:00'
 slug: python-mock-imported-function
+image: featured.jpg
 description: "The most common Python mock mistake: patching utils.sum when the test still runs the real function. When you do `from utils import sum`, the importing module gets its own binding. Patch the importing module's namespace, not the original definition."
 categories:
   - Python
@@ -154,3 +155,9 @@ Same principle: `main()` looks up `sum` in the `app` namespace, so that's where 
 Python's import mechanism creates a separate binding in the importing module. After `from X import Y`, the module has its own `Y` — a separate reference from `X.Y`.
 
 The patch target is always **where the call happens**, not where the function is defined. Keep that rule in mind and mock-not-working problems essentially disappear.
+
+## References
+
+- [Python docs: unittest.mock — where to patch](https://docs.python.org/3/library/unittest.mock.html#patch-builtins)
+- [Python docs: unittest.mock full reference](https://docs.python.org/3/library/unittest.mock.html)
+- [Python import system documentation](https://docs.python.org/3/reference/import.html)

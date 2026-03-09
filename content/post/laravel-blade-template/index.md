@@ -86,3 +86,9 @@ this is content
 ```
 
 前兩個是 Laravel 官方內建的做法，但都需要把重覆區塊移到新檔案。第三個方法利用 `ob_start` 把輸出存進 buffer 再取出，不需要額外建檔，適合那種只在單一 template 內重覆、不值得獨立成檔案的情況。
+
+## 參考資源
+
+- [Laravel Blade Templates 官方文件](https://laravel.com/docs/blade)
+- [Laravel Blade Components 官方文件](https://laravel.com/docs/blade#components)
+- [PHP ob_start 函式文件](https://www.php.net/manual/en/function.ob-start.php)

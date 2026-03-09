@@ -73,3 +73,9 @@ Set-ItemProperty -Path $regkey1, $regkey2 -Name System.IsPinnedToNameSpaceTree -
 ```
 
 After making all these adjustments and rebooting, memory usage should drop significantly.
+
+## References
+
+- [Disable-MMAgent PowerShell cmdlet reference (Microsoft docs)](https://learn.microsoft.com/en-us/powershell/module/mmagent/disable-mmagent)
+- [Set-MpPreference Windows Defender PowerShell reference (Microsoft docs)](https://learn.microsoft.com/en-us/powershell/module/defender/set-mppreference)
+- [Tips to improve PC performance in Windows (Microsoft support)](https://support.microsoft.com/en-us/windows/tips-to-improve-pc-performance-in-windows-b3b3ef5b-5953-fb6a-2528-4bbed82fba96)

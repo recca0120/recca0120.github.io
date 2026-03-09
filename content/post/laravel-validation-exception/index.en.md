@@ -33,3 +33,9 @@ try {
 ```
 
 `withMessages()` accepts the same format as Validator errors — the key is the field name and the value is an array of error messages. The JSON structure the frontend receives will be identical to a regular validation failure.
+
+## References
+
+- [Laravel Docs: Validation - Manually Creating Validators](https://laravel.com/docs/validation#manually-creating-validators)
+- [Laravel Docs: Error Handling - HTTP Exceptions](https://laravel.com/docs/errors#http-exceptions)
+- [Laravel GitHub: ValidationException source code](https://github.com/laravel/framework/blob/master/src/Illuminate/Validation/ValidationException.php)

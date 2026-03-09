@@ -2,6 +2,7 @@
 title: 'Docker Image 瘦身：先用 dive 找出問題，再對症下藥'
 date: '2026-03-29T09:00:00+08:00'
 slug: docker-image-best-practices
+image: featured.jpg
 description: '不要猜 Docker image 為什麼大，用 docker image history 和 dive 直接看。找到問題之後針對性修，比套用技巧清單更有效率。從 1.25GB 壓到 139MB 的實際過程。'
 categories:
   - DevOps
@@ -225,3 +226,12 @@ ENTRYPOINT ["/server"]
 - **node_modules 重複**：加 `.dockerignore`
 
 用工具確認問題，改完再用工具驗收，比憑感覺猜有效率多了。
+
+## 參考資源
+
+- [dive GitHub 倉庫 — Docker image 層分析工具](https://github.com/wagoodman/dive)
+- [Docker 官方文件 — Multi-stage builds](https://docs.docker.com/build/building/multi-stage/)
+- [Docker 官方文件 — .dockerignore file](https://docs.docker.com/reference/dockerfile/#dockerignore-file)
+- [GoogleContainerTools Distroless images](https://github.com/GoogleContainerTools/distroless)
+- [Docker 官方文件 — docker image history](https://docs.docker.com/reference/cli/docker/image/history/)
+

@@ -79,3 +79,9 @@ class AppServiceProvider extends ServiceProvider
 ```
 
 這樣只有 `GitHubService` 注入的 Client 會帶上憑證，其他地方不受影響。
+
+## 參考資源
+
+- [GuzzleHttp 官方文件：請求選項](https://docs.guzzlephp.org/en/stable/request-options.html#verify) — verify 選項的完整說明
+- [Laravel 官方文件：Service Container 情境綁定](https://laravel.com/docs/container#contextual-binding) — contextual binding 的用法
+- [Comodo 根憑證下載頁面](https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2) — COMODO RSA 根憑證官方下載來源

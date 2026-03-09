@@ -2,6 +2,7 @@
 title: 'Fetch Concurrency Control: Limit Simultaneous Requests with p-limit'
 date: '2026-03-22T09:00:00+08:00'
 slug: fetch-concurrent-requests
+image: featured.jpg
 description: 'Promise.all with 100 requests fires them all at once — servers respond with 429 or fall over. Use p-limit with fetch to cap the number of simultaneous requests. One line of setup, no custom semaphore required.'
 categories:
   - Frontend
@@ -235,3 +236,11 @@ Same logic as p-limit, managing the queue manually. More code, one fewer depende
 Firing hundreds of simultaneous requests with `Promise.all` is a common mistake. p-limit caps the concurrency in three lines without changing how `Promise.all` collects results.
 
 If you also need retry and timeout, see [ky with concurrency control](/en/p/ky-concurrent-requests/).
+
+## References
+
+- [p-limit on GitHub](https://github.com/sindresorhus/p-limit)
+- [p-limit on npm](https://www.npmjs.com/package/p-limit)
+- [MDN — Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
+- [MDN — Promise.allSettled](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
+

@@ -23,3 +23,9 @@ use Composer\InstalledVersions;
 
 InstalledVersions::getVersion('laravel/framework');
 ```
+
+## 參考資源
+
+- [Composer 官方文件：InstalledVersions 執行期 API](https://getcomposer.org/doc/07-runtime.md#installed-versions) — InstalledVersions class 完整方法說明
+- [Composer GitHub 儲存庫](https://github.com/composer/composer) — Composer 原始碼與 changelog
+- [PHP 官方文件：命名空間與 use 陳述式](https://www.php.net/manual/zh/language.namespaces.php) — PHP 命名空間基礎說明

@@ -41,3 +41,9 @@ net.core.somaxconn=512
 ```
 
 然後重啟或執行 `sysctl -p` 即可。
+
+## 參考資源
+
+- [Redis 官方文件：核心參數調校建議](https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/latency/)
+- [Linux kernel 文件：net.core.somaxconn](https://www.kernel.org/doc/html/latest/networking/ip-sysctl.html)
+- [sysctl 設定說明（Arch Wiki）](https://wiki.archlinux.org/title/sysctl)

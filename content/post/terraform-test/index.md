@@ -2,6 +2,7 @@
 title: 'terraform test：內建的 Terraform 模組測試框架，不需要 Go'
 date: '2026-03-15T09:00:00+08:00'
 slug: terraform-test
+image: featured.jpg
 description: 'Terraform 1.6 內建測試框架，用 .tftest.hcl 寫測試，支援 plan-only 單元測試、mock_provider 無需雲端憑證、expect_failures 驗證錯誤、apply 整合測試。不需要學 Go，直接用 HCL 寫。'
 categories:
   - DevOps
@@ -457,3 +458,10 @@ Success! 6 passed, 0 failed.
 `terraform test` 最大的優點是零門檻：已經在寫 HCL，就能寫測試。`mock_provider` 讓你可以在 CI 上完全不需要雲端憑證跑單元測試，`expect_failures` 讓 variable validation 規則有辦法自動驗證，不再靠肉眼。
 
 從單元測試開始，把現有 module 的 validation 規則都補上測試，確保改動不會破壞預期行為。
+
+## 參考資源
+
+- [Terraform 官方測試文件](https://developer.hashicorp.com/terraform/language/tests)
+- [Terraform mock_provider 說明（v1.7+）](https://developer.hashicorp.com/terraform/language/tests/mocking)
+- [Terraform 官方文件](https://developer.hashicorp.com/terraform/docs)
+- [JUnit XML 測試報告格式](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format)

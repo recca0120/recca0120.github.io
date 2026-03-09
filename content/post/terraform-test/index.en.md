@@ -2,6 +2,7 @@
 title: 'terraform test: The Built-in Terraform Module Testing Framework, No Go Required'
 date: '2026-03-15T09:00:00+08:00'
 slug: terraform-test
+image: featured.jpg
 description: 'Terraform 1.6 ships a built-in test framework. Write tests in .tftest.hcl, run with terraform test. Supports plan-only unit tests, mock_provider without cloud credentials, expect_failures for validation testing, and apply-based integration tests.'
 categories:
   - DevOps
@@ -457,3 +458,10 @@ Variable priority in test files follows the same rules as regular Terraform:
 The biggest advantage of `terraform test` is zero barrier to entry — you're already writing HCL, so you can write tests. `mock_provider` lets CI run unit tests without cloud credentials. `expect_failures` makes variable validation rules automatically verifiable, not just something you manually check.
 
 Start with unit tests. Write tests for the validation rules in your existing modules. That way, future changes can't silently break expected behavior.
+
+## References
+
+- [Terraform Tests Official Documentation](https://developer.hashicorp.com/terraform/language/tests)
+- [Terraform mock_provider Documentation (v1.7+)](https://developer.hashicorp.com/terraform/language/tests/mocking)
+- [Terraform Official Documentation](https://developer.hashicorp.com/terraform/docs)
+- [JUnit XML Test Report Format](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format)

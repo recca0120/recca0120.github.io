@@ -199,3 +199,10 @@ During development I almost always add `-x` — one failure at a time, output do
 The gap between pytest and unittest isn't about features — it's about how comfortable the writing experience is. Plain `assert`, on-demand fixture composition, `parametrize` for multiple inputs. Once those habits are in place, testing stops feeling like something that requires opening documentation every time.
 
 If your tests need a lot of fake data, [polyfactory](/en/p/polyfactory-test-data/) generates it from type hints automatically — no hand-crafting fixture data.
+
+## References
+
+- [pytest official documentation](https://docs.pytest.org/)
+- [pytest fixtures — how-to guide](https://docs.pytest.org/en/stable/how-to/fixtures.html)
+- [pytest parametrize documentation](https://docs.pytest.org/en/stable/how-to/parametrize.html)
+- [pytest GitHub repository](https://github.com/pytest-dev/pytest)

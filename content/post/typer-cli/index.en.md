@@ -242,3 +242,10 @@ Good for:
 - Consolidating scattered admin scripts
 - Giving internal tools a proper CLI
 - Anything where shell completion would be useful
+
+## References
+
+- [Typer official documentation](https://typer.tiangolo.com/)
+- [Typer GitHub repository](https://github.com/fastapi/typer)
+- [Click official documentation (Typer's underlying framework)](https://click.palletsprojects.com/)
+- [Python argparse official documentation](https://docs.python.org/3/library/argparse.html)

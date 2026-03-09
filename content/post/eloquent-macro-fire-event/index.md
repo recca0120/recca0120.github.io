@@ -144,3 +144,10 @@ trait FiresEvents
 ```
 
 這樣就可以直接 `$user->fireModelEvent('created')` 了。不過 Laravel 的 Model 其實已經有一個 `protected` 的 `fireModelEvent` 方法，所以要注意命名衝突，可能改叫 `dispatchModelEvent` 比較安全。
+
+## 參考資源
+
+- [Laravel 官方文件 — Eloquent Events](https://laravel.com/docs/eloquent#events)
+- [Laravel 官方文件 — Macros](https://laravel.com/docs/macros)
+- [Laravel 官方文件 — saveQuietly / withoutEvents](https://laravel.com/docs/eloquent#saving-a-single-model-without-events)
+

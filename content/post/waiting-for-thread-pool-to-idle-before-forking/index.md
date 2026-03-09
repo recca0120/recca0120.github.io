@@ -22,3 +22,9 @@ draft: false
 ```bash
 pecl install -o -f grpc-1.49.0
 ```
+
+## 參考資源
+
+- [gRPC PHP 擴充套件 PECL 頁面](https://pecl.php.net/package/gRPC)
+- [gRPC GitHub 專案頁面](https://github.com/grpc/grpc)
+- [PHPUnit 官方文件](https://phpunit.de/documentation.html)

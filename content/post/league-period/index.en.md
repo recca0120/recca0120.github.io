@@ -292,3 +292,10 @@ Handling time intervals with raw `DateTime` is easy to write, hard to debug, and
 - Immutable design — safe to pass around without worrying about mutation
 
 Good fit for anything involving "a span of time": booking systems, shift scheduling, reports, event dates, contract validity periods.
+
+## References
+
+- [League Period Official Documentation](https://period.thephpleague.com/)
+- [league/period GitHub Repository](https://github.com/thephpleague/period)
+- [Packagist: league/period](https://packagist.org/packages/league/period)
+- [Allen's Interval Algebra on Wikipedia](https://en.wikipedia.org/wiki/Allen%27s_interval_algebra)

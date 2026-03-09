@@ -2,6 +2,7 @@
 title: 'sslh: Run HTTPS and SSH on Port 443 at the Same Time'
 date: '2026-03-28T09:00:00+08:00'
 slug: sslh-port-multiplexer
+image: featured.jpg
 description: 'sslh is a protocol multiplexer that lets SSH, HTTPS, and OpenVPN share a single port. The most common use case: hide SSH on port 443 to get through firewalls that only allow HTTP/HTTPS.'
 categories:
   - Tools
@@ -202,3 +203,9 @@ If the goal is "SSH through a firewall," sslh is the most direct solution. If th
 ## Summary
 
 Multiple services, one port. sslh routes by inspecting the first packet. The most common setup is SSH on 443, getting through firewalls that only allow HTTPS. Once configured, SSH clients just change port from 22 to 443 — everything else stays the same.
+
+## References
+
+- [sslh GitHub Repository](https://github.com/yrutschle/sslh)
+- [sslh Configuration Documentation](https://github.com/yrutschle/sslh/blob/master/doc/config.md)
+- [OpenSSH Client Configuration (ssh_config man page)](https://man.openbsd.org/ssh_config)

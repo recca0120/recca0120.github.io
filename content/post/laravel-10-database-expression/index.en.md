@@ -104,3 +104,9 @@ class IfExpression implements Expression
 ```
 
 By encapsulating cross-database differences inside an Expression class, the calling code only needs `new IfExpression(...)`. The code is much cleaner and more reusable.
+
+## References
+
+- [Laravel 10 Database Raw Expressions Official Documentation](https://laravel.com/docs/10.x/queries#raw-expressions)
+- [Laravel Framework PR #44784: Introducing the Expression interface](https://github.com/laravel/framework/pull/44784)
+- [Laravel Query Builder Official Documentation](https://laravel.com/docs/10.x/queries)

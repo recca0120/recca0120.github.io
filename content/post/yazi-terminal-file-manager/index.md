@@ -2,6 +2,7 @@
 title: 'yazi：Rust 寫的終端機檔案管理器，vim 鍵位、圖片預覽、Alacritty 解法'
 date: '2026-03-26T09:00:00+08:00'
 slug: yazi-terminal-file-manager
+image: featured.jpg
 description: 'yazi 是 Rust 寫的非同步終端機檔案管理器，vim 鍵位、圖片預覽、Lua 外掛、整合 fzf/zoxide。Alacritty 不支援圖片協議，macOS 用 Chafa，Linux 用 Überzug++ 搭配 X11/Wayland。'
 categories:
   - Tools
@@ -218,3 +219,10 @@ ya pack -a yazi-rs/plugins#git
 yazi 比起 ranger 或 lf，速度快很多，主要是非同步架構的差異。vim 鍵位習慣之後，大部分的檔案操作都不需要離開終端。
 
 Alacritty 使用者：macOS 裝 Chafa 就夠，yazi 自動偵測。Linux 用 Überzug++ 效果更好，畫質是真正的圖片而不是字符模擬。兩者都不需要額外設定，裝完開 yazi 就能看到圖片預覽。
+
+## 參考資源
+
+- [yazi 官方文件](https://yazi-rs.github.io/docs/)
+- [yazi GitHub 專案頁面](https://github.com/sxyazi/yazi)
+- [Chafa 官方網站（字元圖片渲染工具）](https://hpjansson.org/chafa/)
+- [Überzug++ GitHub 專案頁面（Linux 圖片疊層工具）](https://github.com/jstkdng/ueberzugpp)

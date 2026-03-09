@@ -147,3 +147,10 @@ After the import completes, go to the EC2 Console:
 - Re-link your TeamViewer account
 - Install NVIDIA drivers
 - Follow the documentation to enable [ENA Enhanced Networking](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/enhanced-networking.html#supported_instances)
+
+## References
+
+- [AWS VM Import/Export official documentation](https://docs.aws.amazon.com/vm-import/latest/userguide/what-is-vmimport.html)
+- [Getting started with Windows instances on Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/EC2_GetStarted.html)
+- [Required IAM permissions for VM Import (AWS docs)](https://docs.aws.amazon.com/vm-import/latest/userguide/required-permissions.html)
+- [ENA enhanced networking setup (AWS docs)](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/enhanced-networking.html)

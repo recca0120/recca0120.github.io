@@ -24,3 +24,9 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 ```
 
 加到 `~/.bashrc` 或 `~/.zshrc` 就不用每次手動設定了。
+
+## 參考資源
+
+- [Apple 開發者文件：fork 安全性問題](https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/fork.2.html) — macOS fork 行為說明
+- [GuzzleHttp GitHub 儲存庫](https://github.com/guzzle/guzzle) — Guzzle HTTP client 原始碼與 issue tracker
+- [PHP 官方文件：Laravel Artisan Tinker](https://laravel.com/docs/artisan#tinker) — artisan tinker REPL 使用說明

@@ -279,3 +279,11 @@ API 完全一樣，只是攔截層級從 network-level 降到 global patch。測
 | Jest 簡單場景 | **fetch-mock**（不要用 jest-fetch-mock，已停止維護） |
 
 msw-fetch-mock 的甜蜜點在：你想要 MSW 的攔截品質，但又想要 undici/Cloudflare 風格的簡潔 API，而且需要 `times()`、`persist()`、`assertNoPendingInterceptors()` 這些測試生命週期管理功能。
+
+## 參考資源
+
+- [msw-fetch-mock GitHub 儲存庫](https://github.com/recca0120/msw-fetch-mock) — 原始碼、API 文件與使用範例
+- [MSW 官方文件](https://mswjs.io/docs/) — Mock Service Worker 完整使用指南
+- [nock GitHub 儲存庫](https://github.com/nock/nock) — Node.js HTTP mocking 工具
+- [undici MockAgent 文件](https://undici.nodejs.org/#/docs/api/MockAgent) — Node.js 原生 fetch mock 方案
+- [Cloudflare Workers 測試文件](https://developers.cloudflare.com/workers/testing/vitest-integration/) — Cloudflare Workers 測試環境說明

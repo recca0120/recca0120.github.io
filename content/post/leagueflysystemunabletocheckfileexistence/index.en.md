@@ -29,3 +29,10 @@ See this [Laravel issue](https://github.com/laravel/framework/issues/45639) for 
 ## Add s3:ListBucket Permission
 
 After adding `s3:ListBucket` to the IAM Policy, checking for non-existent files will correctly return `false`.
+
+## References
+
+- [Laravel Docs: File Storage - S3 Driver](https://laravel.com/docs/filesystem#s3-driver-configuration)
+- [League Flysystem Official Documentation](https://flysystem.thephpleague.com/docs/)
+- [AWS Docs: S3 IAM Actions Reference](https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-with-s3-actions.html)
+- [Laravel GitHub Issue #45639: S3 exists() 403 discussion](https://github.com/laravel/framework/issues/45639)

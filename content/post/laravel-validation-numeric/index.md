@@ -76,3 +76,9 @@ class MinNumberController extends Controller
 ```
 
 所以數字相關的驗證規則 (`min`, `max`, `between`) 前面都要加上 `numeric`，否則 Laravel 會用字串長度來判斷。
+
+## 參考資源
+
+- [Laravel 官方文件：驗證規則 - numeric](https://laravel.com/docs/validation#rule-numeric)
+- [Laravel 官方文件：驗證規則 - min / max / between](https://laravel.com/docs/validation#rule-min)
+- [Laravel 官方文件：驗證 - 可用的驗證規則總覽](https://laravel.com/docs/validation#available-validation-rules)

@@ -207,3 +207,11 @@ Test logic usually doesn't care if an email looks real — it just needs to be a
 polyfactory's core idea is one thing: **types are the specification, factories generate data according to types**.
 
 Combined with [pytest](/en/p/pytest-getting-started/) fixtures, getting test data down to one or two lines is straightforward — you can focus on what the test is actually checking.
+
+## References
+
+- [polyfactory GitHub repository](https://github.com/litestar-org/polyfactory)
+- [polyfactory official documentation](https://polyfactory.litestar.dev/)
+- [Pydantic v2 official documentation](https://docs.pydantic.dev/latest/)
+- [Faker official documentation](https://faker.readthedocs.io/)
+- [pytest fixture documentation](https://docs.pytest.org/en/stable/how-to/fixtures.html)

@@ -2,6 +2,7 @@
 title: 'Terraform: Manage Cloud Infrastructure as Code, Stop Clicking Around'
 date: '2026-03-14T09:00:00+08:00'
 slug: terraform-infrastructure-as-code
+image: featured.jpg
 description: 'Terraform is an Infrastructure as Code tool that manages AWS, GCP, Cloudflare and 3000+ providers with HCL. Covers installation, HCL syntax, state management, module structure, multi-environment strategy, and a working S3+CloudFront deployment example.'
 categories:
   - DevOps
@@ -653,3 +654,11 @@ resource "aws_s3_bucket" "data" {
 Terraform turns infrastructure into code that can be reviewed, version-controlled, and reused. `plan` shows you exactly what will happen before it happens. `state` lets Terraform know the current reality. `module` lets you share configurations across environments without copy-pasting.
 
 Start small — import one existing resource, wrap it in code, and build from there. Every resource you move out of ClickOps becomes a change you can track in git.
+
+## References
+
+- [Terraform Official Documentation](https://developer.hashicorp.com/terraform/docs)
+- [Terraform Registry: Providers and Modules](https://registry.terraform.io/)
+- [HashiCorp AWS Provider Documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [tfenv: Terraform Version Manager](https://github.com/tfutils/tfenv)
+- [Terraform Language Reference (HCL)](https://developer.hashicorp.com/terraform/language)

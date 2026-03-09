@@ -82,3 +82,9 @@ systemd=true
 ```
 
 After making the change, restart WSL2 and Docker will start automatically.
+
+## References
+
+- [Install Docker Engine on Ubuntu (official docs)](https://docs.docker.com/engine/install/ubuntu/)
+- [WSL documentation: Use systemd in WSL 2 (Microsoft docs)](https://learn.microsoft.com/en-us/windows/wsl/systemd)
+- [Docker post-installation steps for running without sudo](https://docs.docker.com/engine/install/linux-postinstall/)

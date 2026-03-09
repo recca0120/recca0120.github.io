@@ -94,3 +94,10 @@ class RandomHashTest extends TestCase
 ```
 
 這樣即使內部有亂數，測試依然能寫出明確的 assertion。
+
+## 參考資源
+
+- [Mockery 官方文件：Capturing Arguments](http://docs.mockery.io/en/latest/reference/argument_validation.html#capturing-arguments)
+- [Mockery GitHub 倉庫](https://github.com/mockery/mockery)
+- [PHPUnit 官方文件](https://phpunit.de/documentation.html)
+- [Mockery 官方文件：Spy 用法](http://docs.mockery.io/en/latest/reference/spies.html)

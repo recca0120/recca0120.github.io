@@ -2,6 +2,7 @@
 title: 'yazi: Rust Terminal File Manager with Image Preview — Alacritty Fix Included'
 date: '2026-03-26T09:00:00+08:00'
 slug: yazi-terminal-file-manager
+image: featured.jpg
 description: 'yazi is an async Rust terminal file manager with vim keybindings, image preview, Lua plugins, and fzf/zoxide integration. Alacritty has no native image protocol — macOS uses Chafa, Linux uses Überzug++ with X11/Wayland.'
 categories:
   - Tools
@@ -216,3 +217,10 @@ ya pack -a yazi-rs/plugins#git
 yazi is noticeably faster than ranger or lf, mainly because of the async architecture. Once you're used to the vim keybindings, most file operations happen without leaving the terminal.
 
 Alacritty users: on macOS, install Chafa and yazi picks it up automatically. On Linux, Überzug++ gives real image quality instead of character simulation. Either way, no extra configuration — install the tool and open yazi.
+
+## References
+
+- [yazi official documentation](https://yazi-rs.github.io/docs/)
+- [yazi GitHub repository](https://github.com/sxyazi/yazi)
+- [Chafa official website (character-based image renderer)](https://hpjansson.org/chafa/)
+- [Überzug++ GitHub repository (Linux image overlay tool)](https://github.com/jstkdng/ueberzugpp)

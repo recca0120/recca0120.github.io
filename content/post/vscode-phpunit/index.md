@@ -346,3 +346,12 @@ xdebug.client_port = 9003
 如果需要手動觸發，可以用 Command Palette 執行 `PHPUnit: Reload tests`。
 
 擴充套件的啟動條件是 workspace 裡有任何 `*.php` 檔案。沒有 PHP 檔案的專案不會載入這個擴充套件，不影響效能。
+
+## 參考資源
+
+- [PHPUnit & Pest Test Explorer VS Code Marketplace 頁面](https://marketplace.visualstudio.com/items?itemName=recca0120.vscode-phpunit)
+- [PHPUnit 官方文件](https://phpunit.de/documentation.html)
+- [Pest 官方文件](https://pestphp.com/docs/installation)
+- [Xdebug 官方文件](https://xdebug.org/docs/)
+- [Laravel Sail 官方文件](https://laravel.com/docs/sail)
+- [ParaTest GitHub 專案頁面](https://github.com/paratestphp/paratest)

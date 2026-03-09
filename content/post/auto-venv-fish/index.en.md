@@ -2,6 +2,7 @@
 title: 'auto-venv: Fish Shell Auto-Activates Python Virtualenvs on cd'
 date: '2026-03-21T09:00:00+08:00'
 slug: auto-venv-fish
+image: featured.jpg
 description: 'auto-venv is a Fish shell plugin that automatically activates and deactivates Python venvs on directory change. Supports .venv, venv, .env, env naming, uses git root for scope, and works with z, zoxide, and any other navigation tool.'
 categories:
   - Python
@@ -150,3 +151,11 @@ auto-venv has no configuration. The venv directory names are hardcoded (`env`, `
 ## Summary
 
 The entire plugin is under 40 lines. Watching `$PWD` instead of overriding `cd` makes it compatible with every navigation tool. Using the git root as the lookup base means moving between subdirectories never accidentally kills the venv. Once installed, you stop thinking about virtual environment management entirely.
+
+## References
+
+- [auto-venv on GitHub](https://github.com/nakulj/auto-venv)
+- [fisher — Fish shell plugin manager](https://github.com/jorgebucaran/fisher)
+- [Fish Shell Docs — Event Handling with on-variable](https://fishshell.com/docs/current/cmds/function.html)
+- [Python Docs — venv: Creation of virtual environments](https://docs.python.org/3/library/venv.html)
+

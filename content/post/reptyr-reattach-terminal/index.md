@@ -2,6 +2,7 @@
 title: 'reptyr：SSH 忘開 tmux 也救得回來，把 process 移進去'
 date: '2026-03-25T09:00:00+08:00'
 slug: reptyr-reattach-terminal
+image: featured.jpg
 description: 'reptyr 用 ptrace 把已在執行的 process 重新附加到新的 terminal。SSH 忘開 tmux 就跑了長時間任務，或者想把 background process 移進 screen，reptyr 一個指令搞定。'
 categories:
   - Tools
@@ -143,3 +144,10 @@ reptyr -l
 ## 小結
 
 忘開 tmux 不是世界末日。`reptyr <PID>` 一行，process 就從快死的 SSH session 搬進 tmux，繼續跑完。記得先 `disown` 讓它脫離 shell，再開 tmux 把它拉進去。Ubuntu 的話順便把 `ptrace_scope` 調整一下。
+
+## 參考資源
+
+- [reptyr GitHub 官方倉庫](https://github.com/nelhage/reptyr)
+- [tmux 官方 GitHub 倉庫](https://github.com/tmux/tmux)
+- [Linux Yama ptrace_scope 安全說明](https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html)
+- [tmux 使用手冊](https://man.openbsd.org/tmux.1)

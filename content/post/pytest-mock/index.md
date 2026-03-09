@@ -248,3 +248,10 @@ pytest-mock 不是新功能，而是讓 `unittest.mock` 的使用體驗配合 py
 - `mocker.stub` → 最輕量的假回調
 
 搭配 [pytest](/p/pytest-getting-started/) 的 fixture 和 [polyfactory](/p/polyfactory-test-data/) 的假資料，測試的準備工作基本上可以壓到最低。
+
+## 參考資源
+
+- [pytest-mock 官方文件](https://pytest-mock.readthedocs.io/)
+- [pytest-mock GitHub 倉庫](https://github.com/pytest-dev/pytest-mock)
+- [Python unittest.mock 官方文件](https://docs.python.org/3/library/unittest.mock.html)
+- [pytest fixture 說明](https://docs.pytest.org/en/stable/how-to/fixtures.html)

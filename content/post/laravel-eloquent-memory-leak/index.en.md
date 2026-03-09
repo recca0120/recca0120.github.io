@@ -35,3 +35,10 @@ foreach ($users as $user) {
 ```
 
 Some people in the thread also mentioned using `$user->setRelation('posts', null)` to clear a single relation, but in practice the results were unreliable. I recommend clearing all relations to be safe.
+
+## References
+
+- [Laravel Docs: Eloquent Relationships](https://laravel.com/docs/eloquent-relationships)
+- [Laracasts Discussion: Laravel 5.8 Memory Leak](https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak)
+- [Laravel Docs: Eager Loading](https://laravel.com/docs/eloquent-relationships#eager-loading)
+- [Laravel Source: Model::setRelations](https://github.com/laravel/framework/blob/master/src/Illuminate/Database/Eloquent/Model.php)

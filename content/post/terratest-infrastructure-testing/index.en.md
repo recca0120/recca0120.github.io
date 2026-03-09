@@ -2,6 +2,7 @@
 title: 'Terratest: Automated Integration Testing for Terraform Infrastructure'
 date: '2026-03-14T09:00:00+08:00'
 slug: terratest-infrastructure-testing
+image: featured.jpg
 description: 'Terratest is a Go library for writing real integration tests against Terraform modules. It deploys actual infrastructure, validates it, then destroys it — covering terraform, http_helper, aws, retry, and test_structure packages with complete Go code examples.'
 categories:
   - DevOps
@@ -940,3 +941,12 @@ Terratest covers the entire testing surface for Terraform modules:
 | `random` | Unique ID generation for resource namespacing |
 
 The fundamental workflow never changes: `defer Destroy`, then `InitAndApply`, then assert. Everything else is composing those building blocks with retry logic, AWS API calls, and HTTP checks to cover the specific behaviour your module promises to deliver.
+
+## References
+
+- [Terratest Official Website](https://terratest.gruntwork.io/)
+- [Terratest GitHub Repository](https://github.com/gruntwork-io/terratest)
+- [Terratest Official Documentation](https://terratest.gruntwork.io/docs/)
+- [Go Testing Package Documentation](https://pkg.go.dev/testing)
+- [testify: Go Assertion Library](https://github.com/stretchr/testify)
+- [Gruntwork Blog: Terraform Testing Strategies](https://blog.gruntwork.io/)

@@ -246,3 +246,10 @@ pytest-mock doesn't add new capabilities — it makes `unittest.mock` fit natura
 - `mocker.stub` → lightest-weight fake callback
 
 Combined with [pytest](/en/p/pytest-getting-started/) fixtures and [polyfactory](/en/p/polyfactory-test-data/) for test data, test setup overhead gets very low.
+
+## References
+
+- [pytest-mock official documentation](https://pytest-mock.readthedocs.io/)
+- [pytest-mock GitHub repository](https://github.com/pytest-dev/pytest-mock)
+- [Python unittest.mock official documentation](https://docs.python.org/3/library/unittest.mock.html)
+- [pytest fixtures documentation](https://docs.pytest.org/en/stable/how-to/fixtures.html)

@@ -106,3 +106,10 @@ class MigrationTest extends TestCase
 ```
 
 跑 `vendor/bin/phpunit`，如果 migration 有問題會直接報錯。這樣每次改 migration 都能馬上知道有沒有寫壞。
+
+## 參考資源
+
+- [Laravel 官方文件：Database Migrations](https://laravel.com/docs/migrations)
+- [Laravel 官方文件：Database Testing](https://laravel.com/docs/database-testing)
+- [Doctrine DBAL 官方文件：Schema Manager](https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/schema-manager.html)
+- [Laravel 原始碼：Blueprint](https://github.com/laravel/framework/blob/master/src/Illuminate/Database/Schema/Blueprint.php)

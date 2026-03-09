@@ -147,3 +147,10 @@ aws ec2 describe-import-image-tasks --region eu-central-1
 - 重新綁定 TeamViewer 帳號
 - 安裝 NVIDIA 驅動
 - 參考文件啟用 [ENA 增強網路](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/enhanced-networking.html#supported_instances)
+
+## 參考資源
+
+- [AWS VM Import/Export 官方文件](https://docs.aws.amazon.com/vm-import/latest/userguide/what-is-vmimport.html)
+- [AWS EC2 Windows 執行個體官方指南](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/EC2_GetStarted.html)
+- [AWS IAM 角色設定說明](https://docs.aws.amazon.com/vm-import/latest/userguide/required-permissions.html)
+- [ENA 增強網路設定（AWS 官方文件）](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/enhanced-networking.html)

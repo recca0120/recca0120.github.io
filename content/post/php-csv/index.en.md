@@ -48,3 +48,9 @@ echo toFloat('8.90E-12'); // outputs 0.0000000000089
 ```
 
 This correctly converts the number regardless of how many decimal places it has.
+
+## References
+
+- [PHP Manual: sprintf](https://www.php.net/manual/en/function.sprintf.php) — Format specifiers and precision control
+- [PHP Manual: bcmath functions](https://www.php.net/manual/en/book.bcmath.php) — Arbitrary precision mathematics
+- [PHP Manual: preg_match](https://www.php.net/manual/en/function.preg-match.php) — Regular expression matching

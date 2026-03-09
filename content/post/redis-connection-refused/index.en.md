@@ -39,3 +39,9 @@ Restart Redis after making the changes and connections should work again.
 ## Note
 
 This is fine for development environments. For production, keep `protected-mode yes` and use password authentication or firewall rules to control access instead.
+
+## References
+
+- [Redis 6.0 Release Notes — security changes](https://raw.githubusercontent.com/redis/redis/6.0/00-RELEASENOTES)
+- [Redis configuration documentation: bind and protected-mode](https://redis.io/docs/latest/operate/oss_and_stack/management/config/)
+- [Redis security best practices](https://redis.io/docs/latest/operate/oss_and_stack/management/security/)

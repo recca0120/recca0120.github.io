@@ -268,3 +268,11 @@ describe('Alpine $errors', () => {
     });
 });
 ```
+
+## 參考資源
+
+- [Alpine.js 官方文件 — Plugins](https://alpinejs.dev/advanced/extending)
+- [Laravel 驗證回傳格式說明](https://laravel.com/docs/validation#validation-error-response-format)
+- [Laravel MessageBag API 文件](https://laravel.com/docs/errors#validation-exceptions)
+- [Axios Interceptors 官方說明](https://axios-http.com/docs/interceptors)
+- [axios-mock-adapter GitHub](https://github.com/ctimmerm/axios-mock-adapter)

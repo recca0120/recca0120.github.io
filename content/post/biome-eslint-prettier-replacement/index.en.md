@@ -2,6 +2,7 @@
 title: 'Replace ESLint + Prettier with Biome: 35x Faster, One Tool'
 date: '2026-03-10T09:00:00+08:00'
 slug: biome-eslint-prettier-replacement
+image: featured.jpg
 description: 'Biome is a Rust-based frontend toolchain that formats 35x faster than Prettier, includes 455 lint rules covering ESLint + TypeScript ESLint, and replaces five config files with one biome.json. Auto-migration included.'
 categories:
   - Tools
@@ -246,3 +247,12 @@ In practice: `biome check` on large projects usually completes in under a second
 Not every ESLint plugin has a Biome equivalent. If you rely on specific plugins (some `eslint-plugin-import` rules, for example), verify Biome covers them before migrating. Most common TypeScript ESLint rules are supported.
 
 Test on a small project first, then roll it out to your main codebase once you're confident.
+
+## References
+
+- [Biome Official Documentation](https://biomejs.dev/docs/)
+- [Biome on GitHub](https://github.com/biomejs/biome)
+- [Biome Migration Guide from ESLint / Prettier](https://biomejs.dev/guides/migrate-eslint-prettier/)
+- [Biome Lint Rules Reference](https://biomejs.dev/linter/rules/)
+- [Biome Prettier Challenge Win — Performance Blog Post](https://biomejs.dev/blog/biome-wins-prettier-challenge/)
+

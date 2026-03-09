@@ -2,6 +2,7 @@
 title: 'Fish Shell + Laravel Valet: Auto-Switch PHP Versions and Composer v1/v2'
 date: '2026-03-20T09:00:00+08:00'
 slug: fish-valet-php-composer
+image: featured.jpg
 description: 'Use fish shell aliases and functions to make php, composer, and phpunit automatically follow Laravel Valet PHP versions. Handles legacy projects requiring Composer v1 with smart composer.phar detection.'
 categories:
   - PHP
@@ -123,3 +124,10 @@ composer --version
 The core idea: let development tools follow Valet's PHP version automatically instead of managing it manually. `php` and `phpunit` are simple aliases. `composer` needs a function because of the v1/v2 coexistence requirement.
 
 Dropping `composer.phar` in a project root acts as a flag — "this project needs v1." No extra config files, no environment variables, just a file that's already there for a reason.
+
+## References
+
+- [Fish Shell Official Documentation](https://fishshell.com/docs/current/index.html)
+- [Laravel Valet Official Documentation](https://laravel.com/docs/valet)
+- [Composer Official Download Page (all versions including phar)](https://getcomposer.org/download/)
+- [Fish Shell function command reference](https://fishshell.com/docs/current/cmds/function.html)

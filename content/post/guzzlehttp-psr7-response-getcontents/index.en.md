@@ -61,3 +61,9 @@ class Stream implements StreamInterface
 `getContents()` does not reset the pointer -- it reads from the current position forward. After the first read, the pointer is at the end, so the second read returns nothing.
 
 If you need to use `getContents()` and read multiple times, call `$response->getBody()->rewind()` first.
+
+## References
+
+- [GuzzleHttp PSR-7 GitHub Repository](https://github.com/guzzle/psr7)
+- [PSR-7 HTTP Message Interface Specification](https://www.php-fig.org/psr/psr-7/)
+- [PHP-FIG StreamInterface::getContents Definition](https://www.php-fig.org/psr/psr-7/#33-psrhttpmessagestreaminterface)

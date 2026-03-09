@@ -60,3 +60,11 @@ class DocsController extends Controller
 ```
 
 The flow is: Blade first processes the variables and directives in `demo.md`, outputs a plain Markdown string, then CommonMark converts it to HTML.
+
+## References
+
+- [league/commonmark Official Documentation](https://commonmark.thephpleague.com/)
+- [league/commonmark on GitHub](https://github.com/thephpleague/commonmark)
+- [Laravel Blade Templates Documentation](https://laravel.com/docs/blade)
+- [GitHub Flavored Markdown Extension for CommonMark](https://commonmark.thephpleague.com/2.4/extensions/github-flavored-markdown/)
+

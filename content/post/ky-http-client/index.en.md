@@ -2,6 +2,7 @@
 title: 'ky: Stop Writing Fetch Boilerplate'
 date: '2026-03-12T09:00:00+08:00'
 slug: ky-http-client
+image: featured.jpg
 description: 'ky is a tiny fetch-based HTTP client — 4KB gzip, zero dependencies. Built-in retry with exponential backoff, timeout, hooks (like interceptors), JSON shorthand. 3x smaller than axios, half the code of raw fetch.'
 categories:
   - Frontend
@@ -320,3 +321,10 @@ try {
 ky has a clear purpose: solve fetch's pain points without adding complexity. Retry, timeout, hooks, JSON shorthand — these are things every fetch-based project eventually implements itself. ky bundles it all in 4KB.
 
 If your project uses axios but doesn't actually use anything axios-specific, switching to ky cuts bundle size by two-thirds, and the API looks almost identical.
+
+## References
+
+- [ky GitHub Repository](https://github.com/sindresorhus/ky)
+- [ky npm Package Page](https://www.npmjs.com/package/ky)
+- [MDN Fetch API Official Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+- [axios GitHub Repository](https://github.com/axios/axios)

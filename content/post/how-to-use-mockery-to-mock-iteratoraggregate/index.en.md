@@ -74,3 +74,10 @@ class IteratorAggregateTest extends TestCase
 ```
 
 Three things are all you need: the class implements `IteratorAggregate`, mock `getIterator`, and return an `ArrayObject`.
+
+## References
+
+- [Mockery Official Documentation](https://docs.mockery.io/)
+- [Mockery GitHub Repository](https://github.com/mockery/mockery)
+- [PHP IteratorAggregate Interface Documentation](https://www.php.net/manual/en/class.iteratoraggregate.php)
+- [PHP ArrayObject Class Documentation](https://www.php.net/manual/en/class.arrayobject.php)

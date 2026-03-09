@@ -330,3 +330,10 @@ Core concepts:
 - **Archive** — merge deltas into main spec after completion, forming the system's evolution record
 
 v1.2.0 (February 2026), 28k+ GitHub stars, MIT license.
+
+## References
+
+- [OpenSpec Official Website](https://openspec.dev/) — Official documentation, quick start, and tool integration guides
+- [OpenSpec npm Package: @fission-ai/openspec](https://www.npmjs.com/package/@fission-ai/openspec) — Installation and version information
+- [RFC 2119: Key Words for Requirement Levels](https://www.rfc-editor.org/rfc/rfc2119) — Formal definition of MUST/SHALL/SHOULD/MAY keywords
+- [Claude Code Official Documentation](https://docs.anthropic.com/en/docs/claude-code) — AI coding assistant that integrates with OpenSpec

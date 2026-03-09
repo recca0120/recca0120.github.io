@@ -243,3 +243,12 @@ It is **experimental**. The author describes this as demo-level code in the READ
 ---
 
 If you're new to sql.js, [Getting Started with sql.js: SQLite in the Browser](/post/sql-js-browser-sqlite/) covers the fundamentals. For use cases that need offline writes, [Offline Web Apps with sql.js and IndexedDB](/post/sql-js-offline-web-app/) walks through a complete implementation. If you want a broader comparison of browser storage options, [Browser Storage Solutions Compared](/post/browser-storage-comparison/) covers the landscape.
+
+## References
+
+- [sql.js-httpvfs GitHub Repository](https://github.com/phiresky/sql.js-httpvfs)
+- [sql.js GitHub Repository](https://github.com/sql-js/sql.js)
+- [SQLite FTS5 Full-Text Search Documentation](https://www.sqlite.org/fts5.html)
+- [SQLite EXPLAIN QUERY PLAN](https://www.sqlite.org/eqp.html)
+- [HTTP Range Requests (MDN Web Docs)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests)
+- [Official SQLite Wasm with OPFS](https://sqlite.org/wasm/doc/trunk/index.md)

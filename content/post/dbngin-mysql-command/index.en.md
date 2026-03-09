@@ -24,3 +24,9 @@ echo 'export PATH=`printf "%s"$'\''\n'\'' /Users/Shared/DBngin/mysql/* | sort -V
 ```
 
 After reopening the terminal, you can use the `mysql` command directly.
+
+## References
+
+- [DBngin Official Website](https://dbngin.com/)
+- [MySQL Docs — The mysql Command-Line Client](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)
+

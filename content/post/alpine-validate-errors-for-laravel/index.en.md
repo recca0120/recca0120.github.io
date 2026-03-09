@@ -268,3 +268,11 @@ describe('Alpine $errors', () => {
     });
 });
 ```
+
+## References
+
+- [Alpine.js Official Docs — Extending with Plugins](https://alpinejs.dev/advanced/extending)
+- [Laravel Validation Error Response Format](https://laravel.com/docs/validation#validation-error-response-format)
+- [Laravel MessageBag API](https://laravel.com/docs/errors#validation-exceptions)
+- [Axios Interceptors Documentation](https://axios-http.com/docs/interceptors)
+- [axios-mock-adapter on GitHub](https://github.com/ctimmerm/axios-mock-adapter)

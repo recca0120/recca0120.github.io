@@ -59,3 +59,10 @@ VSCode released a new Testing API, and the 2.0 version wasn't designed with Dock
 ```
 
 Feel free to file an issue on [GitHub](https://github.com/recca0120/vscode-phpunit) if you run into any problems.
+
+## References
+
+- [PHPUnit for VSCode extension page on the Marketplace](https://marketplace.visualstudio.com/items?itemName=recca0120.vscode-phpunit)
+- [PHPUnit for VSCode GitHub repository](https://github.com/recca0120/vscode-phpunit)
+- [VS Code Testing API official documentation](https://code.visualstudio.com/api/extension-guides/testing)
+- [PHPUnit official documentation](https://docs.phpunit.de/)

@@ -74,3 +74,10 @@ class IteratorAggregateTest extends TestCase
 ```
 
 三個條件就夠了：class implement `IteratorAggregate`、mock `getIterator`、return `ArrayObject`。
+
+## 參考資源
+
+- [Mockery 官方文件](https://docs.mockery.io/)
+- [Mockery GitHub Repository](https://github.com/mockery/mockery)
+- [PHP IteratorAggregate 介面文件](https://www.php.net/manual/en/class.iteratoraggregate.php)
+- [PHP ArrayObject 類別文件](https://www.php.net/manual/en/class.arrayobject.php)

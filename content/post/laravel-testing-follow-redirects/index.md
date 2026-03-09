@@ -55,3 +55,9 @@ class UserControllerTest extends TestCase {
 ```php
 $this->followRedirects()->post('user', ['name' => 'foo']);
 ```
+
+## 參考資源
+
+- [Laravel 官方文件：HTTP Tests](https://laravel.com/docs/http-tests)
+- [Laravel 原始碼：MakesHttpRequests::followingRedirects](https://github.com/laravel/framework/blob/master/src/Illuminate/Testing/Concerns/MakesHttpRequests.php)
+- [Laravel 官方文件：HTTP Responses — Redirects](https://laravel.com/docs/responses#redirects)

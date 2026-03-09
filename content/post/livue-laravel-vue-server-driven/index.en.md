@@ -435,3 +435,11 @@ Recommendations:
 - Frontend team develops independently, needs full SPA control → **Inertia.js**
 
 LiVue is currently at v1.4.8 and is still early-stage software. It's worth trying on new projects, but factor in maturity before committing to it in production.
+
+## References
+
+- [LiVue Official Website and Documentation](https://livue-laravel.com/)
+- [Livewire Official Documentation](https://livewire.laravel.com/)
+- [Inertia.js Official Documentation](https://inertiajs.com/)
+- [Vue 3 Official Documentation](https://vuejs.org/)
+- [Pinia Official Documentation](https://pinia.vuejs.org/)

@@ -61,3 +61,10 @@ export default defineConfig({
     ],
 });
 ```
+
+## References
+
+- [Laravel Docs: Vite Frontend Integration](https://laravel.com/docs/vite)
+- [laravel-vite-plugin GitHub Repository](https://github.com/laravel/vite-plugin)
+- [Vite Docs: server.host Configuration](https://vitejs.dev/config/server-options.html#server-host)
+- [Laravel Valet Documentation](https://laravel.com/docs/valet)

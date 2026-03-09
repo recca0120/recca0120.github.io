@@ -207,3 +207,11 @@ user = UserFactory.build()
 polyfactory 的核心概念就一個：**型別就是規格，factory 照著型別生資料**。
 
 配合 [pytest](/p/pytest-getting-started/) 的 fixture 用，測試準備資料這件事基本上可以降到一兩行，把注意力放在測試邏輯本身。
+
+## 參考資源
+
+- [polyfactory GitHub 官方倉庫](https://github.com/litestar-org/polyfactory)
+- [polyfactory 官方文件](https://polyfactory.litestar.dev/)
+- [Pydantic v2 官方文件](https://docs.pydantic.dev/latest/)
+- [Faker 官方文件](https://faker.readthedocs.io/)
+- [pytest fixture 官方說明](https://docs.pytest.org/en/stable/how-to/fixtures.html)

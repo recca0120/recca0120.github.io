@@ -155,3 +155,10 @@ class ExampleTest extends TestCase
 ```
 
 php-mock has a limitation: `sleep` must be called within a namespace to be mockable. If `sleep` is called in the global namespace, this approach won't work.
+
+## References
+
+- [php-mock GitHub Repository](https://github.com/php-mock/php-mock) — Library for mocking PHP built-in functions
+- [Mockery Official Documentation](https://docs.mockery.io/en/latest/) — Complete guide to spy and mock objects
+- [PHPUnit Official Documentation](https://phpunit.de/documentation.html) — PHPUnit testing framework reference
+- [Laravel Docs: Service Container](https://laravel.com/docs/container) — How to swap container bindings in tests

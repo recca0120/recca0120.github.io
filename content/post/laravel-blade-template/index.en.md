@@ -86,3 +86,9 @@ this is content
 ```
 
 The first two are official Laravel approaches, but both require extracting the duplicate block into a separate file. The third method uses `ob_start` to capture the output into a buffer, then retrieves it -- no extra file needed. It's suitable for blocks that only repeat within a single template and aren't worth extracting into their own file.
+
+## References
+
+- [Laravel Blade Templates Official Documentation](https://laravel.com/docs/blade)
+- [Laravel Blade Components Official Documentation](https://laravel.com/docs/blade#components)
+- [PHP ob_start Function Documentation](https://www.php.net/manual/en/function.ob-start.php)

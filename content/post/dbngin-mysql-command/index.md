@@ -24,3 +24,9 @@ echo 'export PATH=`printf "%s"$'\''\n'\'' /Users/Shared/DBngin/mysql/* | sort -V
 ```
 
 重新開啟終端機後就能直接使用 `mysql` 指令了。
+
+## 參考資源
+
+- [DBngin 官方網站](https://dbngin.com/)
+- [MySQL 官方文件 — 命令列工具](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)
+

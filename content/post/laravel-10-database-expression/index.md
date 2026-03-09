@@ -104,3 +104,9 @@ class IfExpression implements Expression
 ```
 
 把跨資料庫的差異封裝進 Expression class，使用端只需要 `new IfExpression(...)` 就好，程式碼乾淨很多，也更容易重複使用。
+
+## 參考資源
+
+- [Laravel 10 Database Expression 官方文件](https://laravel.com/docs/10.x/queries#raw-expressions)
+- [Laravel Framework PR #44784：新增 Expression interface](https://github.com/laravel/framework/pull/44784)
+- [Laravel Query Builder 官方文件](https://laravel.com/docs/10.x/queries)

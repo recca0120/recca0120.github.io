@@ -2,6 +2,7 @@
 title: 'Docker Image Diet: Find the Problem With dive Before Trying to Fix It'
 date: '2026-03-29T09:00:00+08:00'
 slug: docker-image-best-practices
+image: featured.jpg
 description: "Don't guess why your Docker image is large — use docker image history and dive to see exactly where the weight is. Fix what's actually broken. A real 1.25GB → 139MB walkthrough."
 categories:
   - DevOps
@@ -225,3 +226,12 @@ The common culprits:
 - **Duplicate node_modules**: add `.dockerignore`
 
 Use tools to diagnose, make targeted fixes, then verify with tools again. More effective than guessing.
+
+## References
+
+- [dive on GitHub — Docker image layer explorer](https://github.com/wagoodman/dive)
+- [Docker Docs — Multi-stage builds](https://docs.docker.com/build/building/multi-stage/)
+- [Docker Docs — .dockerignore file](https://docs.docker.com/reference/dockerfile/#dockerignore-file)
+- [GoogleContainerTools Distroless images](https://github.com/GoogleContainerTools/distroless)
+- [Docker Docs — docker image history](https://docs.docker.com/reference/cli/docker/image/history/)
+

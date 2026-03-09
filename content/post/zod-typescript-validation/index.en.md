@@ -2,6 +2,7 @@
 title: 'Zod: TypeScript Schema Validation Without the Boilerplate'
 date: '2026-03-11T09:00:00+08:00'
 slug: zod-typescript-validation
+image: featured.jpg
 description: 'Zod is a TypeScript-first schema validation library. Define a schema once, get runtime validation and TypeScript types automatically. Supports parse/safeParse, transform, refine, discriminated union. 2kb gzip, zero dependencies.'
 categories:
   - Frontend
@@ -299,3 +300,10 @@ One schema handles both form validation and type inference.
 ## Summary
 
 Zod changes one thing: type definitions and data validation go from being two separate tasks to one. Use it at API boundaries, form inputs, and environment variables — anywhere data comes in from outside. After that, the rest of your code can safely assume the data has the right shape.
+
+## References
+
+- [Zod official documentation](https://zod.dev/)
+- [Zod GitHub repository](https://github.com/colinhacks/zod)
+- [React Hook Form official documentation](https://react-hook-form.com/)
+- [@hookform/resolvers (Zod integration package)](https://github.com/react-hook-form/resolvers)

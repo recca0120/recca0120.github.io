@@ -2,6 +2,7 @@
 title: 'Zustand：React 狀態管理，不需要 Provider，不需要 Reducer'
 date: '2026-03-13T09:00:00+08:00'
 slug: zustand-react-state-management
+image: featured.jpg
 description: 'Zustand 是 1KB 的 React 狀態管理庫，一個 create() 搞定 state 和 action，不需要 Provider 包裝，selector 自動避免多餘 re-render，內建 persist、devtools、immer middleware。'
 categories:
   - Frontend
@@ -372,3 +373,10 @@ const useStore = create<MyStore>()(
 Zustand 改變的不是概念，而是儀式。state 在哪、action 在哪、怎麼更新，這些都沒變，只是不再需要繞那麼多彎。一個 `create()`，加上需要的 middleware，就是完整的狀態管理。
 
 如果你的專案在用 Context 管有頻繁更新的狀態，或者覺得 Redux 的設定太繁瑣，Zustand 值得換。
+
+## 參考資源
+
+- [Zustand 官方文件](https://zustand.docs.pmnd.rs/)
+- [Zustand GitHub 專案頁面](https://github.com/pmndrs/zustand)
+- [Immer 官方文件（不可變狀態更新工具）](https://immerjs.github.io/immer/)
+- [Redux DevTools 瀏覽器擴充套件](https://github.com/reduxjs/redux-devtools)

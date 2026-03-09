@@ -156,3 +156,9 @@ CleanMyMac has a subscription fee and a polished GUI, but navigating it takes mu
 What Mole doesn't have: malware scanning and privacy protection features that CleanMyMac includes. For everyday junk removal, app uninstallation, and clearing dev artifacts, Mole covers everything a developer needs.
 
 Developers → Mole. General users → CleanMyMac. That's roughly the split.
+
+## References
+
+- [Mole GitHub Repository](https://github.com/tw93/Mole) — Source code, issue tracker, and installation instructions
+- [Homebrew tap: tw93/tap](https://github.com/tw93/homebrew-tap) — Homebrew installation source
+- [Mole Official README](https://github.com/tw93/Mole#readme) — Full command reference and configuration options

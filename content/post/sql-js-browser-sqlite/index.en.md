@@ -324,3 +324,11 @@ The other thing to weigh is initial load time. That 1.5 MB `.wasm` file is a rea
 If you want to pair sql.js with IndexedDB to build a genuinely offline-capable app — where data survives page refreshes — see [Building an Offline Web App with sql.js and IndexedDB](/post/sql-js-offline-web-app/).
 
 For a comparison of sql.js against localStorage, IndexedDB, and Cache API across different use cases, check out [Browser Storage Comparison: How to Choose Between localStorage, IndexedDB, and sql.js](/post/browser-storage-comparison/).
+
+## References
+
+- [sql.js GitHub Repository](https://github.com/sql-js/sql.js)
+- [sql.js Official Documentation](https://sql.js.org/documentation/)
+- [SQLite Official Website](https://www.sqlite.org/)
+- [Emscripten Documentation (WebAssembly toolchain)](https://emscripten.org/docs/getting_started/index.html)
+- [better-sqlite3: Native SQLite for Node.js](https://github.com/WiseLibs/better-sqlite3)

@@ -2,6 +2,7 @@
 title: 'SQL NULL 的兩個陷阱：JOIN 撈不到資料、UNIQUE 限制失效'
 date: '2026-03-24T09:00:00+08:00'
 slug: sql-null-join-unique
+image: featured.jpg
 description: '各資料庫對 NULL 的解釋不同，衍生兩個常見問題：JOIN 欄位都是 NULL 時資料撈不到，以及 UNIQUE 欄位允許多筆 NULL 導致限制失效。MySQL、PostgreSQL、SQLite、SQL Server 行為各不同。'
 categories:
   - Database
@@ -233,3 +234,10 @@ WHERE email IS NOT NULL;
 UNIQUE + nullable 欄位，要用 Partial Index 限制「只有非 NULL 的值才受 UNIQUE 約束」，光靠 `UNIQUE` 不夠。
 
 設計 schema 時明確決定欄位要不要允許 NULL，不要「先 nullable 再說」，因為 NULL 在 constraint 和 JOIN 裡的行為跟一般人預期的不同。
+
+## 參考資源
+
+- [PostgreSQL：NULL 值說明文件](https://www.postgresql.org/docs/current/functions-comparison.html)
+- [MySQL：IS NOT DISTINCT FROM 運算子說明](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html)
+- [SQLite：Partial Index 說明文件](https://www.sqlite.org/partialindex.html)
+- [SQL 標準 NULL 語義（Wikipedia）](https://en.wikipedia.org/wiki/Null_(SQL))

@@ -155,3 +155,10 @@ class ExampleTest extends TestCase
 ```
 
 php-mock 有個限制：`sleep` 必須在某個 namespace 底下才能被 mock。如果 `sleep` 是在全域 namespace 呼叫的，這招就不管用了。
+
+## 參考資源
+
+- [php-mock GitHub 儲存庫](https://github.com/php-mock/php-mock) — 直接 mock PHP 內建函式的工具
+- [Mockery 官方文件](https://docs.mockery.io/en/latest/) — Spy 與 Mock 物件的完整使用說明
+- [PHPUnit 官方文件](https://phpunit.de/documentation.html) — PHPUnit 測試框架完整文件
+- [Laravel 官方文件：Service Container swap](https://laravel.com/docs/container) — 測試中替換 Container 綁定的方法

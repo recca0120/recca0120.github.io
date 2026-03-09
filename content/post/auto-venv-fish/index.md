@@ -2,6 +2,7 @@
 title: 'auto-venv：Fish Shell 自動啟用 Python 虛擬環境，cd 進去就好'
 date: '2026-03-21T09:00:00+08:00'
 slug: auto-venv-fish
+image: featured.jpg
 description: 'auto-venv 是 Fish shell plugin，切換目錄時自動啟用和關閉 Python venv，支援 .venv、venv、.env、env 四種命名，用 git root 判斷範圍，相容 z、zoxide 等跳轉工具。'
 categories:
   - Python
@@ -150,3 +151,11 @@ auto-venv 沒有設定選項，venv 目錄名稱是寫死的（`env`、`.env`、
 ## 小結
 
 `auto-venv` 的邏輯簡單，整個 plugin 不到 40 行。監聽 `$PWD` 而不是覆寫 `cd` 這個設計讓它跟所有跳轉工具相容，用 git root 當判斷基準讓在子目錄移動不會意外關掉 venv。裝完幾乎感覺不到它存在，因為它完全在背後自動處理。
+
+## 參考資源
+
+- [auto-venv GitHub 倉庫](https://github.com/nakulj/auto-venv)
+- [fisher — Fish shell plugin manager](https://github.com/jorgebucaran/fisher)
+- [Fish Shell 官方文件 — 事件處理（on-variable）](https://fishshell.com/docs/current/cmds/function.html)
+- [Python 官方文件 — venv 虛擬環境](https://docs.python.org/3/library/venv.html)
+

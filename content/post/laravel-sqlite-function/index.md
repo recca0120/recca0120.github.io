@@ -80,3 +80,10 @@ abstract class TestCase extends BaseTestCase
 ```
 
 這樣 SQLite 就能認得 `FIELD` function，測試正常通過。同樣的方式也可以補上其他 MySQL 專屬的 function。
+
+## 參考資源
+
+- [PHP 官方文件：PDO::sqliteCreateFunction](https://www.php.net/manual/en/pdo.sqlitecreatefunction.php)
+- [Laravel 官方文件：Database Testing](https://laravel.com/docs/database-testing)
+- [SQLite 官方文件：Core Functions](https://www.sqlite.org/lang_corefunc.html)
+- [MySQL 官方文件：FIELD Function](https://dev.mysql.com/doc/refman/8.0/en/string-functions.html#function_field)

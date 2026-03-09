@@ -61,3 +61,10 @@ export default defineConfig({
     ],
 });
 ```
+
+## 參考資源
+
+- [Laravel 官方文件：Vite 前端整合](https://laravel.com/docs/vite)
+- [laravel-vite-plugin GitHub 倉庫](https://github.com/laravel/vite-plugin)
+- [Vite 官方文件：server.host 設定](https://vitejs.dev/config/server-options.html#server-host)
+- [Laravel Valet 官方文件](https://laravel.com/docs/valet)

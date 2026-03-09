@@ -45,3 +45,9 @@ connect xx:xx:xx:xx:xx:xx
 ```
 
 The `trust` step is important -- once added, the device will automatically reconnect on the next boot without manual pairing.
+
+## References
+
+- [Raspberry Pi official Bluetooth configuration documentation](https://www.raspberrypi.com/documentation/computers/configuration.html#bluetooth)
+- [bluetoothctl man page](https://man.archlinux.org/man/bluetoothctl.1)
+- [BlueZ official project site](http://www.bluez.org/)

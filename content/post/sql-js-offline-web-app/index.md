@@ -296,3 +296,10 @@ window.addEventListener('beforeunload', () => {
 ---
 
 如果你還沒看過 sql.js 的基本用法，可以先看 [sql.js 在瀏覽器跑 SQLite 的入門教學](/post/sql-js-browser-sqlite/)。如果你對瀏覽器儲存機制的整體比較感興趣（localStorage、sessionStorage、IndexedDB、Cache API），可以參考 [瀏覽器儲存方案全比較](/post/browser-storage-comparison/)。
+
+## 參考資源
+
+- [sql.js GitHub 官方倉庫](https://github.com/sql-js/sql.js)
+- [IndexedDB API（MDN Web Docs）](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+- [Storage API：配額查詢（MDN Web Docs）](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API)
+- [beforeunload 事件說明（MDN Web Docs）](https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event)

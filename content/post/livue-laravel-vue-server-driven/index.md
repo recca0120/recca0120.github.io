@@ -437,3 +437,11 @@ public function handleProfileUpdate($event)
 - 前端團隊獨立開發，需要完整 SPA 控制權 → **Inertia.js**
 
 LiVue 目前是 v1.4.8，屬於早期專案。新專案可以嘗試，但在 production 使用前要自行評估成熟度。
+
+## 參考資源
+
+- [LiVue 官方網站與文件](https://livue-laravel.com/)
+- [Livewire 官方文件](https://livewire.laravel.com/)
+- [Inertia.js 官方文件](https://inertiajs.com/)
+- [Vue 3 官方文件](https://vuejs.org/)
+- [Pinia 官方文件](https://pinia.vuejs.org/)

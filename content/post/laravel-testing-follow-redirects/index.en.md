@@ -55,3 +55,9 @@ In older versions, the method name drops the "ing":
 ```php
 $this->followRedirects()->post('user', ['name' => 'foo']);
 ```
+
+## References
+
+- [Laravel Docs: HTTP Tests](https://laravel.com/docs/http-tests)
+- [Laravel Source: MakesHttpRequests::followingRedirects](https://github.com/laravel/framework/blob/master/src/Illuminate/Testing/Concerns/MakesHttpRequests.php)
+- [Laravel Docs: HTTP Responses — Redirects](https://laravel.com/docs/responses#redirects)

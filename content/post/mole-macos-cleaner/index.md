@@ -156,3 +156,9 @@ CleanMyMac 要年費，GUI 很漂亮但有些操作要點很多步。Mole 全是
 功能上 Mole 沒有 CleanMyMac 的惡意軟體掃描和隱私保護，但日常清垃圾、卸載 App、清開發 artifacts 完全夠用。
 
 開發者用 Mole，一般使用者用 CleanMyMac，大概是這樣的定位。
+
+## 參考資源
+
+- [Mole GitHub 儲存庫](https://github.com/tw93/Mole) — 原始碼、issue tracker 與安裝說明
+- [Homebrew tap：tw93/tap](https://github.com/tw93/homebrew-tap) — Homebrew 安裝來源
+- [Mole 官方 README](https://github.com/tw93/Mole#readme) — 完整指令文件與設定說明

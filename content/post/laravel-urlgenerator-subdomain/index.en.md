@@ -2,6 +2,7 @@
 title: 'Generate Root Domain URLs Inside Laravel Subdomain Routes: clone UrlGenerator'
 date: '2026-03-17T09:00:00+08:00'
 slug: laravel-urlgenerator-subdomain
+image: featured.jpg
 description: 'Inside a Laravel subdomain route, url() and route() produce URLs with the subdomain. Clone app(UrlGenerator::class) and call useOrigin() to generate root domain URLs without affecting global state.'
 categories:
   - Laravel
@@ -130,3 +131,10 @@ public function useOrigin(string $origin): static
 ## Summary
 
 When you need a root domain URL inside a subdomain route, `clone app(UrlGenerator::class)` followed by `useOrigin()` is the cleanest approach. No temporary config changes, no `URL::forceRootUrl()` (that's global), no manual string concatenation.
+
+## References
+
+- [Laravel Docs: URL Generation - Named Routes](https://laravel.com/docs/urls#named-routes)
+- [Laravel Docs: Routing - Subdomain Routing](https://laravel.com/docs/routing#subdomain-routing)
+- [Laravel GitHub: UrlGenerator source code](https://github.com/laravel/framework/blob/master/src/Illuminate/Routing/UrlGenerator.php)
+- [Laravel Docs: Service Container - Binding and Resolution](https://laravel.com/docs/container)

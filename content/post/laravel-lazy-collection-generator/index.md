@@ -59,3 +59,10 @@ $this->assertEquals(6, LazyCollection::make(function () {
 這樣只會執行第一輪迴圈就停了，才是真正的延遲載入。
 
 差別只在於傳進去的是 Generator 本身，還是產生 Generator 的 Closure。
+
+## 參考資源
+
+- [Laravel 官方文件：Lazy Collections](https://laravel.com/docs/collections#lazy-collections)
+- [PHP 官方文件：Generators](https://www.php.net/manual/en/language.generators.overview.php)
+- [Laravel 原始碼：LazyCollection](https://github.com/laravel/framework/blob/master/src/Illuminate/Support/LazyCollection.php)
+- [PHP 官方文件：iterator_to_array](https://www.php.net/manual/en/function.iterator-to-array.php)

@@ -82,3 +82,9 @@ systemd=true
 ```
 
 改完重啟 WSL2 就不用每次手動啟動了。
+
+## 參考資源
+
+- [在 Ubuntu 安裝 Docker Engine 官方文件](https://docs.docker.com/engine/install/ubuntu/)
+- [WSL 官方文件：在 WSL 2 中使用 systemd](https://learn.microsoft.com/en-us/windows/wsl/systemd)
+- [Docker 以非 root 使用者執行的 Post-installation 步驟](https://docs.docker.com/engine/install/linux-postinstall/)

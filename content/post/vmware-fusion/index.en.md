@@ -27,3 +27,8 @@ If form validation fails during registration, try the following details:
 - Country/Territory: United States
 - State or province: California
 - Business phone: 0013602923672
+
+## References
+
+- [VMware Fusion Player Personal Use application page](https://customerconnect.vmware.com/evalcenter?p=fusion-player-personal-13)
+- [VMware Fusion official product page](https://www.vmware.com/products/fusion.html)

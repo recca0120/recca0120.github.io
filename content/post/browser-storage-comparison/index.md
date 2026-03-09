@@ -231,3 +231,13 @@ const db = new SQL.Database(saved ?? [])
 - [用 sql.js + IndexedDB 打造離線 Web App](/post/sql-js-offline-web-app/)：實際做一個離線可用的應用程式，示範持久化整合
 
 三篇讀完，瀏覽器端資料庫的眉角應該夠清楚了。
+
+## 參考資源
+
+- [sql.js GitHub 倉庫](https://github.com/sql-js/sql.js)
+- [MDN — IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+- [MDN — Web Storage API（localStorage / sessionStorage）](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)
+- [idb — Promise 封裝的 IndexedDB 函式庫](https://github.com/jakearchibald/idb)
+- [MDN — Origin Private File System](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system)
+- [SQLite Wasm 官方說明](https://sqlite.org/wasm/doc/trunk/index.md)
+

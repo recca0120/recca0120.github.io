@@ -278,3 +278,11 @@ Same API, just a different interception level. When you're ready to migrate to M
 | Jest simple scenarios | **fetch-mock** (avoid jest-fetch-mock — abandoned) |
 
 msw-fetch-mock's sweet spot: you want MSW's interception quality with undici/Cloudflare's clean API, plus `times()`, `persist()`, and `assertNoPendingInterceptors()` for proper test lifecycle management.
+
+## References
+
+- [msw-fetch-mock GitHub Repository](https://github.com/recca0120/msw-fetch-mock) — Source code, API documentation, and usage examples
+- [MSW Official Documentation](https://mswjs.io/docs/) — Complete Mock Service Worker guide
+- [nock GitHub Repository](https://github.com/nock/nock) — HTTP mocking for Node.js
+- [undici MockAgent Documentation](https://undici.nodejs.org/#/docs/api/MockAgent) — Node.js native fetch mock solution
+- [Cloudflare Workers Testing Documentation](https://developers.cloudflare.com/workers/testing/vitest-integration/) — Testing environment for Cloudflare Workers

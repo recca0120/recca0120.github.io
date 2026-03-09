@@ -16,3 +16,9 @@ draft: false
 ---
 
 [tester-phpunit](https://github.com/recca0120/tester-phpunit) 是我寫的一個 Atom 編輯器套件，讓你可以直接在 Atom 裡面跑 PHPUnit 測試。
+
+## 參考資源
+
+- [tester-phpunit GitHub 專案頁面](https://github.com/recca0120/tester-phpunit)
+- [PHPUnit 官方文件](https://phpunit.de/documentation.html)
+- [Atom 套件發布頁面（atom.io 已停止服務）](https://github.com/atom/atom)

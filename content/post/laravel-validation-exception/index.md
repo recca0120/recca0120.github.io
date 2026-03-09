@@ -33,3 +33,9 @@ try {
 ```
 
 `withMessages()` 接受的格式跟 Validator 的錯誤格式一致，key 是欄位名稱，value 是錯誤訊息的陣列。前端收到的 JSON 結構會跟一般驗證失敗一模一樣。
+
+## 參考資源
+
+- [Laravel 官方文件：驗證 - 手動建立 Validator](https://laravel.com/docs/validation#manually-creating-validators)
+- [Laravel 官方文件：錯誤處理 - HTTP 例外](https://laravel.com/docs/errors#http-exceptions)
+- [Laravel GitHub：ValidationException 原始碼](https://github.com/laravel/framework/blob/master/src/Illuminate/Validation/ValidationException.php)

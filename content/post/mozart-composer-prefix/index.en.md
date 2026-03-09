@@ -163,3 +163,10 @@ $obj = new $class();  // not rewritten
 There's no official WordPress solution for dependency conflicts. Mozart is the most direct approach: copy dependencies, prefix namespaces, make your classes completely distinct from everyone else's.
 
 If you run into Mozart's limitations — constant prefixing, file autoloaders, license headers — [Strauss](/en/p/strauss-composer-prefix/) is worth a look.
+
+## References
+
+- [Mozart GitHub Repository](https://github.com/coenjacobs/mozart) — Source code and full configuration documentation
+- [Strauss: The Mozart Fork](https://github.com/BrianHenryIE/strauss) — Drop-in replacement that addresses known Mozart limitations
+- [Composer Docs: the extra field](https://getcomposer.org/doc/04-schema.md#extra) — How to configure tools via composer.json extra
+- [WordPress Plugin Development: Best Practices](https://developer.wordpress.org/plugins/plugin-basics/best-practices/) — Official WordPress plugin development guidelines

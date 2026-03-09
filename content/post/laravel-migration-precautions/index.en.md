@@ -106,3 +106,10 @@ class MigrationTest extends TestCase
 ```
 
 Run `vendor/bin/phpunit`. If any migration has a problem, it will fail immediately. This way you can catch broken migrations right away every time you make changes.
+
+## References
+
+- [Laravel Docs: Database Migrations](https://laravel.com/docs/migrations)
+- [Laravel Docs: Database Testing](https://laravel.com/docs/database-testing)
+- [Doctrine DBAL Docs: Schema Manager](https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/schema-manager.html)
+- [Laravel Source: Blueprint](https://github.com/laravel/framework/blob/master/src/Illuminate/Database/Schema/Blueprint.php)

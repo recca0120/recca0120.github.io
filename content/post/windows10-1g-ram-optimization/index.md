@@ -73,3 +73,9 @@ Set-ItemProperty -Path $regkey1, $regkey2 -Name System.IsPinnedToNameSpaceTree -
 ```
 
 全部調整完後重開機，記憶體使用量會降不少。
+
+## 參考資源
+
+- [Disable-MMAgent PowerShell 指令說明（Microsoft 官方文件）](https://learn.microsoft.com/en-us/powershell/module/mmagent/disable-mmagent)
+- [Set-MpPreference Windows Defender PowerShell 設定（Microsoft 官方文件）](https://learn.microsoft.com/en-us/powershell/module/defender/set-mppreference)
+- [Windows 10 效能最佳化指南（Microsoft 官方支援）](https://support.microsoft.com/en-us/windows/tips-to-improve-pc-performance-in-windows-b3b3ef5b-5953-fb6a-2528-4bbed82fba96)

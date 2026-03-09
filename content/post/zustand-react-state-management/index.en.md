@@ -2,6 +2,7 @@
 title: 'Zustand: React State Management Without Providers or Reducers'
 date: '2026-03-13T09:00:00+08:00'
 slug: zustand-react-state-management
+image: featured.jpg
 description: 'Zustand is a 1KB React state management library. One create() call handles state and actions, no Provider wrapping needed, selectors prevent unnecessary re-renders, with built-in persist, devtools, and immer middleware.'
 categories:
   - Frontend
@@ -372,3 +373,10 @@ const useStore = create<MyStore>()(
 Zustand doesn't change the concepts — state, actions, updates all work the same way. It just removes the ceremony. One `create()` call, add the middleware you need, and you have a complete state management solution.
 
 If your project uses Context for frequently-updating state, or Redux feels like too much setup for what you're doing, Zustand is worth the switch.
+
+## References
+
+- [Zustand official documentation](https://zustand.docs.pmnd.rs/)
+- [Zustand GitHub repository](https://github.com/pmndrs/zustand)
+- [Immer official documentation (immutable state update helper)](https://immerjs.github.io/immer/)
+- [Redux DevTools browser extension](https://github.com/reduxjs/redux-devtools)

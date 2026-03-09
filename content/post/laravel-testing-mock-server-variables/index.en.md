@@ -60,3 +60,9 @@ $this->withServerVariables(['REMOTE_ADDR' => '10.1.0.1']);
 ```
 
 All subsequent requests within the same test method will use these values.
+
+## References
+
+- [Laravel Docs: HTTP Tests](https://laravel.com/docs/http-tests)
+- [Laravel Source: MakesHttpRequests::withServerVariables](https://github.com/laravel/framework/blob/master/src/Illuminate/Testing/Concerns/MakesHttpRequests.php)
+- [PHP Docs: $_SERVER superglobal](https://www.php.net/manual/en/reserved.variables.server.php)

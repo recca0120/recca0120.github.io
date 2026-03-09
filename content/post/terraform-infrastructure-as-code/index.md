@@ -2,6 +2,7 @@
 title: 'Terraform 入門：用程式碼管理雲端基礎設施，告別手動點擊'
 date: '2026-03-14T09:00:00+08:00'
 slug: terraform-infrastructure-as-code
+image: featured.jpg
 description: 'Terraform 是 Infrastructure as Code 工具，用 HCL 宣告式語言管理 AWS、GCP、Cloudflare 等 3000+ provider。本文涵蓋安裝、HCL 語法、state 管理、module 架構、多環境策略與實際部署靜態網站範例。'
 categories:
   - DevOps
@@ -654,3 +655,11 @@ resource "aws_s3_bucket" "data" {
 Terraform 把基礎設施變成可以 review、可以版本控制、可以重複使用的程式碼。`plan` 讓你在執行前看清楚會發生什麼，`state` 讓 Terraform 知道現在的狀態，`module` 讓設定可以在不同環境重用。
 
 從一個小專案開始，把現有的雲端設定用 import 匯入，慢慢把 ClickOps 替換成程式碼，基礎設施就有了 git history。
+
+## 參考資源
+
+- [Terraform 官方文件](https://developer.hashicorp.com/terraform/docs)
+- [Terraform Registry：Provider 與 Module 目錄](https://registry.terraform.io/)
+- [HashiCorp AWS Provider 文件](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [tfenv：Terraform 版本管理工具](https://github.com/tfutils/tfenv)
+- [Terraform Language 參考（HCL 語法）](https://developer.hashicorp.com/terraform/language)

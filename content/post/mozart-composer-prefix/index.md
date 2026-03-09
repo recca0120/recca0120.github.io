@@ -165,3 +165,10 @@ $obj = new $class();  // Mozart 不會改這裡
 WordPress 外掛的依賴衝突問題沒有官方解法，Mozart 是目前最直接的工具。核心概念簡單：把依賴複製一份，namespace 加前綴，讓它跟別人的版本完全不是同一個 class。
 
 如果你遇到 Mozart 的限制（常數前綴、file autoloader 支援、license 合規），可以考慮 [Strauss](/p/strauss-composer-prefix/)，它在這幾個地方做了改進。
+
+## 參考資源
+
+- [Mozart GitHub 儲存庫](https://github.com/coenjacobs/mozart) — 原始碼與完整設定文件
+- [Strauss：Mozart 的 fork 繼承者](https://github.com/BrianHenryIE/strauss) — 解決 Mozart 已知問題的替代方案
+- [Composer 官方文件：extra 欄位](https://getcomposer.org/doc/04-schema.md#extra) — composer.json 的 extra 設定說明
+- [WordPress 外掛開發：依賴管理最佳實踐](https://developer.wordpress.org/plugins/plugin-basics/best-practices/) — WordPress 官方外掛開發指引

@@ -144,3 +144,10 @@ trait FiresEvents
 ```
 
 Then you can simply call `$user->fireModelEvent('created')`. Note that Laravel's Model already has a `protected` method called `fireModelEvent`, so watch out for naming conflicts -- you might want to use `dispatchModelEvent` instead.
+
+## References
+
+- [Laravel Docs — Eloquent Events](https://laravel.com/docs/eloquent#events)
+- [Laravel Docs — Macros](https://laravel.com/docs/macros)
+- [Laravel Docs — Saving a Model Without Firing Events (saveQuietly / withoutEvents)](https://laravel.com/docs/eloquent#saving-a-single-model-without-events)
+

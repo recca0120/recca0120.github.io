@@ -346,3 +346,12 @@ The extension automatically reloads the test list when:
 For manual reload, run `PHPUnit: Reload tests` from the Command Palette.
 
 The extension activates when the workspace contains any `*.php` file. Projects without PHP files won't load the extension, so there's no performance impact.
+
+## References
+
+- [PHPUnit & Pest Test Explorer on VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=recca0120.vscode-phpunit)
+- [PHPUnit official documentation](https://phpunit.de/documentation.html)
+- [Pest official documentation](https://pestphp.com/docs/installation)
+- [Xdebug official documentation](https://xdebug.org/docs/)
+- [Laravel Sail official documentation](https://laravel.com/docs/sail)
+- [ParaTest GitHub repository](https://github.com/paratestphp/paratest)

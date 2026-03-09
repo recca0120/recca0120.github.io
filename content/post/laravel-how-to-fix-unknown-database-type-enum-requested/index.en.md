@@ -121,3 +121,10 @@ Doctrine\DBAL\Types\TextType::class
 Doctrine\DBAL\Types\TimeType::class
 Doctrine\DBAL\Types\TimeImmutableType::class
 ```
+
+## References
+
+- [Doctrine DBAL Docs: Types](https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/types.html)
+- [Laravel Docs: Database Migrations](https://laravel.com/docs/migrations)
+- [Doctrine DBAL GitHub Repository](https://github.com/doctrine/dbal)
+- [Laravel Source: DatabaseServiceProvider](https://github.com/laravel/framework/blob/master/src/Illuminate/Database/DatabaseServiceProvider.php)

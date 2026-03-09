@@ -208,3 +208,10 @@ Strauss 會自動識別並套用。
 Strauss 跟 Mozart 解決同一個問題：WordPress 外掛的依賴衝突。差別在細節：更完整的 autoloader 支援、常數前綴、license 合規、更保守的預設值。
 
 新外掛直接選 Strauss，舊外掛有痛點再考慮遷移。
+
+## 參考資源
+
+- [Strauss GitHub 官方倉庫](https://github.com/BrianHenryIE/strauss)
+- [Composer 官方文件](https://getcomposer.org/doc/)
+- [WordPress 外掛依賴管理最佳實踐](https://developer.wordpress.org/plugins/plugin-basics/)
+- [Mozart GitHub 倉庫（Strauss 的前身）](https://github.com/coenjacobs/mozart)

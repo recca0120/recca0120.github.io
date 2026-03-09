@@ -2,6 +2,7 @@
 title: 'Laravel Subdomain Route 裡產出 Root Domain 網址：clone UrlGenerator'
 date: '2026-03-17T09:00:00+08:00'
 slug: laravel-urlgenerator-subdomain
+image: featured.jpg
 description: 'Laravel 在 subdomain route 裡呼叫 url() 或 route()，產出的網址會帶 subdomain。用 clone app(UrlGenerator::class) 再 useOrigin() 就能在不影響全域的情況下產出 root domain 網址。'
 categories:
   - Laravel
@@ -130,3 +131,10 @@ public function useOrigin(string $origin): static
 ## 小結
 
 遇到 subdomain route 裡需要產出 root domain 網址，`clone app(UrlGenerator::class)` 再 `useOrigin()` 是最乾淨的做法。不需要暫時改 config、不需要 `URL::forceRootUrl()`（那個是全域的），也不用自己拼字串。
+
+## 參考資源
+
+- [Laravel 官方文件：URL 產生 - 命名路由](https://laravel.com/docs/urls#named-routes)
+- [Laravel 官方文件：路由 - Subdomain 路由](https://laravel.com/docs/routing#subdomain-routing)
+- [Laravel GitHub：UrlGenerator 原始碼](https://github.com/laravel/framework/blob/master/src/Illuminate/Routing/UrlGenerator.php)
+- [Laravel 官方文件：服務容器 - 綁定與解析](https://laravel.com/docs/container)

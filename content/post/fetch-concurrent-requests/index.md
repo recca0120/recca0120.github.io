@@ -2,6 +2,7 @@
 title: 'fetch 並發控制：用 p-limit 限制同時請求數量，避免打爆 API'
 date: '2026-03-22T09:00:00+08:00'
 slug: fetch-concurrent-requests
+image: featured.jpg
 description: 'Promise.all 同時發出 100 個請求，server 很容易回 429 或直接掛掉。用 p-limit 搭配 fetch 限制同時執行的請求數量，只需要一行設定，不需要自己寫 semaphore。'
 categories:
   - Frontend
@@ -235,3 +236,11 @@ const users = await Promise.all(
 `Promise.all` 同時打幾百個請求是很常見的意外。`p-limit` 三行設定就能控制同時執行的數量，不需要自己寫 semaphore，也不影響 `Promise.all` 收集結果的方式。
 
 如果需要 retry 和 timeout，可以搭配 [ky 的並發控制](/p/ky-concurrent-requests/) 一起用。
+
+## 參考資源
+
+- [p-limit GitHub 倉庫](https://github.com/sindresorhus/p-limit)
+- [p-limit npm 套件頁面](https://www.npmjs.com/package/p-limit)
+- [MDN — Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
+- [MDN — Promise.allSettled](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
+

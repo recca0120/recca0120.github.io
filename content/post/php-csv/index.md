@@ -48,3 +48,9 @@ echo toFloat('8.90E-12'); // 輸出 0.0000000000089
 ```
 
 這樣不管小數點位數多長都能正確轉換。
+
+## 參考資源
+
+- [PHP 官方文件：sprintf](https://www.php.net/manual/zh/function.sprintf.php) — sprintf 格式說明與精度控制
+- [PHP 官方文件：bcmath 函式庫](https://www.php.net/manual/zh/book.bcmath.php) — 任意精度數學運算函式
+- [PHP 官方文件：preg_match](https://www.php.net/manual/zh/function.preg-match.php) — 正規表達式比對函式

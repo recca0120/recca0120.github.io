@@ -242,3 +242,12 @@ sql.js-httpvfs 有幾個實際使用時要了解的限制：
 ---
 
 如果你是第一次接觸 sql.js，可以先看[《在瀏覽器裡跑 SQLite：sql.js 入門》](/post/sql-js-browser-sqlite/)從基礎開始。需要離線寫入的場景，[《sql.js + IndexedDB 打造離線 Web 應用》](/post/sql-js-offline-web-app/)有完整的做法。想比較各種瀏覽器儲存方案的話，[《瀏覽器儲存方案全比較》](/post/browser-storage-comparison/)有更系統性的整理。
+
+## 參考資源
+
+- [sql.js-httpvfs GitHub 官方倉庫](https://github.com/phiresky/sql.js-httpvfs)
+- [sql.js GitHub 官方倉庫](https://github.com/sql-js/sql.js)
+- [SQLite FTS5 全文搜尋官方文件](https://www.sqlite.org/fts5.html)
+- [SQLite EXPLAIN QUERY PLAN 說明](https://www.sqlite.org/eqp.html)
+- [HTTP Range Request（MDN Web Docs）](https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests)
+- [官方 SQLite Wasm 與 OPFS 說明文件](https://sqlite.org/wasm/doc/trunk/index.md)

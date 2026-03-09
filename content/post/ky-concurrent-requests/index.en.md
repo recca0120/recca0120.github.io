@@ -2,6 +2,7 @@
 title: 'ky + p-limit: Concurrency Control With Built-in Retry for Batch Requests'
 date: '2026-03-23T09:00:00+08:00'
 slug: ky-concurrent-requests
+image: featured.jpg
 description: 'ky handles per-request retry, timeout, and auth hooks. p-limit caps simultaneous requests. Two tools, two responsibilities — batch-fetching 100 endpoints without hitting 429 or losing data to network hiccups.'
 categories:
   - Frontend
@@ -229,3 +230,10 @@ If you also need retry and auth handling, ky removes a lot of boilerplate.
 ## Summary
 
 ky and p-limit don't overlap: ky manages the lifecycle of each request, p-limit manages how many requests run at the same time. Batch API calls run into both problems. Using them together is the natural fit.
+
+## References
+
+- [ky GitHub Repository](https://github.com/sindresorhus/ky)
+- [p-limit GitHub Repository](https://github.com/sindresorhus/p-limit)
+- [MDN Promise.allSettled Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
+- [MDN Promise.all Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)

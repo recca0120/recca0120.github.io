@@ -269,3 +269,11 @@ Lefthook 適合這些情境：
 - 想要 CI-like 的 post-merge 自動化
 
 單純前端小專案用 Husky 也完全夠用，但專案規模一大或 commit 等待時間讓你煩了，換 Lefthook 值得。
+
+## 參考資源
+
+- [Lefthook GitHub 倉庫](https://github.com/evilmartians/lefthook)
+- [Lefthook 官方文件](https://lefthook.dev/docs/)
+- [Husky 官方文件](https://typicode.github.io/husky/)
+- [lint-staged GitHub 倉庫](https://github.com/lint-staged/lint-staged)
+- [Evil Martians 技術部落格：Lefthook 介紹](https://evilmartians.com/chronicles/lefthook-knock-your-team-hooks-into-shape)

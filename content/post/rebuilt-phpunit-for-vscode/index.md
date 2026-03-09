@@ -59,3 +59,10 @@ VSCode 推出了新版 Testing API，加上 2.0 版當初設計時沒有考慮 D
 ```
 
 有問題歡迎到 [GitHub](https://github.com/recca0120/vscode-phpunit) 上提 issue。
+
+## 參考資源
+
+- [PHPUnit for VSCode 擴充套件頁面](https://marketplace.visualstudio.com/items?itemName=recca0120.vscode-phpunit)
+- [PHPUnit for VSCode GitHub 倉庫](https://github.com/recca0120/vscode-phpunit)
+- [VS Code Testing API 官方文件](https://code.visualstudio.com/api/extension-guides/testing)
+- [PHPUnit 官方文件](https://docs.phpunit.de/)

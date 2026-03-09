@@ -2,6 +2,7 @@
 title: 'Terratest：Terraform 基礎設施的自動化整合測試'
 date: '2026-03-14T09:00:00+08:00'
 slug: terratest-infrastructure-testing
+image: featured.jpg
 description: 'Terratest 是一個用 Go 撰寫真實整合測試的函式庫，針對 Terraform 模組部署真實基礎設施、驗證其行為，然後銷毀。涵蓋 terraform、http_helper、aws、retry、test_structure 套件，附完整 Go 程式碼範例。'
 categories:
   - DevOps
@@ -939,3 +940,12 @@ Terratest 涵蓋了 Terraform 模組的完整測試面向：
 | `random` | 用於資源命名空間隔離的唯一 ID 產生 |
 
 基本工作流程永遠不變：`defer Destroy`，然後 `InitAndApply`，然後斷言。其他一切都是將這些基本組件與重試邏輯、AWS API 呼叫和 HTTP 檢查組合在一起，以驗證模組所承諾提供的特定行為。
+
+## 參考資源
+
+- [Terratest 官方網站](https://terratest.gruntwork.io/)
+- [Terratest GitHub 倉庫](https://github.com/gruntwork-io/terratest)
+- [Terratest 官方文件](https://terratest.gruntwork.io/docs/)
+- [Go 官方測試套件文件](https://pkg.go.dev/testing)
+- [testify：Go 斷言函式庫](https://github.com/stretchr/testify)
+- [Gruntwork 部落格：Terraform 測試策略](https://blog.gruntwork.io/)

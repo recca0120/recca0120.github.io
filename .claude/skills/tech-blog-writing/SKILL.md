@@ -28,7 +28,8 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 7. 套用 humanizer-zh 規則檢查 AI 痕跡
 8. 確認程式碼可讀、有註解、可複製貼上
 9. 加入相關文章的內部連結
-10. 確認 frontmatter 格式正確（見 `frontmatter-reference.md`）
+10. 文章末尾加入 `## 參考資源` 區塊（見參考資源規範）
+11. 確認 frontmatter 格式正確（見 `frontmatter-reference.md`）
 11. 寫英文版 `index.en.md`（完整翻譯，不是摘要）
 12. 用 Cloudflare Workers AI 產封面圖（見 `cover-image.md`）
 13. `hugo --gc --minify` 確認建置無錯誤
@@ -42,6 +43,28 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 - **承（原因分析）**：用一兩句話說明技術原因，貼關鍵原始碼片段
 - **轉（解決方案）**：具體可操作的步驟，程式碼有語言標記和中文註解
 - **合（補充）**：注意事項或替代方案。有就寫，沒有就不寫
+- **參考資源**：文章末尾固定加上參考資源區塊（見下方規範）
+
+## 參考資源區塊
+
+每篇文章結尾必須加上 `## 參考資源` 區塊，列出撰寫本文時參考的官方文件、GitHub repo、相關教學等。
+
+格式：
+
+```markdown
+## 參考資源
+
+- [官方文件標題](https://official-docs-url)
+- [GitHub Repo 名稱](https://github.com/org/repo)
+- [相關文章或教學標題](https://url)
+```
+
+規則：
+- 只列實際參考過的資源，不堆砌無關連結
+- 連結文字用描述性短句，不要只寫 "官方文件" 或 URL
+- 優先列：官方文件 > GitHub repo > 官方部落格文章 > 其他教學
+- 英文版對應到相同資源的英文版頁面（如果有）
+- 最少 2 個，最多 8 個
 
 ## 關鍵原則
 

@@ -88,3 +88,9 @@ self::assertEquals($user->toArray(), $response->viewData('user')->toArray());
 ```
 
 `viewData` 只能驗資料有沒有正確傳到 View，前端的 JavaScript、CSS 以及 Blade template 有沒有正確輸出變數，這個方法是測不到的。
+
+## 參考資源
+
+- [Laravel 官方文件：HTTP Tests - assertViewHas / viewData](https://laravel.com/docs/testing#assert-view-has)
+- [Laravel 官方文件：Database Testing - Model Factories](https://laravel.com/docs/database-testing#defining-model-factories)
+- [Laravel 官方文件：Testing - RefreshDatabase trait](https://laravel.com/docs/database-testing#resetting-the-database-after-each-test)

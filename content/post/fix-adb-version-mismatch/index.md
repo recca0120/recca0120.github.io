@@ -38,3 +38,9 @@ export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$ANDROID_HOME/tool
 ```
 
 最後 `source ~/.bashrc` 讓設定生效，再跑一次 `adb devices` 就正常了。
+
+## 參考資源
+
+- [Android Debug Bridge (adb) 官方文件](https://developer.android.com/tools/adb)
+- [Android Studio 安裝 SDK 工具官方說明](https://developer.android.com/tools/releases/platform-tools)
+- [Homebrew 官方網站](https://brew.sh/)

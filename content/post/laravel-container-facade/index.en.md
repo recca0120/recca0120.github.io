@@ -180,3 +180,10 @@ If you want to find where a built-in Laravel Facade is registered, just grep for
 ```bash
 grep -rnw ./vendor -e "\$this->app->\(singleton\|bind\)('db'"
 ```
+
+## References
+
+- [Laravel Docs: Service Container](https://laravel.com/docs/container)
+- [Laravel Docs: Facades](https://laravel.com/docs/facades)
+- [Laravel Source: Illuminate\Support\Facades\Facade](https://github.com/laravel/framework/blob/master/src/Illuminate/Support/Facades/Facade.php)
+- [Laravel Docs: Service Providers](https://laravel.com/docs/providers)

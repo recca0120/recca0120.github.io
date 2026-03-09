@@ -38,3 +38,9 @@ export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/tools:$ANDROID_HOME/tool
 ```
 
 Finally, run `source ~/.bashrc` to apply the changes, then `adb devices` should work normally.
+
+## References
+
+- [Android Debug Bridge (adb) Official Documentation](https://developer.android.com/tools/adb)
+- [Android SDK Platform Tools Release Notes](https://developer.android.com/tools/releases/platform-tools)
+- [Homebrew Official Website](https://brew.sh/)

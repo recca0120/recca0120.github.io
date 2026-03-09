@@ -269,3 +269,11 @@ Lefthook works well when:
 - You want CI-like automation in post-merge hooks
 
 For small frontend projects, Husky is still fine. But once your project grows or commit wait times start annoying you, Lefthook is worth the switch.
+
+## References
+
+- [Lefthook GitHub Repository](https://github.com/evilmartians/lefthook)
+- [Lefthook Official Documentation](https://lefthook.dev/docs/)
+- [Husky Official Documentation](https://typicode.github.io/husky/)
+- [lint-staged GitHub Repository](https://github.com/lint-staged/lint-staged)
+- [Evil Martians Blog: Introducing Lefthook](https://evilmartians.com/chronicles/lefthook-knock-your-team-hooks-into-shape)

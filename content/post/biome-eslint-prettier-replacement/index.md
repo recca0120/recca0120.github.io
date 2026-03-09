@@ -2,6 +2,7 @@
 title: '用 Biome 取代 ESLint + Prettier：快 35 倍，一個工具搞定'
 date: '2026-03-10T09:00:00+08:00'
 slug: biome-eslint-prettier-replacement
+image: featured.jpg
 description: 'Biome 是用 Rust 寫的前端工具鏈，formatter 比 Prettier 快 35 倍，455 條 lint 規則涵蓋 ESLint + TypeScript ESLint，一個 biome.json 取代五個設定檔，支援自動遷移。'
 categories:
   - Tools
@@ -246,3 +247,12 @@ pre-commit:
 不是所有 ESLint plugin 都有對應的 Biome 規則，如果你依賴特定 plugin（例如 `eslint-plugin-import` 的某些規則），要先確認 Biome 有沒有等效的。多數常見的 TypeScript ESLint 規則都有，遷移成功率高。
 
 試一個小專案，如果沒問題再推到主要專案。
+
+## 參考資源
+
+- [Biome 官方文件](https://biomejs.dev/docs/)
+- [Biome GitHub 倉庫](https://github.com/biomejs/biome)
+- [Biome 從 ESLint / Prettier 遷移指南](https://biomejs.dev/guides/migrate-eslint-prettier/)
+- [Biome Lint 規則完整列表](https://biomejs.dev/linter/rules/)
+- [Biome 效能基準測試說明](https://biomejs.dev/blog/biome-wins-prettier-challenge/)
+

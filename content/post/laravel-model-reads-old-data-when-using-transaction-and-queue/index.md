@@ -95,3 +95,10 @@ EmailChanged::dispatch($user, $oldEmail, $newEmail)
 ```
 
 這樣 Job 執行時就能讀到正確的新資料了。
+
+## 參考資源
+
+- [Laravel 官方文件：Queues — Dispatching After DB Transactions](https://laravel.com/docs/queues#dispatching-after-db-transactions)
+- [Laravel 官方文件：Database Transactions](https://laravel.com/docs/database#database-transactions)
+- [Laravel 原始碼：SerializesModels Trait](https://github.com/laravel/framework/blob/master/src/Illuminate/Queue/SerializesModels.php)
+- [Laravel 原始碼：Queueable Trait](https://github.com/laravel/framework/blob/master/src/Illuminate/Bus/Queueable.php)

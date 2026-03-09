@@ -2,6 +2,7 @@
 title: 'Fish Shell + Laravel Valet：自動切換 PHP 版本和 Composer v1/v2'
 date: '2026-03-20T09:00:00+08:00'
 slug: fish-valet-php-composer
+image: featured.jpg
 description: '用 fish shell alias 和 function 讓 php、composer、phpunit 自動跟著 Laravel Valet 的 PHP 版本走。解決舊專案需要 Composer v1 的問題，智慧判斷用 composer.phar 還是系統 composer。'
 categories:
   - PHP
@@ -123,3 +124,10 @@ composer --version
 這組設定的核心邏輯：讓開發工具跟著 Valet 的 PHP 版本走，不要自己手動切換。`php` 和 `phpunit` 用 alias 直接解決，`composer` 因為有 v1/v2 共存的需求，用 function 加一層判斷。
 
 專案根目錄放 `composer.phar` 當作「這個專案要用 v1」的旗標，乾淨又直覺，不需要額外的設定檔。
+
+## 參考資源
+
+- [Fish Shell 官方文件](https://fishshell.com/docs/current/index.html)
+- [Laravel Valet 官方文件](https://laravel.com/docs/valet)
+- [Composer 官方下載頁面（含各版本 phar）](https://getcomposer.org/download/)
+- [Fish Shell function 語法說明](https://fishshell.com/docs/current/cmds/function.html)

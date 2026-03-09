@@ -2,6 +2,7 @@
 title: 'reptyr: Move a Running Process Into tmux After Forgetting to Start It'
 date: '2026-03-25T09:00:00+08:00'
 slug: reptyr-reattach-terminal
+image: featured.jpg
 description: 'reptyr uses ptrace to re-attach a running process to a new terminal. Started a long job over SSH without tmux? reptyr moves the process into tmux so you can disconnect safely.'
 categories:
   - Tools
@@ -138,3 +139,10 @@ Cleaner than handing gdb your terminal directly.
 ## Summary
 
 Forgetting tmux isn't fatal. `reptyr <PID>` moves a process from a dying SSH session into tmux in one command. `disown` it first to cut the shell's hold, then open tmux and pull it in. On Ubuntu, adjust `ptrace_scope` as needed.
+
+## References
+
+- [reptyr GitHub repository](https://github.com/nelhage/reptyr)
+- [tmux official GitHub repository](https://github.com/tmux/tmux)
+- [Linux Yama ptrace_scope security documentation](https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html)
+- [tmux manual page](https://man.openbsd.org/tmux.1)

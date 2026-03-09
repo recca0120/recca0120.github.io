@@ -330,3 +330,10 @@ OpenSpec 不是取代 AI coding assistant，而是在它前面加一層規格。
 - **Archive** — 完成後合併 delta 進 main spec，形成系統的演化記錄
 
 v1.2.0（2026 年 2 月），28k+ GitHub stars，MIT license。
+
+## 參考資源
+
+- [OpenSpec 官方網站](https://openspec.dev/) — 官方文件、快速入門與工具整合說明
+- [OpenSpec npm 套件：@fission-ai/openspec](https://www.npmjs.com/package/@fission-ai/openspec) — 安裝與版本資訊
+- [RFC 2119：需求強度關鍵字標準](https://www.rfc-editor.org/rfc/rfc2119) — MUST/SHALL/SHOULD/MAY 關鍵字的正式定義
+- [Claude Code 官方文件](https://docs.anthropic.com/en/docs/claude-code) — 與 OpenSpec 整合的 AI coding assistant

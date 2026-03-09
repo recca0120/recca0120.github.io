@@ -2,6 +2,7 @@
 title: 'reverse_ssh：用標準 SSH 語法管理反向連線，穿透防火牆不需要 VPN'
 date: '2026-03-27T09:00:00+08:00'
 slug: reverse-ssh
+image: featured.jpg
 description: 'reverse_ssh 把 SSH 反向：目標機主動連回 server，operator 再用原生 SSH 語法連進去。支援 HTTP/WebSocket/TLS 多種 transport 穿防火牆，SCP/SFTP/port forwarding 全部可用。'
 categories:
   - Tools
@@ -192,3 +193,9 @@ systemctl enable --now rssh
 reverse_ssh 的核心價值是：用你已經熟悉的 SSH 工具操作反向連線，不需要學新的協議或工具。目標機連上 server 之後，剩下的就是標準 SSH 操作，`-J` jump host 一行搞定。
 
 多種 transport 讓它在嚴格的網路環境也能用，HTTP polling 基本上任何能上網的機器都能連出去。
+
+## 參考資源
+
+- [reverse_ssh GitHub 官方倉庫](https://github.com/NHAS/reverse_ssh)
+- [OpenSSH ProxyJump 說明文件](https://man.openbsd.org/ssh_config#ProxyJump)
+- [SSH Port Forwarding 官方說明](https://www.openssh.com/manual.html)

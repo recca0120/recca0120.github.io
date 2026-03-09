@@ -60,3 +60,11 @@ class DocsController extends Controller
 ```
 
 流程是：Blade 先處理 `demo.md` 裡的變數和指令，輸出純 Markdown 字串，再交給 CommonMark 轉成 HTML。
+
+## 參考資源
+
+- [league/commonmark 官方文件](https://commonmark.thephpleague.com/)
+- [league/commonmark GitHub 倉庫](https://github.com/thephpleague/commonmark)
+- [Laravel Blade 模板引擎文件](https://laravel.com/docs/blade)
+- [GithubFlavoredMarkdownConverter 說明](https://commonmark.thephpleague.com/2.4/extensions/github-flavored-markdown/)
+

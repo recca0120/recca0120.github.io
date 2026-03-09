@@ -59,3 +59,10 @@ $this->assertEquals(6, LazyCollection::make(function () {
 This way only the first iteration runs before stopping -- that's true lazy loading.
 
 The distinction is whether you pass the Generator itself or a Closure that produces one.
+
+## References
+
+- [Laravel Docs: Lazy Collections](https://laravel.com/docs/collections#lazy-collections)
+- [PHP Docs: Generators Overview](https://www.php.net/manual/en/language.generators.overview.php)
+- [Laravel Source: LazyCollection](https://github.com/laravel/framework/blob/master/src/Illuminate/Support/LazyCollection.php)
+- [PHP Docs: iterator_to_array](https://www.php.net/manual/en/function.iterator-to-array.php)

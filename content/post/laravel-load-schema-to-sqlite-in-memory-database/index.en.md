@@ -106,4 +106,11 @@ abstract class TestCase extends BaseTestCase
         parent::setUpTraits();
     }
 }
+
+## References
+
+- [Laravel Docs: Database Testing](https://laravel.com/docs/database-testing)
+- [Laravel Source: SqliteSchemaState](https://github.com/laravel/framework/blob/b9203fca96960ef9cd8860cb4ec99d1279353a8d/src/Illuminate/Database/Schema/SqliteSchemaState.php)
+- [PHP Docs: PDO::exec](https://www.php.net/manual/en/pdo.exec.php)
+- [Laravel Docs: Squashing Migrations with schema:dump](https://laravel.com/docs/migrations#squashing-migrations)
 ```

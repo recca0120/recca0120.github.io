@@ -208,3 +208,10 @@ Migration cost is low — Strauss reads Mozart config, so it's mostly updating t
 Strauss and Mozart solve the same problem: WordPress plugin dependency conflicts. The difference is in the details: more complete autoloader support, constant prefixing, proper license handling, and safer defaults.
 
 Start new plugins with Strauss. Migrate existing Mozart setups when you hit a limitation.
+
+## References
+
+- [Strauss GitHub Repository](https://github.com/BrianHenryIE/strauss)
+- [Composer Official Documentation](https://getcomposer.org/doc/)
+- [WordPress Plugin Developer Handbook](https://developer.wordpress.org/plugins/plugin-basics/)
+- [Mozart GitHub Repository (Strauss predecessor)](https://github.com/coenjacobs/mozart)

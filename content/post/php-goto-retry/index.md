@@ -2,6 +2,7 @@
 title: 'PHP goto 不是邪魔：用來寫 retry 比 while 少一層縮排'
 date: '2026-03-18T09:00:00+08:00'
 slug: php-goto-retry
+image: featured.jpg
 description: 'PHP goto 語法在 retry 邏輯上比 while loop 更直覺：少一層縮排、流程更平坦、語意更精確。只有明確要重試才跳回去，成功直接 return，失敗次數用完才 throw。'
 categories:
   - PHP
@@ -142,3 +143,9 @@ function b() { label: ... }  // 不行
 `goto` 不是不能碰，是要用在對的地方。retry 這個模式，跳躍目標明確、只往回跳、不橫跨函式，用 `goto` 比 `while (true)` 的意圖更直接，縮排也少一層。
 
 見到 `goto` 先別嚇跑，看一下跳哪裡、為什麼跳，再決定要不要改。
+
+## 參考資源
+
+- [PHP 官方文件：goto](https://www.php.net/manual/zh/control-structures.goto.php) — goto 語法規則與限制說明
+- [Dijkstra 1968：Go To Statement Considered Harmful](https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf) — 批評任意 goto 用法的經典論文
+- [PHP 官方文件：例外處理](https://www.php.net/manual/zh/language.exceptions.php) — try/catch 與例外機制完整說明

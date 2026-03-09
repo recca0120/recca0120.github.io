@@ -60,3 +60,9 @@ $this->withServerVariables(['REMOTE_ADDR' => '10.1.0.1']);
 ```
 
 之後同一個測試方法裡的所有請求都會套用。
+
+## 參考資源
+
+- [Laravel 官方文件：HTTP Tests](https://laravel.com/docs/http-tests)
+- [Laravel 原始碼：MakesHttpRequests::withServerVariables](https://github.com/laravel/framework/blob/master/src/Illuminate/Testing/Concerns/MakesHttpRequests.php)
+- [PHP 官方文件：$_SERVER 超全域變數](https://www.php.net/manual/en/reserved.variables.server.php)

@@ -81,3 +81,10 @@ $callback->shouldHaveBeenCalled()->with('foo')->twice();
 ```
 
 整個測試結構符合 3A pattern (Arrange-Act-Assert)，比在 closure 裡面塞 assertion 更好讀，也能正確偵測 callback 從未被呼叫的情況。
+
+## 參考資源
+
+- [Mockery 官方文件](https://docs.mockery.io/)
+- [Mockery GitHub Repository](https://github.com/mockery/mockery)
+- [Mockery 支援 Closure spy 的 PR #712](https://github.com/mockery/mockery/pull/712)
+- [PHPUnit 官方文件](https://phpunit.de/documentation.html)

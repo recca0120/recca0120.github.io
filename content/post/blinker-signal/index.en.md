@@ -220,3 +220,11 @@ Good fits:
 - Plugin architectures (core module doesn't know plugins exist)
 - Breaking circular imports (A imports B, but B also needs to call something from A)
 - Hooking into a specific point in time during tests
+
+## References
+
+- [blinker Official Documentation](https://blinker.readthedocs.io/)
+- [blinker on GitHub](https://github.com/pallets-eco/blinker)
+- [Flask Signals Documentation](https://flask.palletsprojects.com/signals/)
+- [blinker on PyPI](https://pypi.org/project/blinker/)
+

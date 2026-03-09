@@ -2,6 +2,7 @@
 title: 'Two SQL NULL Traps: Missing JOIN Rows and UNIQUE Constraints That Do Nothing'
 date: '2026-03-24T09:00:00+08:00'
 slug: sql-null-join-unique
+image: featured.jpg
 description: 'NULL behavior varies across databases and causes two common problems: JOIN on NULL columns returns no rows, and UNIQUE constraints allow multiple NULLs. Covers MySQL, PostgreSQL, SQLite, SQL Server with solutions for each.'
 categories:
   - Database
@@ -222,3 +223,10 @@ When a JOIN is dropping rows, check whether the ON condition columns can be NULL
 For UNIQUE on a nullable column, a plain `UNIQUE` constraint isn't enough. Use a Partial Index (`WHERE column IS NOT NULL`) to enforce uniqueness only for non-NULL values.
 
 When designing a schema, decide explicitly whether a column should be nullable. Don't make it nullable by default — NULL interacts with constraints and JOINs in ways that aren't obvious until something silently breaks.
+
+## References
+
+- [PostgreSQL: Comparison Functions and NULL](https://www.postgresql.org/docs/current/functions-comparison.html)
+- [MySQL: Comparison Operators and NULL-Safe Equality](https://dev.mysql.com/doc/refman/8.0/en/comparison-operators.html)
+- [SQLite: Partial Indexes](https://www.sqlite.org/partialindex.html)
+- [SQL NULL Semantics (Wikipedia)](https://en.wikipedia.org/wiki/Null_(SQL))

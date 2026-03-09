@@ -41,3 +41,9 @@ net.core.somaxconn=512
 ```
 
 Then reboot or run `sysctl -p` to apply.
+
+## References
+
+- [Redis documentation: kernel tuning recommendations](https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/latency/)
+- [Linux kernel docs: net.core.somaxconn](https://www.kernel.org/doc/html/latest/networking/ip-sysctl.html)
+- [sysctl configuration guide (Arch Wiki)](https://wiki.archlinux.org/title/sysctl)

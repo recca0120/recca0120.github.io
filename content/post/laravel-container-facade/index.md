@@ -180,3 +180,10 @@ Container 註冊的 key 本來就是字串（`FakeApi::class` 本質上也是字
 ```bash
 grep -rnw ./vendor -e "\$this->app->\(singleton\|bind\)('db'"
 ```
+
+## 參考資源
+
+- [Laravel 官方文件：Service Container](https://laravel.com/docs/container)
+- [Laravel 官方文件：Facades](https://laravel.com/docs/facades)
+- [Laravel 原始碼：Illuminate\Support\Facades\Facade](https://github.com/laravel/framework/blob/master/src/Illuminate/Support/Facades/Facade.php)
+- [Laravel 官方文件：Service Providers](https://laravel.com/docs/providers)

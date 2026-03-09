@@ -230,3 +230,13 @@ This is the third article in the series. The other two:
 - [Building an Offline Web App with sql.js and IndexedDB](/post/sql-js-offline-web-app/) — a real application demonstrating the persistence integration end to end
 
 The three together cover the full picture of browser-side databases.
+
+## References
+
+- [sql.js on GitHub](https://github.com/sql-js/sql.js)
+- [MDN — IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+- [MDN — Web Storage API (localStorage / sessionStorage)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API)
+- [idb — Promise-based IndexedDB wrapper](https://github.com/jakearchibald/idb)
+- [MDN — Origin Private File System](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system)
+- [SQLite Wasm Official Documentation](https://sqlite.org/wasm/doc/trunk/index.md)
+

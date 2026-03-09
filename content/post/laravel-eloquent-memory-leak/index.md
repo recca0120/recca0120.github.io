@@ -35,3 +35,10 @@ foreach ($users as $user) {
 ```
 
 討論串裡也有人提到用 `$user->setRelation('posts', null)` 只清單一 relation，但實測效果不太穩定，建議直接清全部比較保險。
+
+## 參考資源
+
+- [Laravel 官方文件：Eloquent Relationships](https://laravel.com/docs/eloquent-relationships)
+- [Laracasts 討論串：Laravel 5.8 Memory Leak](https://laracasts.com/discuss/channels/laravel/laravel-58-memory-leak)
+- [Laravel 官方文件：Eager Loading](https://laravel.com/docs/eloquent-relationships#eager-loading)
+- [Laravel 原始碼：Model::setRelations](https://github.com/laravel/framework/blob/master/src/Illuminate/Database/Eloquent/Model.php)

@@ -61,3 +61,9 @@ class Stream implements StreamInterface
 而 `getContents()` 不會歸零，它從目前指標的位置往後讀。第一次讀完指標已經到底了，第二次自然讀不到東西。
 
 如果要用 `getContents()` 又想重複讀取，記得先手動 `$response->getBody()->rewind()`。
+
+## 參考資源
+
+- [GuzzleHttp PSR-7 GitHub Repository](https://github.com/guzzle/psr7)
+- [PSR-7 HTTP Message Interface 規範](https://www.php-fig.org/psr/psr-7/)
+- [PHP StreamInterface::getContents 說明](https://www.php-fig.org/psr/psr-7/#33-psrhttpmessagestreaminterface)

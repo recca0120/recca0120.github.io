@@ -24,3 +24,9 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 ```
 
 Add it to `~/.bashrc` or `~/.zshrc` so you don't have to set it manually every time.
+
+## References
+
+- [GuzzleHttp GitHub Repository](https://github.com/guzzle/guzzle) — Guzzle HTTP client source code and issue tracker
+- [Laravel Artisan Tinker Documentation](https://laravel.com/docs/artisan#tinker) — artisan tinker REPL usage guide
+- [macOS fork() Safety: OBJC_DISABLE_INITIALIZE_FORK_SAFETY](https://www.mikeash.com/pyblog/friday-qa-2012-01-20-objective-c-messaging.html) — Background on Objective-C runtime and fork safety

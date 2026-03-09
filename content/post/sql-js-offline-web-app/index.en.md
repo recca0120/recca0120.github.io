@@ -296,3 +296,10 @@ This approach works well as long as the database stays reasonably small, but the
 ---
 
 If you have not covered the basics of sql.js yet, [Getting Started with sql.js: Running SQLite in the Browser](/post/sql-js-browser-sqlite/) is the place to start. If you want a broader look at how IndexedDB compares to other browser storage options—localStorage, sessionStorage, Cache API—see [Browser Storage Compared](/post/browser-storage-comparison/).
+
+## References
+
+- [sql.js GitHub Repository](https://github.com/sql-js/sql.js)
+- [IndexedDB API (MDN Web Docs)](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+- [Storage API: Quota Estimation (MDN Web Docs)](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API)
+- [beforeunload Event (MDN Web Docs)](https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event)

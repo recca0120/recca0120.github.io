@@ -79,3 +79,9 @@ class AppServiceProvider extends ServiceProvider
 ```
 
 This way only the Client injected into `GitHubService` will include the certificate — other usages remain unaffected.
+
+## References
+
+- [GuzzleHttp Official Docs: Request Options](https://docs.guzzlephp.org/en/stable/request-options.html#verify) — Full documentation for the verify option
+- [Laravel Official Docs: Contextual Binding](https://laravel.com/docs/container#contextual-binding) — How to use contextual binding in the service container
+- [Comodo Root Certificate Download](https://support.comodo.com/index.php?/Knowledgebase/Article/View/969/108/root-comodo-rsa-certification-authority-sha-2) — Official COMODO RSA root certificate download page

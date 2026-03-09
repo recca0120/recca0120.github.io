@@ -292,3 +292,10 @@ echo json_encode($period);
 - 不可變設計，傳來傳去不怕被改到
 
 適合任何需要處理「一段時間」的場景：預約系統、排班、報表、活動日期、合約有效期。
+
+## 參考資源
+
+- [League Period 官方文件](https://period.thephpleague.com/)
+- [league/period GitHub 倉庫](https://github.com/thephpleague/period)
+- [Packagist：league/period](https://packagist.org/packages/league/period)
+- [Allen's Interval Algebra 維基百科說明](https://en.wikipedia.org/wiki/Allen%27s_interval_algebra)

@@ -100,3 +100,9 @@ class ExampleTest extends TestCase
 ```
 
 這個做法也讓你不必依賴為 Laravel 特別封裝的 third-party package，升版時少一個卡點。
+
+## 參考資源
+
+- [Laravel Service Container 官方文件](https://laravel.com/docs/container)
+- [Laravel Service Providers 官方文件](https://laravel.com/docs/providers)
+- [Laravel 依賴注入（Dependency Injection）說明](https://laravel.com/docs/container#automatic-injection)

@@ -45,3 +45,9 @@ connect xx:xx:xx:xx:xx:xx
 ```
 
 `trust` 這步很重要，加了之後下次開機會自動重新連線，不用再手動配對。
+
+## 參考資源
+
+- [Raspberry Pi 官方藍芽設定文件](https://www.raspberrypi.com/documentation/computers/configuration.html#bluetooth)
+- [bluetoothctl man page](https://man.archlinux.org/man/bluetoothctl.1)
+- [BlueZ 官方專案網站](http://www.bluez.org/)

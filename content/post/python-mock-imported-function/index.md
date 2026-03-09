@@ -2,6 +2,7 @@
 title: 'Python Mock 踩坑：patch 要指向被測模組，不是原始模組'
 date: '2026-03-19T09:00:00+08:00'
 slug: python-mock-imported-function
+image: featured.jpg
 description: 'Python unittest.mock.patch 的最常見誤區：mock utils.sum 但測試還是跑真的邏輯。原因是 from utils import sum 在被測模組建立了自己的 binding，patch 要指向被測模組的命名空間，不是函式的原始定義位置。'
 categories:
   - Python
@@ -156,3 +157,9 @@ with patch('app.sum') as mocked:
 Python 的 import 機制會在被匯入的模組建立獨立的 binding。`from X import Y` 之後，模組裡就有自己的 `Y`，跟 `X.Y` 是各自獨立的 reference。
 
 patch 的目標永遠是**呼叫發生的地方**，不是函式定義的地方。記住這條規則，mock 不到的問題基本上就不會再出現。
+
+## 參考資源
+
+- [Python 官方文件：unittest.mock — patch 的位置說明](https://docs.python.org/3/library/unittest.mock.html#patch-builtins)
+- [Python 官方文件：unittest.mock 完整參考](https://docs.python.org/3/library/unittest.mock.html)
+- [Python import 系統說明](https://docs.python.org/3/reference/import.html)

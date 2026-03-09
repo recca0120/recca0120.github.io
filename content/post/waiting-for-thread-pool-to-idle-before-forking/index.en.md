@@ -22,3 +22,9 @@ Downgrading grpc to 1.49.0 eliminates this message:
 ```bash
 pecl install -o -f grpc-1.49.0
 ```
+
+## References
+
+- [gRPC PHP extension on PECL](https://pecl.php.net/package/gRPC)
+- [gRPC GitHub repository](https://github.com/grpc/grpc)
+- [PHPUnit official documentation](https://phpunit.de/documentation.html)

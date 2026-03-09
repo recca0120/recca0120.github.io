@@ -16,3 +16,9 @@ draft: false
 ---
 
 [tester-phpunit](https://github.com/recca0120/tester-phpunit) is an Atom editor package I wrote that lets you run PHPUnit tests directly inside Atom.
+
+## References
+
+- [tester-phpunit GitHub repository](https://github.com/recca0120/tester-phpunit)
+- [PHPUnit official documentation](https://phpunit.de/documentation.html)
+- [Atom editor GitHub repository](https://github.com/atom/atom)

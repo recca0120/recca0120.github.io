@@ -2,6 +2,7 @@
 title: 'ky：用 fetch 的人，不用再寫那些重複的樣板'
 date: '2026-03-12T09:00:00+08:00'
 slug: ky-http-client
+image: featured.jpg
 description: 'ky 是基於 fetch 的輕量 HTTP 客戶端，4KB gzip 零依賴，內建 retry 指數退避、timeout、hooks 攔截器、JSON 簡寫，比 axios 小 3 倍，比裸 fetch 少寫一半程式碼。'
 categories:
   - Frontend
@@ -320,3 +321,10 @@ try {
 ky 的定位很清楚：用 fetch 的人，解決 fetch 的痛點，不增加不必要的複雜度。retry、timeout、hooks、JSON 簡寫，這些都是每個用 fetch 的專案遲早都要自己實作的東西，ky 4KB 就包好了。
 
 如果你的專案在用 axios，但其實沒用到 axios 的特殊功能，換 ky 能讓 bundle 小三分之二，然後 API 長得幾乎一樣。
+
+## 參考資源
+
+- [ky GitHub Repository](https://github.com/sindresorhus/ky)
+- [ky npm 套件頁面](https://www.npmjs.com/package/ky)
+- [MDN Fetch API 官方文件](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)
+- [axios GitHub Repository](https://github.com/axios/axios)

@@ -133,3 +133,11 @@ class ScraperClient implements ClientInterface
 ```
 
 因為實作了 `ClientInterface`，所以在 PHP 端可以像平常使用 HTTP client 一樣呼叫，完全不需要改變既有的使用習慣。需要換回 Guzzle 或其他 client 時，只要抽換實作就好。
+
+## 參考資源
+
+- [PSR-7 HTTP Message Interface 規範](https://www.php-fig.org/psr/psr-7/)
+- [PSR-18 HTTP Client 規範](https://www.php-fig.org/psr/psr-18/)
+- [GuzzleHttp PSR-7 GitHub 倉庫](https://github.com/guzzle/psr7)
+- [Symfony Process 元件官方文件](https://symfony.com/doc/current/components/process.html)
+- [Python requests 官方文件](https://requests.readthedocs.io/)
