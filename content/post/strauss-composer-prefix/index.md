@@ -2,7 +2,6 @@
 title: 'Strauss：Mozart 的繼承者，WordPress 外掛依賴隔離的更好選擇'
 date: '2026-04-05T09:00:00+08:00'
 slug: strauss-composer-prefix
-image: cover.jpg
 description: 'Strauss 是從 Mozart fork 出來的 Composer 依賴前綴工具，解決了 Mozart 幾個已知問題：支援 files autoloader、常數前綴、license 合規、零設定開箱即用。WordPress 外掛開發的現代選擇。'
 categories:
   - PHP

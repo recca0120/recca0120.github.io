@@ -2,7 +2,6 @@
 title: 'Mozart：WordPress 外掛的 Composer 依賴隔離工具'
 date: '2026-04-04T09:00:00+08:00'
 slug: mozart-composer-prefix
-image: cover.jpg
 description: 'WordPress 外掛共用一個 PHP process，不同外掛用同一個 library 的不同版本就會炸。Mozart 把你的 vendor 依賴加上自訂 namespace 前綴，徹底隔離，不跟別人衝突。'
 categories:
   - PHP

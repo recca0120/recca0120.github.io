@@ -2,7 +2,6 @@
 title: 'Strauss: The Better Mozart for WordPress Plugin Dependency Isolation'
 date: '2026-04-05T09:00:00+08:00'
 slug: strauss-composer-prefix
-image: cover.jpg
 description: "Strauss is a Composer dependency prefixing tool forked from Mozart. It fixes Mozart's known limitations: full files autoloader support, constant prefixing, license compliance, and zero-config defaults. The modern choice for WordPress plugin dependency isolation."
 categories:
   - PHP

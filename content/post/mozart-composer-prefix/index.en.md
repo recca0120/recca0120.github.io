@@ -2,7 +2,6 @@
 title: 'Mozart: Isolate Composer Dependencies in WordPress Plugins'
 date: '2026-04-04T09:00:00+08:00'
 slug: mozart-composer-prefix
-image: cover.jpg
 description: "All WordPress plugins run in the same PHP process. If two plugins use different versions of the same library, only one version loads — and it might be the wrong one. Mozart prefixes your vendor dependencies with a custom namespace so they can't conflict with anyone else's."
 categories:
   - PHP

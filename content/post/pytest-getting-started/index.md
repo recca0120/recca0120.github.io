@@ -2,7 +2,6 @@
 title: 'pytest 入門：assert 就夠了，不需要記 self.assertEqual'
 date: '2026-03-30T09:00:00+08:00'
 slug: pytest-getting-started
-image: cover.jpg
 description: 'pytest 跟 unittest 最大的差距不是功能多寡，而是寫起來有多舒服。assert 直接用，失敗訊息自動展開，fixture 比 setUp/tearDown 靈活很多。'
 categories:
   - Python

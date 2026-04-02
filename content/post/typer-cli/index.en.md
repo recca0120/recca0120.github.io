@@ -2,7 +2,6 @@
 title: 'Typer: Build CLIs With Type Hints, No argparse API to Memorize'
 date: '2026-04-02T09:00:00+08:00'
 slug: typer-cli
-image: cover.jpg
 description: "Typer is a CLI framework by the FastAPI author, built on Click, but you don't need to learn Click's API. Type hints are the CLI specification — help text, shell completion, and subcommands are generated automatically."
 categories:
   - Python
