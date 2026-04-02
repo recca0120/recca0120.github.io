@@ -2,6 +2,7 @@
 title: 'pytest-mock: Cleaner Mocking With the mocker Fixture'
 date: '2026-04-03T09:00:00+08:00'
 slug: pytest-mock
+image: cover.jpg
 description: "pytest-mock provides a mocker fixture that integrates unittest.mock.patch into pytest's lifecycle — no manual start/stop, no with blocks, no decorator ordering issues. spy preserves real behavior while tracking calls. stub tests callbacks."
 categories:
   - Python

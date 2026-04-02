@@ -2,6 +2,7 @@
 title: 'polyfactory: Stop Hand-Writing Test Fixtures, Let Type Hints Do It'
 date: '2026-03-31T09:00:00+08:00'
 slug: polyfactory-test-data
+image: cover.jpg
 description: 'polyfactory generates test data automatically from Python type hints. Supports dataclasses, Pydantic v2, TypedDict, and msgspec. Pair it with pytest fixtures to eliminate the boilerplate of hand-crafting fake objects for every test.'
 categories:
   - Python

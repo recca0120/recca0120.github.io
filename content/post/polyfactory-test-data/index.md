@@ -2,6 +2,7 @@
 title: 'polyfactory：不要手刻測試假資料，讓 type hint 自動生成'
 date: '2026-03-31T09:00:00+08:00'
 slug: polyfactory-test-data
+image: cover.jpg
 description: 'polyfactory 根據 Python type hint 自動產生測試資料，支援 dataclass、Pydantic v2、TypedDict、msgspec。搭配 pytest fixture 用，省掉每次寫測試都要 hardcode 一堆假資料的麻煩。'
 categories:
   - Python

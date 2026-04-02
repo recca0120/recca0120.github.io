@@ -2,6 +2,7 @@
 title: 'blinker：Python 的 signal 系統，讓模組之間不直接呼叫'
 date: '2026-04-01T09:00:00+08:00'
 slug: blinker-signal
+image: cover.jpg
 description: 'blinker 是 Python 輕量的 signal/event 系統，Flask 內部用它處理 request_started、request_finished 等事件。拿來做模組解耦、plugin 架構、避免 circular import 都很合適。'
 categories:
   - Python

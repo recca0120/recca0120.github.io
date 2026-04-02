@@ -2,6 +2,7 @@
 title: 'Typer：用 type hint 寫 CLI，不需要記 argparse API'
 date: '2026-04-02T09:00:00+08:00'
 slug: typer-cli
+image: cover.jpg
 description: 'Typer 是 FastAPI 同作者寫的 CLI 框架，底層是 Click，但你不需要學 Click API。Type hint 就是 CLI 的規格，自動產生 help、shell 補全、子命令，把一堆 scripts 整理成一個工具。'
 categories:
   - Python
