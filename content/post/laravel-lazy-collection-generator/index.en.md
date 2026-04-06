@@ -42,7 +42,7 @@ protected function getArrayableItems($items)
 
 The lazy loading effect is completely lost.
 
-![Eager vs Lazy Generator execution difference](lazy-vs-eager.png)
+![Eager vs Lazy Generator execution difference](lazy-vs-eager.jpg)
 
 ## The Correct Approach
 

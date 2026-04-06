@@ -17,7 +17,7 @@ draft: false
 
 隨著 migration 檔案越來越多，測試速度越來越慢，即使用 SQLite In-Memory Database 也一樣，因為 migration 是一個檔案一個檔案跑的。
 
-![Migration 逐步執行 vs Schema Dump 一次載入的速度差異](migration-vs-schema-dump.png)
+![Migration 逐步執行 vs Schema Dump 一次載入的速度差異](migration-vs-schema-dump.jpg)
 
 ## schema:dump 不支援 In-Memory Database
 

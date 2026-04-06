@@ -60,7 +60,7 @@ The architecture has three layers:
 └─────────────────────────────────────┘
 ```
 
-![msw-fetch-mock three-layer architecture](msw-fetch-mock-architecture.png)
+![msw-fetch-mock three-layer architecture](msw-fetch-mock-architecture.jpg)
 
 The key is the **single catch-all handler**. MSW's standard approach registers one handler per endpoint, but in browser environments this causes Service Worker timing issues (each `worker.use()` requires SW communication). msw-fetch-mock registers just one `http.all('*', ...)` catch-all, running all matching logic in the main thread, avoiding Service Worker round-trip latency.
 

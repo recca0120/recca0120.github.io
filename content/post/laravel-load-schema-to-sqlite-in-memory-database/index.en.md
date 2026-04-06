@@ -17,7 +17,7 @@ draft: false
 
 As migration files pile up, test speed keeps getting slower -- even with SQLite In-Memory Database, because migrations run one file at a time.
 
-![Migration step-by-step vs Schema Dump single load speed comparison](migration-vs-schema-dump.png)
+![Migration step-by-step vs Schema Dump single load speed comparison](migration-vs-schema-dump.jpg)
 
 ## schema:dump Doesn't Support In-Memory Database
 

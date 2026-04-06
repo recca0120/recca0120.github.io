@@ -18,7 +18,7 @@ When dispatching a Job to a Queue inside a Transaction, the Job reads stale data
 
 ## Why the Job Gets Old Data
 
-![Transaction and Queue Job timing race condition](transaction-job-timing.png)
+![Transaction and Queue Job timing race condition](transaction-job-timing.jpg)
 
 Setup: Laravel connected to a real database, Queue Driver using Redis, one User already in the database, `php artisan queue:work` running.
 

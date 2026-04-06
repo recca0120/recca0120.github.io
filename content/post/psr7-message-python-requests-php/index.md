@@ -16,7 +16,7 @@ draft: false
 
 有時候 Python 已經有現成好用的 package 可以抓取網頁資訊，但後續處理都在 PHP 端。問題是怎麼把 Python requests 的 response 完整帶回 PHP？
 
-![Python → PSR-7 HTTP Message → PHP 的資料流](psr7-data-flow.png)
+![Python → PSR-7 HTTP Message → PHP 的資料流](psr7-data-flow.jpg)
 
 ```bash
 composer require guzzlehttp/psr7 symfony/process

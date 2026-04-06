@@ -42,7 +42,7 @@ protected function getArrayableItems($items)
 
 延遲載入的效果完全沒了。
 
-![Eager vs Lazy Generator 執行差異](lazy-vs-eager.png)
+![Eager vs Lazy Generator 執行差異](lazy-vs-eager.jpg)
 
 ## 正確寫法
 

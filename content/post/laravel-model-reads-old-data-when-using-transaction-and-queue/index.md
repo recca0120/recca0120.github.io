@@ -18,7 +18,7 @@ draft: false
 
 ## 為什麼 Job 拿到舊資料
 
-![Transaction 與 Queue Job 的時序競爭](transaction-job-timing.png)
+![Transaction 與 Queue Job 的時序競爭](transaction-job-timing.jpg)
 
 先準備環境：Laravel 連接真實資料庫、Queue Driver 使用 Redis、資料庫裡已有一筆 User、執行 `php artisan queue:work`。
 

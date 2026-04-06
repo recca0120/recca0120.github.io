@@ -16,7 +16,7 @@ draft: false
 
 Sometimes Python already has a great package for scraping web data, but all the downstream processing is in PHP. The question is: how do you pass a Python requests response back to PHP intact?
 
-![Python → PSR-7 HTTP Message → PHP data flow](psr7-data-flow.png)
+![Python → PSR-7 HTTP Message → PHP data flow](psr7-data-flow.jpg)
 
 ```bash
 composer require guzzlehttp/psr7 symfony/process

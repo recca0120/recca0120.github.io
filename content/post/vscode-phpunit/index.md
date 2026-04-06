@@ -93,7 +93,7 @@ Pest 的 dataset 功能完整支援，包括：
 
 核心概念：`phpunit.command` 定義怎麼執行測試指令，`phpunit.paths` 做本機路徑和容器路徑的對應。
 
-![VS Code 與 Docker 容器之間的路徑對應](vscode-docker-path-mapping.png)
+![VS Code 與 Docker 容器之間的路徑對應](vscode-docker-path-mapping.jpg)
 
 ### Docker Compose
 

@@ -3,7 +3,7 @@ title: 'I Built a Global Developer Ranking Site with Vibe Coding'
 description: 'How I vibe-coded CodeAtlas, a global developer ranking platform with Astro + Svelte 5 + Three.js, covering GitHub API data collection to 3D globe interaction.'
 slug: codeatlas-vibe-coding-developer-ranking
 date: '2026-04-03T02:57:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
 - Frontend
 tags:

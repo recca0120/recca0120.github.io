@@ -3,7 +3,7 @@ title: '我用 Vibe Coding 做了一個全球開發者排行榜'
 description: '分享用 Astro + Svelte 5 + Three.js vibe coding 出 CodeAtlas 全球開發者排行榜的過程，從 GitHub API 資料收集到 3D 地球儀互動體驗。'
 slug: codeatlas-vibe-coding-developer-ranking
 date: '2026-04-03T02:57:00+08:00'
-image: featured.png
+image: featured.jpg
 categories:
 - Frontend
 tags:

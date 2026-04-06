@@ -57,7 +57,7 @@ It works, but the code is verbose and messy.
 
 Laravel 10's `Expression` interface has a `getValue(Grammar $grammar)` method that generates the appropriate SQL based on the Grammar type. As described in this [PR](https://github.com/laravel/framework/pull/44784), this is exactly its intended purpose:
 
-![Expression branching to different SQL via Grammar](expression-grammar-branching.png)
+![Expression branching to different SQL via Grammar](expression-grammar-branching.jpg)
 
 ```php
 namespace Tests\Feature;
