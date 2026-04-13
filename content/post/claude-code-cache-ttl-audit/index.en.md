@@ -1,8 +1,8 @@
 ---
-title: 'claude-code-cache-fix: Detect and Repair Anthropic''s Silent Cache TTL Regression'
-description: 'In March 2026 Anthropic silently flipped Claude Code cache TTL from 1h back to 5m, with monthly costs inflating 15-53%. Developer cnighswonger used the ephemeral_5m / ephemeral_1h fields in ~/.claude/projects JSONL to pinpoint March 6 as the regression date, then shipped an npm package to fix it.'
+title: 'I Scanned 95 Days of My Claude Code Logs and Found Anthropic''s Second Silent Cache TTL Regression'
+description: 'The community is angry about Anthropic''s March 6 silent TTL change, but billing statements aren''t enough proof. I scanned 95 days of my own Claude Code native logs, precisely reproduced the March 6 regression, and uncovered a second wave starting April 9 — sub-agents 100% downgraded to 5m TTL, never publicly reported.'
 slug: claude-code-cache-ttl-audit
-date: '2026-04-14T02:00:00+08:00'
+date: '2026-04-14T03:00:00+08:00'
 image: featured.jpg
 categories:
 - AI
@@ -10,91 +10,23 @@ tags:
 - claude-code
 - prompt-caching
 - ai-agent
-- npm
-draft: true
+- python
+draft: false
 ---
 
-[The previous post](/en/2026/04/13/claude-code-session-cost-cache-misconception/) explained Claude Code's prompt caching mechanics. While researching it I found a very dramatic incident: in March 2026 Anthropic **silently switched the default cache TTL for Claude Code's main agent from 1 hour back to 5 minutes**, causing community-measured monthly costs to inflate 15–53%.
+[The previous post](/en/2026/04/13/claude-code-session-cost-cache-misconception/) covered prompt caching cost mechanics. While researching it I bumped into a dramatic controversy — in March 2026 Anthropic **silently changed Claude Code's cache TTL from 1 hour back to 5 minutes**, with community-measured monthly costs inflating 15–53%. Reddit and HN exploded.
 
-Worse, TTL is **decided automatically by the client — there's no user setting**. Anthropic employee Jarred Sumner publicly defended the change and **refused to add a user setting**, arguing sub-agents legitimately need 5m.
+But every public claim is somebody else's billing statement or [issue #46829](https://github.com/anthropics/claude-code/issues/46829). I wanted to know whether **my own machine** was affected. After scanning 95 days of native logs, the answer turned out richer than expected: I not only reproduced the March 6 regression precisely, but also discovered **a second wave starting April 9** — five consecutive days, 4,840 API calls, sub-agents 100% downgraded to 5m, and no public report I can find.
 
-But [cnighswonger](https://github.com/cnighswonger/claude-code-cache-fix) did two things: he used `~/.claude/projects` JSONL logs to **pinpoint March 6 as the exact regression date**, then shipped an npm package that **fixes the regression directly**. This post is about that tool.
+## The Evidence Is in ~/.claude/projects JSONL
 
-## Incident Recap
+Claude Code writes complete API interaction logs at:
 
-- **2026/02/01**: Anthropic raised the Claude Code default TTL from 5 minutes to 1 hour
-- **2026/02/27 ~ 03/08**: Silently reverted to 5 minutes
-- **Late 2026/03**: Mass user reports of quota drain. A $200/month Max user said "never hit a quota before March, now I'm capped constantly"
-- **2026/04/13**: Sumner publicly responded, arguing 5m is actually cheaper for one-shot calls, **refused to add a user setting**
-
-Community math: for interactive long-session workflows, 5m TTL inflates monthly cost by **15–53%** vs 1h — every coffee break, IDE switch, or thinking pause longer than 5 minutes triggers a `cache_creation` write instead of a `cache_read`.
-
-## Why Cache Mysteriously Breaks
-
-While building the fix, cnighswonger uncovered three client-side bugs that silently break cache:
-
-1. **Attachment block drift**: on session resume, blocks containing skills, MCP servers, deferred tools, and hooks "drift to later messages" instead of staying in `messages[0]`. The prefix hash changes, cache fully invalidates
-2. **Unstable cc_version fingerprint**: the version fingerprint is computed from `messages[0]` content including meta/attachment blocks; when those drift, the fingerprint changes
-3. **Inconsistent tool ordering**: tool definitions can arrive in different orders between turns, breaking prefix consistency
-
-These are all client bugs, independent of any server-side TTL changes — but combined they create the subjective experience of "why does cache hit rate suddenly tank after I resume?"
-
-## Using claude-code-cache-fix
-
-### Install
-
-```bash
-npm install -g claude-code-cache-fix
+```
+~/.claude/projects/{project-path}/{session-uuid}.jsonl
 ```
 
-### Usage (pick one)
-
-**Option A: wrapper script (recommended)**
-
-```bash
-claude-fixed [any claude args]
-```
-
-**Option B: alias replacing claude**
-
-```bash
-alias claude='NODE_OPTIONS="--import claude-code-cache-fix" node "$(npm root -g)/@anthropic-ai/claude-code/cli.js"'
-```
-
-**Option C: per-invocation env var**
-
-```bash
-NODE_OPTIONS="--import claude-code-cache-fix" claude
-```
-
-Under the hood, a Node.js preload module intercepts API requests before they're sent, normalizing attachment blocks, fingerprint, and tool ordering to restore prefix consistency.
-
-### Live TTL Status in Your Status Line
-
-After install, the tool writes quota state to `~/.claude/quota-status.json`. Pair it with `quota-statusline.sh` to see this in your Claude Code status line:
-
-- **Q5h%** (5-hour quota usage) + burn rate
-- **Q7d%** (weekly quota usage)
-- **TTL tier**: shows `TTL:1h` when healthy, **red `TTL:5m` when the server has downgraded you**
-- `PEAK` flag during weekday peak hours (UTC 13:00–19:00)
-- Cache hit rate
-
-For anyone who lives in Claude Code and dreads mysterious quota drain, **this status line beats any post-hoc analysis**.
-
-### Cost Reports
-
-```bash
-node tools/cost-report.mjs                    # today
-node tools/cost-report.mjs --date 2026-04-08  # specific date
-node tools/cost-report.mjs --since 2h         # last 2 hours
-node tools/cost-report.mjs --admin-key <key>  # cross-check with Admin API
-```
-
-Reads `~/.claude/usage.jsonl` (written by the interceptor, not Claude Code's native session logs).
-
-## Don't Want to Install npm? Audit Historical TTL Anyway
-
-cnighswonger's tool only sees data captured after install. To **review your past months of TTL distribution**, you can use the same approach he used in issue #46829: scan `~/.claude/projects` JSONL files and look at each assistant message's `usage.cache_creation` object:
+Each assistant response carries a `usage.cache_creation` object that **directly tells you which TTL bucket this write went to**:
 
 ```json
 {
@@ -105,124 +37,167 @@ cnighswonger's tool only sees data captured after install. To **review your past
 }
 ```
 
-These fields come straight from Anthropic's API, bypassing any client display logic.
+These fields come **straight from Anthropic's API**, bypassing any client-side display logic. If the client wanted to lie, the server wouldn't go along — this data is the truth from the server itself.
 
-I distilled the approach into a 60-line Python that scans every project at once:
+A Python script that scans every project, splits by date, and separates main agent from sub-agent:
 
 ```python
 #!/usr/bin/env python3
-"""Audit Claude Code prompt cache TTL across all projects.
-Inspired by cnighswonger/claude-code-cache-fix's quota analysis."""
-import json, sys
+import json
 from pathlib import Path
 from collections import defaultdict
 
 ROOT = Path.home() / ".claude/projects"
-TOP = 30
-if "--top" in sys.argv:
-    TOP = int(sys.argv[sys.argv.index("--top")+1])
-
-stats = defaultdict(lambda: {"5m": 0, "1h": 0, "read": 0, "sessions": set()})
+main = defaultdict(lambda: {"5m":0,"1h":0,"calls":0})
+sub  = defaultdict(lambda: {"5m":0,"1h":0,"calls":0})
 
 for jsonl in ROOT.rglob("*.jsonl"):
-    proj = jsonl.parent.name
+    bucket = sub if "subagent" in jsonl.parent.name.lower() else main
     try:
         with jsonl.open() as fp:
             for line in fp:
-                try: d = json.loads(line)
+                try: d=json.loads(line)
                 except: continue
-                msg = d.get("message")
-                if not isinstance(msg, dict): continue
-                u = msg.get("usage") or {}
-                cc = u.get("cache_creation") or {}
-                w5 = cc.get("ephemeral_5m_input_tokens", 0)
-                w1 = cc.get("ephemeral_1h_input_tokens", 0)
-                if w5 or w1:
-                    stats[proj]["5m"] += w5
-                    stats[proj]["1h"] += w1
-                    stats[proj]["read"] += u.get("cache_read_input_tokens", 0)
-                    stats[proj]["sessions"].add(jsonl.stem)
-    except Exception as e:
-        print(f"skip {jsonl}: {e}", file=sys.stderr)
+                ts=d.get("timestamp"); msg=d.get("message")
+                if not isinstance(msg,dict) or not ts: continue
+                u=msg.get("usage") or {}; cc=u.get("cache_creation") or {}
+                w5=cc.get("ephemeral_5m_input_tokens",0)
+                w1=cc.get("ephemeral_1h_input_tokens",0)
+                if not (w5 or w1): continue
+                day=ts[:10]
+                bucket[day]["5m"]+=w5
+                bucket[day]["1h"]+=w1
+                bucket[day]["calls"]+=1
+    except: pass
 
-rows = []
-for p, s in stats.items():
-    tw = s["5m"] + s["1h"]
-    if tw == 0: continue
-    rows.append((p, tw, s["5m"], s["1h"], s["1h"]/tw*100, s["read"], len(s["sessions"])))
-rows.sort(key=lambda r: -r[1])
+def pct(s):
+    tot=s["5m"]+s["1h"]
+    return s["1h"]/tot*100 if tot else 0
 
-w = 55
-print(f"{'Project':<{w}} {'5m writes':>13} {'1h writes':>13} {'1h%':>6} {'sess':>5}")
-print("-" * (w + 42))
-for p, tw, w5, w1, pct, rd, sess in rows[:TOP]:
-    print(f"{p[:w]:<{w}} {w5:>13,} {w1:>13,} {pct:>5.1f}% {sess:>5}")
-
-t5 = sum(s["5m"] for s in stats.values())
-t1 = sum(s["1h"] for s in stats.values())
-tr = sum(s["read"] for s in stats.values())
-print("-" * (w + 42))
-print(f"TOTAL writes — 5m: {t5:,}  1h: {t1:,}  1h share: {t1/(t5+t1)*100:.1f}%")
-print(f"TOTAL cache reads:  {tr:,}")
+print(f"{'Date':<11} | {'M5m':>10} {'M1h':>11} {'M%':>4} | {'S5m':>11} {'S1h':>12} {'S%':>4} {'calls':>5}")
+for d in sorted(set(main.keys())|set(sub.keys())):
+    if d < '2026-01-01': continue
+    m=main[d]; s=sub[d]
+    print(f"{d} | {m['5m']:>10,} {m['1h']:>11,} {pct(m):>3.0f}% | "
+          f"{s['5m']:>11,} {s['1h']:>12,} {pct(s):>3.0f}% {s['calls']:>5}")
 ```
 
-My machine, 4 months of logs:
+## 95-Day Timeline
+
+Scanning my machine from January 9 through April 13, **four phases with three transitions emerge**:
+
+| Phase | Window | Sub-agent | Main agent | Event |
+|-------|--------|-----------|-----------|-------|
+| 1 | 1/9 ~ 2/5 | **100% 5m** (28 days) | no data | 1h not yet rolled out |
+| 2 | **2/6** | 79% 1h (transition starts) | — | **The 2/1-announced 1h upgrade actually goes live** |
+| 3 | 2/7 ~ 3/5 | **100% 1h** stable (28 days) | 100% 1h | 1h golden era |
+| 4 | **3/6** ~ 4/8 | 1h ↔ 5m mixed, swinging 6%–97% | 100% 1h | **First regression** (the one cnighswonger reported) |
+| 5 | **4/9** ~ now | **100% 5m** stable (5 days) | 100% 1h | **Second regression** (no public report) |
+
+Key days around each transition:
 
 ```
-Project                                  5m writes     1h writes    1h%   sess
--------------------------------------------------------------------------------
-subagents                              369,275,664   825,966,925  69.1%  5261
-work-project-a                                   0   238,986,709 100.0%    89
-work-project-b                                   0   142,661,382 100.0%     2
-side-project-c                                   0    50,753,727 100.0%     9
-... (everything else 0 / 100%)
--------------------------------------------------------------------------------
-TOTAL writes — 5m: 369,275,664  1h: 1,344,488,569  1h share: 78.5%
+Date        | MAIN 1h  calls | SUB 5m         SUB 1h         S1h%   calls
+------------|----------------|-----------------------------------------
+2026-02-05  | (no data)      |          0    7,974,898       100%   1392    ← still 1h
+2026-02-06  | (no data)      |  2,886,030   10,753,834        79%   1684    ← 1h rollout begins
+2026-02-07  | (no data)      |          0    4,280,317       100%    639
+
+2026-03-05  | 100%   1503    |          0    6,004,235       100%   2446    ← still 1h
+2026-03-06  | 100%   3355    |    461,509    1,281,686        74%    608    ← FIRST regression!
+2026-03-07  | 100%   2753    |  9,810,771   10,465,251        52%   7548
+2026-03-08  | 100%   4724    | 34,340,003   24,301,557        41%  17514
+
+2026-04-08  | 100%   3041    |  2,650,760    5,533,277        68%   1301    ← still mixed
+2026-04-09  | 100%   4155    |  8,451,674            0         0%   1268    ← SECOND regression!
+2026-04-10  | 100%   5523    |  5,437,455            0         0%   1170
+2026-04-11  | 100%   2579    |  3,325,195            0         0%    778
+2026-04-12  | 100%   3738    |  2,981,213            0         0%    993
+2026-04-13  | 100%   4443    |  2,648,132            0         0%    631
 ```
 
-Sliced by month (main agent only, sub-agents excluded):
+## Decoding the Three Transitions
 
-| Month | 5m writes | 1h writes | 1h% |
-|-------|-----------|-----------|-----|
-| 2026-02 | 0 | 546K | 100% |
-| 2026-03 | 0 | **390M** | 100% |
-| 2026-04 | 0 | 128M | 100% |
+### Transition 1: 2026-02-06 — 1h Rollout Goes Live
 
-## Why My Data Wasn't Affected
+Anthropic announced "TTL upgraded from 5m to 1h" on 2/1. **The actual rollout landed on 2/6.** My logs show sub-agent flipping from 100% 5m to 79% 1h overnight, matching the announcement.
 
-My main agent has zero 5m writes for the entirety of March, which doesn't match cnighswonger's "5m surge after 3/6" data. Three possible explanations:
+### Transition 2: 2026-03-06 — [First Silent Regression](https://github.com/anthropics/claude-code/issues/46829)
 
-1. The regression never affected the main agent, only sub-agents (consistent with Sumner's defense)
-2. The regression only rolled out to a subset of users; I happened to be in the control group
-3. Some client version or config path I was on didn't hit the regression code path
+This is the event [cnighswonger reported in issue #46829](https://github.com/anthropics/claude-code/issues/46829), using the same methodology to scan 119,866 API calls — **on March 6, sub-agent went from 100% 1h to 74%**. I reproduced it precisely: 3/5 still 100% 1h, 3/6 dropped to 74%, 3/7 spiked to 9.8M tokens of 5m writes.
 
-A single machine's data **can't distinguish between these three**. So the conclusion isn't "Anthropic is fine" or "Anthropic is definitely broken" — **the conclusion is you must audit your own data**.
+The following month (3/6–4/8), sub-agent oscillated wildly between 6% and 97% 1h share. The server's TTL decision **logic was unstable**.
 
-If your scan shows large 5m writes on main projects in March, you were a regression victim. Strongly recommend installing cnighswonger's tool — beyond live TTL visibility, it also fixes the attachment-drift class of side effects.
+Anthropic employee Jarred Sumner defended in [The Register's coverage](https://www.theregister.com/2026/04/13/claude_code_cache_confusion/) that "sub-agent 5m is cheaper for one-shot calls" — barely plausible for the mixed phase 4 behavior. But the next event breaks that defense.
 
-## Tool Selection Guide
+### Transition 3: 2026-04-09 — Second Silent Regression (Original Finding)
+
+**Starting 4/9, sub-agent 1h share dropped to zero.** Five consecutive days, 100% 5m, across **4,840 API calls**. No public report I can find.
+
+Why this matters:
+
+**Not noise.** 4,840 calls with zero 1h, while 4/8 was still 68% 1h. This is a **sharp binary cutover**, not gradual drift.
+
+**Not a quota-triggered downgrade.** Anthropic's docs say exceeding 5h quota triggers a server-enforced downgrade. But **main agent is 100% 1h on the same days** — quota mechanism would have downgraded both.
+
+**Not a client version issue.** Same client, same day, two different TTL behaviors for main vs sub.
+
+**Not a workflow change.** API call volume sits in the normal range (631–1268 per day), comparable to early April.
+
+**The only plausible explanation: starting 4/9, the server changed sub-agent default TTL from "mixed" to "hard-coded 5m".** And **no changelog, no announcement, no issue mentions it** — the same silent-rollout pattern as 3/6.
+
+## Why Main Agent Was Never Affected
+
+Across all 95 days, main agent has zero 5m writes. Every TTL action Anthropic took **only touched sub-agents**:
+
+| Claim | Did my data verify it |
+|-------|----------------------|
+| Reddit "Anthropic silently changed TTL on 3/6" | ✅ **Strongly verified** (precise 3/6 transition) |
+| Sumner "main agent unaffected" | ✅ **Verified** (main 100% 1h across 95 days) |
+| "Regression only hits sub-agent" | ✅ **Verified** |
+| Sumner "sub-agent 5m is a one-shot optimization" | ⚠️ **Partially refuted** (4/9 100% 5m isn't optimization, it's forced downgrade) |
+| **New finding: 4/9 sub-agent 100% 5m** | 🆕 **Original** |
+
+## Anyone Can Reproduce This
+
+Save the script above as `~/bin/cc-ttl-timeline.py` and run:
+
+```bash
+python3 ~/bin/cc-ttl-timeline.py
+```
+
+If you see corresponding 3/6 and 4/9 transitions in your sub-agent — you're a silent regression victim, please add a data point to issue #46829. If you don't see them — the regression isn't a 100% rollout and you're in the control group.
+
+Both outcomes have value. **The point is this evidence chain doesn't depend on anyone's claims** — the source is local JSONL written by Claude Code to your disk, and the `cache_creation` object structure is part of Anthropic's public API spec. To fake this the server would have to lie in its own API responses.
+
+## Why Not Just Use cnighswonger's npm Package
+
+[cnighswonger/claude-code-cache-fix](https://github.com/cnighswonger/claude-code-cache-fix) is excellent, but it **only sees data captured after install** — its monitoring tools (status line, cost-report, quota-analysis) read `~/.claude/usage.jsonl`, which only exists while the interceptor is loaded.
+
+For **historical** audit, only Claude Code's own `~/.claude/projects/*.jsonl` works. That's what this post uses.
+
+The two are complementary:
 
 | Scenario | Tool |
 |----------|------|
-| Heavy user wanting live TTL + quota visibility | `claude-code-cache-fix` status line |
-| Want to fix resume-session cache breakage | `claude-code-cache-fix` wrapper |
-| Just want a historical TTL split, no install | The Python script above |
+| Look back, find regression transition dates | **The Python script in this post** |
+| Live TTL state visibility + fix client cache bugs | cnighswonger's package |
 | General token usage analysis | [ccusage](https://github.com/ryoppippi/ccusage) |
 
-## Why This Method Is Reliable
+## Closing
 
-It doesn't depend on any Anthropic public API, doesn't need admin access, doesn't wait for a billing statement — the source is local JSONL written by Claude Code to your disk, and the `cache_creation` object structure is part of Anthropic's API spec. Whatever the client does in its UI, this raw data **is the truth from the server**.
+"Did Anthropic silently change cache TTL?" — everyone should scan their own data. Community rumors and Anthropic's official statements aren't enough. Only the JSONL on your disk doesn't lie.
 
-For anyone treating Claude Code as a production tool, this kind of self-instrumentation beats trusting Anthropic's changelog by a wide margin — especially since their March 6 change **had no changelog at all**.
+The result is valuable either way: see the regression → you're a victim, contribute evidence; don't see it → you're in the control group, which is also evidence that the rollout isn't 100%.
+
+I'll keep scanning every few days to see how long the 4/9 wave persists and whether it spreads to main agents. If your data shows similar 100% 5m sub-agent behavior post-4/9, please comment on [issue #46829](https://github.com/anthropics/claude-code/issues/46829) or reach out.
 
 ## References
 
-- [cnighswonger/claude-code-cache-fix](https://github.com/cnighswonger/claude-code-cache-fix) — main subject of this post; npm package providing both the fix and live TTL monitoring
-- [How to Monitor Claude Code Cache Statistics — BSWEN](https://docs.bswen.com/blog/2026-04-01-monitor-cache-stats/) — earlier work on JSONL cache parsing
+- [Cache TTL silently regressed from 1h to 5m — GitHub Issue #46829](https://github.com/anthropics/claude-code/issues/46829) — cnighswonger's original evidence
 - [Followup: Anthropic quietly switched the default — r/ClaudeAI](https://www.reddit.com/r/ClaudeAI/comments/1sk3m12/followup_anthropic_quietly_switched_the_default/)
-- [Cache TTL silently regressed from 1h to 5m — GitHub Issue #46829](https://github.com/anthropics/claude-code/issues/46829)
 - [Anthropic: Claude quota drain not caused by cache tweaks — The Register](https://www.theregister.com/2026/04/13/claude_code_cache_confusion/)
 - [Anthropic downgraded cache TTL on March 6th — Hacker News](https://news.ycombinator.com/item?id=47736476)
+- [cnighswonger/claude-code-cache-fix](https://github.com/cnighswonger/claude-code-cache-fix) — fixes client cache-busting bugs + live monitor
 - [Prompt Caching — Claude API Docs](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
 - [ccusage — Claude Code Usage CLI](https://github.com/ryoppippi/ccusage)
-
