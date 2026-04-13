@@ -11,7 +11,7 @@ tags:
 - prompt-caching
 - ai-agent
 - npm
-draft: false
+draft: true
 ---
 
 [前一篇](/2026/04/13/claude-code-session-cost-cache-misconception/)講過 Claude Code 的 prompt cache 機制。寫完之後查到一個很有戲的事件：2026 年 3 月 Anthropic **靜默把 Claude Code 主 agent 的預設 cache TTL 從 1 小時改回 5 分鐘**，導致社群實測月成本暴漲 15–53%，Reddit 跟 HN 上一片哀號。

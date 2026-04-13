@@ -11,7 +11,7 @@ tags:
 - prompt-caching
 - ai-agent
 - npm
-draft: false
+draft: true
 ---
 
 [The previous post](/en/2026/04/13/claude-code-session-cost-cache-misconception/) explained Claude Code's prompt caching mechanics. While researching it I found a very dramatic incident: in March 2026 Anthropic **silently switched the default cache TTL for Claude Code's main agent from 1 hour back to 5 minutes**, causing community-measured monthly costs to inflate 15–53%.
