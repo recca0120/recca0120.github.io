@@ -119,10 +119,12 @@ Cache requires **100% identical prefixes** to hit. These actions invalidate it �
 | Switching Sonnet ↔ Opus | Different model, different cache — starts over |
 | Toggling web search / citations | system + message cache invalidates |
 | Idle > 5 minutes (TTL expires) | Cache evaporates; next call pays 100% to rewrite |
-| Auto-compact fires | Cache fully invalidates; compacted version must be rewritten |
+| Auto-compact fires | Prefix is replaced by a summary; subsequent turns warm a fresh cache |
 | `/clear` | Everything resets |
 
-Idle-over-5-minutes is the sneakiest — grab lunch, come back, type a question, and you've quietly paid full write price without any UI warning. Auto-compact is the nastiest: the moment it squashes 200K of context into a summary, all accumulated cache is gone.
+Idle-over-5-minutes is the sneakiest — grab lunch, come back, type a question, and you've quietly paid full write price without any UI warning.
+
+A nuance about auto-compact worth clarifying: per Anthropic's implementation, the **compaction API call itself** sends the same prefix as the turn before it, so that call is a cache hit. The real cost lands **after** compaction — the new session uses the summary in place of the original history as its prefix, so every subsequent turn is warming a brand-new cache from that point on. The net cost is similar to "cache blown away," but the mechanism is prefix replacement, not cache invalidation.
 
 ### 3. TTL (5 Minutes vs 1 Hour)
 

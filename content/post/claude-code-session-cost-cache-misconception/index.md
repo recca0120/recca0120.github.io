@@ -119,10 +119,12 @@ cache 需要**前綴 100% 相同**才會命中。下面這些動作會讓 cache 
 | 切 Sonnet → Opus | 不同 model 不同 cache，等於重來 |
 | 開關 web search、citations | system + message cache 失效 |
 | idle > 5 分鐘（TTL 過期） | cache 蒸發，下一發付 100% 重新寫入 |
-| 觸發 auto-compact | cache 全毀，壓縮版本要重新寫入 |
+| 觸發 auto-compact | 壓縮後前綴被換成摘要，後續輪數從新前綴重暖 cache |
 | `/clear` | 全部歸零 |
 
-idle 超過 5 分鐘是最容易忽略的一個——去吃個飯回來繼續打字，那一輪其實已經偷偷付了全額寫入稅，只是 UI 沒告訴你。auto-compact 更狠，把 200K context 壓縮成摘要的那一刻，原本累積的 cache 全部作廢，下一輪要重新暖起來。
+idle 超過 5 分鐘是最容易忽略的一個——去吃個飯回來繼續打字，那一輪其實已經偷偷付了全額寫入稅，只是 UI 沒告訴你。
+
+auto-compact 的細節值得多說兩句：官方實作下，**壓縮那一次 API call 本身**的前綴跟壓縮前完全相同，所以是 cache hit；真正的代價是壓縮**之後**——新 session 用「摘要」取代了原本的完整歷史當前綴，從那一刻起後面每一輪都在從新前綴重暖 cache。所以結果上一樣要付重暖成本，只是機制不是「cache 被炸掉」而是「前綴被換掉」。
 
 ### 三、TTL（5 分鐘／1 小時）
 
