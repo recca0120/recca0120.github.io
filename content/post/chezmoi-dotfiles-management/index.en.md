@@ -250,3 +250,4 @@ chezmoi isn't free of friction:
 - [chezmoi Quick Start](https://www.chezmoi.io/quick-start/)
 - [age — Simple File Encryption](https://github.com/FiloSottile/age)
 - [Managing Dotfiles With Chezmoi — Nathaniel Landau](https://natelandau.com/managing-dotfiles-with-chezmoi/)
+

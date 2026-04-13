@@ -181,3 +181,4 @@ Personally, I prefer `--cmd cd`. Muscle memory doesn't want to change, so the to
 - [zoxide: Tips and Tricks — Bozhidar Batsov](https://batsov.com/articles/2025/06/12/zoxide-tips-and-tricks/)
 - [fzf Fuzzy Finder](https://github.com/junegunn/fzf)
 - [icezyclon/zoxide.fish — enhanced fish completions](https://github.com/icezyclon/zoxide.fish)
+
