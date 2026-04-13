@@ -15,15 +15,16 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Cross-post new articles to Hashnode
+      - name: Sync articles to Hashnode (create / update / remove)
         env:
           HASHNODE_API_KEY: ${{ secrets.HASHNODE_API_KEY }}
           HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+          HASHNODE_HOST: ${{ secrets.HASHNODE_HOST }}
           SITE_URL: https://recca0120.github.io
         run: |
           changed=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'content/post/*/index.en.md' || true)
           if [ -z "$changed" ]; then
-            echo "No new English articles found."
+            echo "No changed English articles found."
             exit 0
           fi
           echo "$changed" > /tmp/changed_files.txt
@@ -34,6 +35,7 @@ jobs:
 
           API_KEY = os.environ["HASHNODE_API_KEY"]
           PUB_ID = os.environ["HASHNODE_PUBLICATION_ID"]
+          HOST = os.environ.get("HASHNODE_HOST") or "recca0120.hashnode.dev"
           SITE_URL = os.environ["SITE_URL"]
           GQL_URL = "https://gql.hashnode.com"
           HEADERS = {"Content-Type": "application/json", "Authorization": API_KEY, "User-Agent": "recca0120-blog-crosspost/1.0"}
@@ -51,8 +53,7 @@ jobs:
               with open(filepath, "r", encoding="utf-8") as f:
                   content = f.read()
               parts = content.split("---", 2)
-              if len(parts) < 3:
-                  return None, content
+              if len(parts) < 3: return None, content
               fm_text = parts[1]
               body = parts[2].strip()
               fm = {}
@@ -70,21 +71,19 @@ jobs:
                           key = key.strip()
                           val = val.strip().strip("'\"")
                           current_key = key
-                          if val:
-                              fm[key] = val
-                          else:
-                              list_values = []
+                          if val: fm[key] = val
+                          else: list_values = []
               if current_key and list_values:
                   fm[current_key] = list_values
               return fm, body
 
-          # Fetch existing canonical URLs
-          existing_urls = set()
+          # canonical_url -> post id
+          existing = {}
           query_posts = """
           query($host: String!, $after: String) {
             publication(host: $host) {
               posts(first: 50, after: $after) {
-                edges { node { canonicalUrl } cursor }
+                edges { node { id canonicalUrl } cursor }
                 pageInfo { hasNextPage endCursor }
               }
             }
@@ -92,14 +91,13 @@ jobs:
           """
           after = None
           while True:
-              _, resp = gql(query_posts, {"host": "recca0120.hashnode.dev", "after": after})
+              _, resp = gql(query_posts, {"host": HOST, "after": after})
               posts = resp.get("data", {}).get("publication", {}).get("posts", {})
               for edge in posts.get("edges", []):
-                  u = edge["node"].get("canonicalUrl") or ""
-                  if u:
-                      existing_urls.add(u)
-              if not posts.get("pageInfo", {}).get("hasNextPage"):
-                  break
+                  node = edge["node"]
+                  u = node.get("canonicalUrl") or ""
+                  if u: existing[u] = node["id"]
+              if not posts.get("pageInfo", {}).get("hasNextPage"): break
               after = posts["pageInfo"]["endCursor"]
 
           with open("/tmp/changed_files.txt") as f:
@@ -109,60 +107,88 @@ jobs:
 
           publish_mutation = """
           mutation PublishPost($input: PublishPostInput!) {
-            publishPost(input: $input) {
-              post { id url }
-            }
+            publishPost(input: $input) { post { id url } }
+          }
+          """
+          update_mutation = """
+          mutation UpdatePost($input: UpdatePostInput!) {
+            updatePost(input: $input) { post { id url } }
+          }
+          """
+          remove_mutation = """
+          mutation RemovePost($input: RemovePostInput!) {
+            removePost(input: $input) { post { id } }
           }
           """
 
           for filepath in files:
               fm, body = parse_frontmatter(filepath)
-              if not fm:
-                  continue
+              if not fm: continue
 
               title = fm.get("title", "")
               slug = fm.get("slug", "")
               date_str = fm.get("date", "")
               description = fm.get("description", "")
-              draft = fm.get("draft", "false")
+              draft_flag = fm.get("draft", "false") == "true"
               tags = fm.get("tags", [])
-              if isinstance(tags, str):
-                  tags = [tags]
-
-              if draft == "true":
-                  print(f"SKIP (draft): {title}")
-                  continue
+              if isinstance(tags, str): tags = [tags]
 
               try:
                   dt = datetime.fromisoformat(date_str)
-                  if dt > now:
-                      print(f"SKIP (future): {title}")
-                      continue
                   year, month, day = dt.strftime("%Y"), dt.strftime("%m"), dt.strftime("%d")
               except:
                   print(f"SKIP (bad date): {title}")
                   continue
 
-              # Clean slug for Hashnode: lowercase, alphanumeric and dashes only, max 250 chars
+              canonical_url = f"{SITE_URL}/en/{year}/{month}/{day}/{slug}/"
+              prior_id = existing.get(canonical_url)
+
+              # draft:true handling -- if exists on Hashnode, remove it
+              if draft_flag:
+                  if prior_id:
+                      _, r = gql(remove_mutation, {"input": {"id": prior_id}})
+                      if r.get("data", {}).get("removePost", {}).get("post"):
+                          print(f"REMOVED: {title}")
+                      else:
+                          print(f"REMOVE FAIL: {title} - {r}")
+                  else:
+                      print(f"SKIP (draft, never posted): {title}")
+                  time.sleep(5)
+                  continue
+
+              if dt > now:
+                  print(f"SKIP (future): {title}")
+                  continue
+
               hashnode_slug = re.sub(r'[^a-z0-9-]', '-', slug.lower())
               hashnode_slug = re.sub(r'-+', '-', hashnode_slug).strip('-')[:250]
-
-              canonical_url = f"{SITE_URL}/en/{year}/{month}/{day}/{slug}/"
-
-              if canonical_url in existing_urls:
-                  print(f"SKIP (exists): {title}")
-                  continue
 
               hashnode_tags = []
               for t in tags[:5]:
                   tag_slug = re.sub(r'[^a-z0-9-]', '', t.lower().replace(' ', '-'))
-                  if tag_slug:
-                      hashnode_tags.append({"slug": tag_slug, "name": t})
+                  if tag_slug: hashnode_tags.append({"slug": tag_slug, "name": t})
 
               md = f"*Originally published at [recca0120.github.io]({canonical_url})*\n\n{body}"
 
-              variables = {
-                  "input": {
+              if prior_id:
+                  variables = {"input": {
+                      "id": prior_id,
+                      "title": title,
+                      "contentMarkdown": md,
+                      "originalArticleURL": canonical_url,
+                      "slug": hashnode_slug,
+                      "tags": hashnode_tags,
+                      "metaTags": {"description": description},
+                  }}
+                  status, resp = gql(update_mutation, variables)
+                  post_data = resp.get("data", {}).get("updatePost", {}).get("post", {})
+                  if post_data and post_data.get("url"):
+                      print(f"UPDATED: {title} -> {post_data['url']}")
+                  else:
+                      err = resp.get("errors", [{}])[0].get("message") or str(resp)[:200]
+                      print(f"UPDATE FAIL ({status}): {title} - {err}")
+              else:
+                  variables = {"input": {
                       "title": title,
                       "contentMarkdown": md,
                       "publicationId": PUB_ID,
@@ -170,18 +196,14 @@ jobs:
                       "slug": hashnode_slug,
                       "tags": hashnode_tags,
                       "metaTags": {"description": description},
-                  }
-              }
-
-              status, resp = gql(publish_mutation, variables)
-              post_data = resp.get("data", {}).get("publishPost", {}).get("post", {})
-              errors = resp.get("errors", [])
-
-              if post_data and post_data.get("url"):
-                  print(f"OK: {title} -> {post_data['url']}")
-              else:
-                  err_msg = errors[0]["message"] if errors else str(resp)[:200]
-                  print(f"FAIL ({status}): {title} - {err_msg}")
+                  }}
+                  status, resp = gql(publish_mutation, variables)
+                  post_data = resp.get("data", {}).get("publishPost", {}).get("post", {})
+                  if post_data and post_data.get("url"):
+                      print(f"CREATED: {title} -> {post_data['url']}")
+                  else:
+                      err = resp.get("errors", [{}])[0].get("message") or str(resp)[:200]
+                      print(f"CREATE FAIL ({status}): {title} - {err}")
 
               time.sleep(5)
           SCRIPT

@@ -15,15 +15,14 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Cross-post new articles to dev.to
+      - name: Sync articles to dev.to (create or update)
         env:
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           SITE_URL: https://recca0120.github.io
         run: |
-          # 找出新增或修改的英文文章
           changed=$(git diff --name-only --diff-filter=AM HEAD~1 HEAD -- 'content/post/*/index.en.md' || true)
           if [ -z "$changed" ]; then
-            echo "No new English articles found."
+            echo "No changed English articles found."
             exit 0
           fi
           echo "$changed" > /tmp/changed_files.txt
@@ -36,19 +35,15 @@ jobs:
           SITE_URL = os.environ["SITE_URL"]
           HEADERS = {"api-key": API_KEY, "Content-Type": "application/json", "User-Agent": "recca0120-blog-crosspost/1.0"}
 
-          def api_get(url):
-              req = urllib.request.Request(url, headers=HEADERS)
-              with urllib.request.urlopen(req) as resp:
-                  return json.loads(resp.read())
-
-          def api_post(url, data):
-              body = json.dumps(data).encode()
-              req = urllib.request.Request(url, data=body, headers=HEADERS, method="POST")
+          def api_call(url, method="GET", data=None):
+              body = json.dumps(data).encode() if data else None
+              req = urllib.request.Request(url, data=body, headers=HEADERS, method=method)
               try:
                   with urllib.request.urlopen(req) as resp:
                       return resp.status, json.loads(resp.read())
               except urllib.error.HTTPError as e:
-                  return e.code, e.read().decode()
+                  try: return e.code, json.loads(e.read().decode())
+                  except: return e.code, e.read().decode()
 
           def parse_frontmatter(filepath):
               with open(filepath, "r", encoding="utf-8") as f:
@@ -73,95 +68,104 @@ jobs:
                           key = key.strip()
                           val = val.strip().strip("'\"")
                           current_key = key
-                          if val:
-                              fm[key] = val
-                          else:
-                              list_values = []
+                          if val: fm[key] = val
+                          else: list_values = []
               if current_key and list_values:
                   fm[current_key] = list_values
               return fm, body
 
-          # 讀取變更檔案清單
           with open("/tmp/changed_files.txt") as f:
               files = [l.strip() for l in f if l.strip()]
 
           now = datetime.now(timezone.utc)
 
-          # 抓已有的 canonical URLs
-          existing_urls = set()
+          # Fetch all my articles to build canonical_url -> {id, published} map
+          existing = {}  # canonical_url -> (id, published)
           page = 1
           while True:
               try:
-                  articles = api_get(f"https://dev.to/api/articles/me?per_page=100&page={page}")
+                  s, articles = api_call(f"https://dev.to/api/articles/me/all?per_page=100&page={page}")
                   if not isinstance(articles, list) or len(articles) == 0:
                       break
                   for a in articles:
                       u = a.get("canonical_url") or ""
                       if u:
-                          existing_urls.add(u)
+                          existing[u] = (a.get("id"), a.get("published", False))
                   page += 1
-              except:
+              except Exception as e:
+                  print(f"fetch page {page} error: {e}")
                   break
 
           for filepath in files:
               fm, body = parse_frontmatter(filepath)
-              if not fm:
-                  continue
+              if not fm: continue
 
               title = fm.get("title", "")
               slug = fm.get("slug", "")
               date_str = fm.get("date", "")
               description = fm.get("description", "")
-              draft = fm.get("draft", "false")
+              draft_flag = fm.get("draft", "false") == "true"
               tags = fm.get("tags", [])
-              if isinstance(tags, str):
-                  tags = [tags]
-
-              if draft == "true":
-                  print(f"SKIP (draft): {title}")
-                  continue
+              if isinstance(tags, str): tags = [tags]
 
               try:
                   dt = datetime.fromisoformat(date_str)
-                  if dt > now:
-                      print(f"SKIP (future): {title}")
-                      continue
                   year, month, day = dt.strftime("%Y"), dt.strftime("%m"), dt.strftime("%d")
               except:
                   print(f"SKIP (bad date): {title}")
                   continue
 
               canonical_url = f"{SITE_URL}/en/{year}/{month}/{day}/{slug}/"
+              prior = existing.get(canonical_url)
 
-              if canonical_url in existing_urls:
-                  print(f"SKIP (exists): {title}")
+              # draft:true handling -- if article exists on dev.to, unpublish it
+              if draft_flag:
+                  if prior:
+                      art_id, was_published = prior
+                      if was_published:
+                          payload = {"article": {"published": False}}
+                          s, r = api_call(f"https://dev.to/api/articles/{art_id}", "PUT", payload)
+                          print(f"UNPUBLISHED ({s}): {title}")
+                      else:
+                          print(f"SKIP (already unpublished): {title}")
+                  else:
+                      print(f"SKIP (draft, never published): {title}")
+                  time.sleep(15)
+                  continue
+
+              if dt > now:
+                  print(f"SKIP (future): {title}")
                   continue
 
               devto_tags = []
               for t in tags[:4]:
                   tag = re.sub(r'[^a-z0-9]', '', t.lower())
-                  if tag:
-                      devto_tags.append(tag)
+                  if tag: devto_tags.append(tag)
 
               md = f"*Originally published at [recca0120.github.io]({canonical_url})*\n\n{body}"
 
-              payload = {
-                  "article": {
-                      "title": title,
-                      "body_markdown": md,
-                      "published": True,
-                      "canonical_url": canonical_url,
-                      "tags": devto_tags,
-                      "description": description,
-                  }
+              article_payload = {
+                  "title": title,
+                  "body_markdown": md,
+                  "published": True,
+                  "canonical_url": canonical_url,
+                  "tags": devto_tags,
+                  "description": description,
               }
 
-              status, resp = api_post("https://dev.to/api/articles", payload)
-              if status == 201:
-                  url = resp.get("url", "") if isinstance(resp, dict) else ""
-                  print(f"OK: {title} -> {url}")
+              if prior:
+                  art_id, _ = prior
+                  s, r = api_call(f"https://dev.to/api/articles/{art_id}", "PUT", {"article": article_payload})
+                  if s == 200:
+                      print(f"UPDATED: {title} -> {r.get('url','') if isinstance(r,dict) else ''}")
+                  else:
+                      print(f"UPDATE FAIL ({s}): {title} - {str(r)[:200]}")
               else:
-                  print(f"FAIL ({status}): {title} - {str(resp)[:200]}")
+                  s, r = api_call("https://dev.to/api/articles", "POST", {"article": article_payload})
+                  if s == 201:
+                      print(f"CREATED: {title} -> {r.get('url','') if isinstance(r,dict) else ''}")
+                  else:
+                      print(f"CREATE FAIL ({s}): {title} - {str(r)[:200]}")
 
               time.sleep(15)
           SCRIPT
