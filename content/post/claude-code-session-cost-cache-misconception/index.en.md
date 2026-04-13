@@ -41,6 +41,58 @@ Opus is even more dramatic: base input $5, cache read only $0.50.
 
 Meaning: the first time you send a large context block, it gets written to the cache and you pay a small write premium (25% above base). For the next 5 minutes, resending the same prefix costs 10% of base. The longer the session and the more cache hits accumulate, the lower your average per-token cost.
 
+## What "Prefix" Actually Means
+
+Before going further, it's worth unpacking the word "prefix." A prompt is an ordered sequence of tokens. Cache matching runs **from the very beginning, token by token** — and a single differing token breaks everything after it.
+
+In multi-turn conversations, every new turn **only appends to the tail**; the prior history stays untouched:
+
+```
+Turn 1: [system] [CLAUDE.md] [Q1]
+Turn 2: [system] [CLAUDE.md] [Q1] [A1] [Q2]
+         ↑ identical prefix → cache hit at 10% price
+                                    ↑ new tail → written to cache
+Turn 3: [system] [CLAUDE.md] [Q1] [A1] [Q2] [A2] [Q3]
+         ↑ an even longer prefix hits cache
+```
+
+So long conversations **aren't a cost disadvantage — they're an advantage**. The longer the accumulated history, the more tokens per turn get the 90% discount.
+
+But this only holds while you're strictly appending. If you could go back and edit Turn 5, every token after Turn 5 — even ones that look identical — invalidates because the prefix hash diverges from that point onward. That's the cruelty of "prefix": change one character in the middle and everything downstream is lost.
+
+Analogy: git commit hashes. Tweak any historical commit and every hash after it changes.
+
+## Topic Switching: How Cache Bills Across A → B → C
+
+The most-overlooked scenario: you discuss topic A with Claude, finish, move to topic B, then topic C — **without `/clear` in between**. A's and B's histories stay glued to the prompt prefix, getting billed at 10% on every single turn while they ride along.
+
+Concretely:
+
+```
+Topic A (30K tokens accumulated over 10 turns)
+  → A's 30K written to cache
+
+Switch to B (no /clear)
+  Turn 11 = [A's 30K] + [B's new question]
+            ↑ 30K × $0.30/M = $0.009 from cache
+
+B accumulates 20K more
+
+Switch to C (still no /clear)
+  Every turn = [A's 30K] + [B's 20K] + [C's new question]
+               ↑ 50K from cache ≈ $0.015 / turn
+```
+
+20 turns on C means an extra 20 × $0.015 = $0.30 spent "carrying corpses." A and B may contribute nothing to C, but you're paying for them to ride along.
+
+**Rule of thumb for when to `/clear`**:
+
+- **A, B, C are independent** (frontend in the morning / SQL in the afternoon / CI at night) → `/clear` between topics
+- **A, B, C reference each other** (A defines spec / B implements / C debugs B) → don't clear; the 10% price on history is cheap and useful
+- **History is heavy but its conclusion is condensable** (A was a 50K doc you read) → clear, then paste a short summary of A's conclusions as new context
+
+A common misconception: "Claude Code automatically detects topic changes and drops stale content." **It doesn't.** Cache is mechanical prefix matching — it has no semantic understanding. Deciding what to forget is **entirely a human responsibility**: either `/clear` manually, or let auto-compact fire based on context usage (not topic).
+
 ## The Three Variables That Actually Drive Cost
 
 So the cost model isn't "context size × number of turns." It's these three factors:
@@ -58,14 +110,19 @@ About a **7x difference**.
 
 ### 2. Cache Invalidation
 
-Cache requires **100% identical prefixes** to hit. These actions invalidate the whole cache:
+Cache requires **100% identical prefixes** to hit. These actions invalidate it — some loudly, some quietly:
 
-- Editing any historical message
-- Changing tool schemas (adding/removing MCP tools)
-- Switching models (Sonnet ↔ Opus)
-- Toggling web search or citations
+| Event | Impact |
+|-------|--------|
+| Editing message N | Everything from N onward invalidates (earlier still cached) |
+| Adding/removing an MCP tool | Full invalidation (tool schemas sit at the front) |
+| Switching Sonnet ↔ Opus | Different model, different cache — starts over |
+| Toggling web search / citations | system + message cache invalidates |
+| Idle > 5 minutes (TTL expires) | Cache evaporates; next call pays 100% to rewrite |
+| Auto-compact fires | Cache fully invalidates; compacted version must be rewritten |
+| `/clear` | Everything resets |
 
-Claude Code's auto-compact is also a cache-destruction event. The moment it squashes your 200K context into a summary, the accumulated cache is gone, and the next turn has to warm from scratch.
+Idle-over-5-minutes is the sneakiest — grab lunch, come back, type a question, and you've quietly paid full write price without any UI warning. Auto-compact is the nastiest: the moment it squashes 200K of context into a summary, all accumulated cache is gone.
 
 ### 3. TTL (5 Minutes vs 1 Hour)
 

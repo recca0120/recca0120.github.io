@@ -41,6 +41,58 @@ Opus 更誇張，base input $5，cache read 只要 $0.50。
 
 這代表：你第一次送出一大段 context 會被寫入 cache，付寫入成本（比 base 稍貴 25%）；接下來 5 分鐘內，同樣的前綴重送一次只收 10%。會話越長、cache hit 越多次，平均單價就越低。
 
+## 「前綴」是什麼意思
+
+理解 cache 之前先搞懂「前綴」這個詞。prompt 是一長串有順序的 token，cache 的規則是**從開頭往下比對，一個 token 都不能差**，比對到哪裡就能讀到哪裡。
+
+多輪對話時每一輪都**只往尾端追加**新內容，前面的歷史原封不動：
+
+```
+Turn 1: [system] [CLAUDE.md] [Q1]
+Turn 2: [system] [CLAUDE.md] [Q1] [A1] [Q2]
+         ↑ 跟 Turn 1 完全一樣的前綴，cache 命中 10% 價
+                                    ↑ 新的部分，寫入 cache
+Turn 3: [system] [CLAUDE.md] [Q1] [A1] [Q2] [A2] [Q3]
+         ↑ 前面更長一段都命中
+```
+
+所以長對話在 cache 機制下**不是劣勢而是優勢**——累積越多，每輪被折扣的 token 就越多。
+
+但這只對「一直往尾端加」的情境成立。如果你能**回頭改 Turn 5 的內容**，Turn 5 之後的所有 token 雖然字面上沒變，cache 也全部失效——因為前綴 hash 從 Turn 5 那個位置就對不上了。這就是「前綴」的殘忍之處：中間改一個字，後面全毀。
+
+類比：git 的 commit hash chain，任何歷史 commit 動一下，後面每個 hash 都跟著變。
+
+## 轉議題時 cache 怎麼計價
+
+實務上最常忽略的情境：你跟 Claude 討論 A，做完後轉去問 B，再轉去問 C——**如果中間沒 `/clear`**，A 跟 B 的歷史會一直黏在 prompt 前綴裡，每一輪都被 10% 計費陪跑。
+
+展開看：
+
+```
+討論 A（10 輪後累積 30K token）
+  → A 的 30K 寫入 cache
+
+轉到 B（不 clear）
+  Turn 11 = [A 的 30K] + [B 新問題]
+            ↑ 30K × $0.30/M = $0.009 從 cache 讀
+
+討論 B 又累積 20K
+
+轉到 C（還是不 clear）
+  每一輪 = [A 的 30K] + [B 的 20K] + [C 新問題]
+           ↑ 50K 從 cache 讀 ≈ $0.015 / turn
+```
+
+C 討論 20 輪，就是額外付 20 × $0.015 = $0.30 在「運屍體」。A、B 對 C 可能毫無幫助，但你一直在為它們陪跑付錢。
+
+**判斷該不該 `/clear` 的原則**：
+
+- **A、B、C 互相獨立**（早上改前端 / 下午寫 SQL / 晚上改 CI）→ 轉議題就 `/clear`
+- **A、B、C 互相有引用**（A 定規格 / B 寫實作 / C 除錯 B）→ 不要 clear，歷史的 10% 很便宜也很有用
+- **歷史佔比重但結論可濃縮**（A 是讀完 50K 的技術文件）→ clear 後用自己的話把 A 的結論貼過來當新 context
+
+很多人誤以為「Claude Code 會自動判斷議題轉換、聰明地丟舊內容」。**並不會**。cache 是機械性的前綴比對，它不懂語意、看不出話題切換。丟棄舊內容的決定**完全是人類的責任**——要嘛手動 `/clear`，要嘛等 auto-compact 觸發（這是看 context 使用率，不是議題）。
+
 ## 真正決定成本的三個變數
 
 所以成本模型不是「context 大小 × 對話次數」，而是三個更關鍵的因素：
@@ -58,14 +110,19 @@ Opus 更誇張，base input $5，cache read 只要 $0.50。
 
 ### 二、cache invalidation
 
-cache 需要**前綴 100% 相同**才會命中。下面這些動作會讓 cache 整段失效：
+cache 需要**前綴 100% 相同**才會命中。下面這些動作會讓 cache 失效——有些很顯眼，有些很默默：
 
-- 編輯歷史訊息中間的任何一條
-- 修改 tool schema（新增或拿掉 MCP tools）
-- 切換 model（Sonnet ↔ Opus）
-- 開啟／關閉 web search、citations
+| 狀況 | 影響範圍 |
+|------|---------|
+| 編輯第 N 輪訊息 | 第 N 輪之後全失效（前面還在） |
+| 加／拿掉 MCP tool | 全段失效（tool schema 在最前面） |
+| 切 Sonnet → Opus | 不同 model 不同 cache，等於重來 |
+| 開關 web search、citations | system + message cache 失效 |
+| idle > 5 分鐘（TTL 過期） | cache 蒸發，下一發付 100% 重新寫入 |
+| 觸發 auto-compact | cache 全毀，壓縮版本要重新寫入 |
+| `/clear` | 全部歸零 |
 
-Claude Code 的 auto-compact 也是 cache 毀滅事件——把 200K context 壓縮成摘要的那一刻，原本累積的 cache 全部作廢，下一輪要重新暖起來。
+idle 超過 5 分鐘是最容易忽略的一個——去吃個飯回來繼續打字，那一輪其實已經偷偷付了全額寫入稅，只是 UI 沒告訴你。auto-compact 更狠，把 200K context 壓縮成摘要的那一刻，原本累積的 cache 全部作廢，下一輪要重新暖起來。
 
 ### 三、TTL（5 分鐘／1 小時）
 
