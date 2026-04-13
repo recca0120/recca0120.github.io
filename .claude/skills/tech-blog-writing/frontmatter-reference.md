@@ -45,7 +45,7 @@ draft: false
 
 規則：
 - `slug` 用英文 kebab-case
-- `date` 一定要帶時區 `+08:00`，且不能是未來時間。**寫文章前先用 `date` 指令確認當前時間**
+- `date` 一定要帶時區 `+08:00`，且**絕對不能是未來時間**。Hugo 預設會跳過未來日期的文章，首頁、RSS、sitemap 都不會出現，GitHub Actions 部署完也看不到。寫文章前**必須先用 `date` 指令**確認當前時間，date 欄位建議填「當前時間減 30 分鐘」保留 buffer，避開 deploy 期間時間還沒到的 race condition
 - `image` 封面圖檔名，通常是 `featured.png`
 - `categories` 只放一個，`tags` 是陣列格式
 - 不要加 `author`、`comments`、`keywords`、`description`（空值）、`abbrlink`
