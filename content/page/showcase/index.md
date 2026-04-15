@@ -15,7 +15,7 @@ menu:
 <div class="showcase-card">
   <a href="https://recca0120.github.io/rubik-cube/" target="_blank" rel="noopener">
     <div class="showcase-preview">
-      <iframe src="https://recca0120.github.io/rubik-cube/" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+      <img src="https://image.thum.io/get/width/600/crop/400/https://recca0120.github.io/rubik-cube/" alt="Rubik's Cube" loading="lazy">
     </div>
     <div class="showcase-info">
       <h3>Rubik's Cube</h3>
@@ -28,7 +28,7 @@ menu:
 <div class="showcase-card">
   <a href="https://recca0120.github.io/codeatlas/" target="_blank" rel="noopener">
     <div class="showcase-preview">
-      <iframe src="https://recca0120.github.io/codeatlas/" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+      <img src="https://image.thum.io/get/width/600/crop/400/https://recca0120.github.io/codeatlas/" alt="CodeAtlas" loading="lazy">
     </div>
     <div class="showcase-info">
       <h3>CodeAtlas</h3>
@@ -41,7 +41,7 @@ menu:
 <div class="showcase-card">
   <a href="https://www.ganyuanbuy.com/" target="_blank" rel="noopener">
     <div class="showcase-preview">
-      <iframe src="https://www.ganyuanbuy.com/" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+      <img src="https://image.thum.io/get/width/600/crop/400/https://www.ganyuanbuy.com/" alt="甘源買" loading="lazy">
     </div>
     <div class="showcase-info">
       <h3>甘源買</h3>
@@ -82,20 +82,23 @@ menu:
 }
 
 .showcase-preview {
-  position: relative;
   width: 100%;
   height: 200px;
   overflow: hidden;
   background: #f3f4f6;
 }
 
-.showcase-preview iframe {
-  width: 150%;
-  height: 150%;
-  transform: scale(0.667);
-  transform-origin: top left;
-  border: none;
-  pointer-events: none;
+.showcase-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  transition: transform 0.3s;
+}
+
+.showcase-card:hover .showcase-preview img {
+  transform: scale(1.03);
 }
 
 .showcase-info {
