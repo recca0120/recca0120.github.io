@@ -15,7 +15,7 @@ menu:
 <div class="showcase-card">
   <a href="https://recca0120.github.io/rubik-cube/" target="_blank" rel="noopener">
     <div class="showcase-preview">
-      <img src="https://image.thum.io/get/width/600/crop/400/https://recca0120.github.io/rubik-cube/" alt="Rubik's Cube" loading="lazy">
+      <img src="rubik-cube.jpg" alt="Rubik's Cube" loading="lazy">
     </div>
     <div class="showcase-info">
       <h3>Rubik's Cube</h3>
@@ -28,7 +28,7 @@ menu:
 <div class="showcase-card">
   <a href="https://recca0120.github.io/codeatlas/" target="_blank" rel="noopener">
     <div class="showcase-preview">
-      <img src="https://image.thum.io/get/width/600/crop/400/https://recca0120.github.io/codeatlas/" alt="CodeAtlas" loading="lazy">
+      <img src="codeatlas.jpg" alt="CodeAtlas" loading="lazy">
     </div>
     <div class="showcase-info">
       <h3>CodeAtlas</h3>
@@ -41,7 +41,7 @@ menu:
 <div class="showcase-card">
   <a href="https://www.ganyuanbuy.com/" target="_blank" rel="noopener">
     <div class="showcase-preview">
-      <img src="https://image.thum.io/get/width/600/crop/400/https://www.ganyuanbuy.com/" alt="甘源買" loading="lazy">
+      <img src="ganyuanbuy.jpg" alt="甘源買" loading="lazy">
     </div>
     <div class="showcase-info">
       <h3>甘源買</h3>
