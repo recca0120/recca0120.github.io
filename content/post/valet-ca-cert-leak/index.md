@@ -18,7 +18,7 @@ draft: false
 某天開著 Chrome 瀏覽 `analytics.google.com`，點開憑證資訊卻看到：
 
 ```
-核發對象：filament-scu.test
+核發對象：myproject.test
 發行者：Laravel Valet CA Self Signed CN
 ```
 

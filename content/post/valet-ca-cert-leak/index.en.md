@@ -18,7 +18,7 @@ draft: false
 You open `analytics.google.com` in Chrome and click the certificate — and see this:
 
 ```
-Subject: filament-scu.test
+Subject: myproject.test
 Issuer: Laravel Valet CA Self Signed CN
 ```
 

@@ -41,10 +41,10 @@ menu:
 <div class="showcase-card">
   <a href="https://www.ganyuanbuy.com/" target="_blank" rel="noopener">
     <div class="showcase-preview">
-      <img src="ganyuanbuy.jpg" alt="甘源買" loading="lazy">
+      <img src="ganyuanbuy.jpg" alt="干苑" loading="lazy">
     </div>
     <div class="showcase-info">
-      <h3>甘源買</h3>
+      <h3>干苑</h3>
       <p>台灣滷味電商，專售健康無添加滷製食品，面向注重食品安全的家庭消費者。</p>
       <span class="showcase-link">ganyuanbuy.com →</span>
     </div>
