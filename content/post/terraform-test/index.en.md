@@ -437,7 +437,7 @@ Variable priority in test files follows the same rules as regular Terraform:
 
 ## terraform test vs Terratest
 
-| | terraform test | [Terratest](/en/p/terratest-infrastructure-testing/) |
+| | terraform test | [Terratest]({{< ref "/post/terratest-infrastructure-testing" >}}) |
 |--|--|--|
 | Language | HCL | Go |
 | Requirement | Terraform 1.6+ | Go 1.21+ |

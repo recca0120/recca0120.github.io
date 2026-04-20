@@ -227,8 +227,8 @@ const db = new SQL.Database(saved ?? [])
 
 這篇是本系列的第三篇，其他兩篇：
 
-- [sql.js 入門：在瀏覽器裡跑 SQLite](/post/sql-js-browser-sqlite/)：從安裝到第一個查詢的完整教學
-- [用 sql.js + IndexedDB 打造離線 Web App](/post/sql-js-offline-web-app/)：實際做一個離線可用的應用程式，示範持久化整合
+- [sql.js 入門：在瀏覽器裡跑 SQLite]({{< ref "/post/sql-js-browser-sqlite" >}})：從安裝到第一個查詢的完整教學
+- [用 sql.js + IndexedDB 打造離線 Web App]({{< ref "/post/sql-js-offline-web-app" >}})：實際做一個離線可用的應用程式，示範持久化整合
 
 三篇讀完，瀏覽器端資料庫的眉角應該夠清楚了。
 

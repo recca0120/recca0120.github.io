@@ -224,7 +224,7 @@ useEffect(() => {
 | 錯誤訊息 | 要自己 parse | ✓ beforeError hook |
 | bundle 大小 | fetch 是內建 | +4KB |
 
-如果只需要並發控制，[fetch + p-limit](/p/fetch-concurrent-requests/) 就夠了。
+如果只需要並發控制，[fetch + p-limit]({{< ref "/post/fetch-concurrent-requests" >}}) 就夠了。
 如果同時需要 retry 和 auth，加 ky 省很多重複程式碼。
 
 ## 小結

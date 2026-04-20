@@ -222,7 +222,7 @@ npx @biomejs/biome check --write .
 
 ## 配合 Lefthook 用
 
-如果有裝 [Lefthook 管理 Git hooks](/p/lefthook-git-hooks/)，把 husky + lint-staged 換成：
+如果有裝 [Lefthook 管理 Git hooks]({{< ref "/post/lefthook-git-hooks" >}})，把 husky + lint-staged 換成：
 
 ```yaml
 # lefthook.yml

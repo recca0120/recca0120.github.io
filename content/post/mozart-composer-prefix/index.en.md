@@ -156,13 +156,13 @@ $obj = new $class();  // not rewritten
 
 **Mozart's own dependencies**: Mozart itself uses libraries. Requiring it directly into your project can cause the same conflicts you're trying to solve — hence the Docker or PHAR recommendation.
 
-**Ecosystem shift**: Mozart is still maintained (latest: 1.1.3), but many developers have moved to [Strauss](/en/p/strauss-composer-prefix/), a fork that addresses a few known Mozart limitations — better constant prefixing, full `files` autoloader support, and license compliance handling.
+**Ecosystem shift**: Mozart is still maintained (latest: 1.1.3), but many developers have moved to [Strauss]({{< ref "/post/strauss-composer-prefix" >}}), a fork that addresses a few known Mozart limitations — better constant prefixing, full `files` autoloader support, and license compliance handling.
 
 ## Summary
 
 There's no official WordPress solution for dependency conflicts. Mozart is the most direct approach: copy dependencies, prefix namespaces, make your classes completely distinct from everyone else's.
 
-If you run into Mozart's limitations — constant prefixing, file autoloaders, license headers — [Strauss](/en/p/strauss-composer-prefix/) is worth a look.
+If you run into Mozart's limitations — constant prefixing, file autoloaders, license headers — [Strauss]({{< ref "/post/strauss-composer-prefix" >}}) is worth a look.
 
 ## References
 

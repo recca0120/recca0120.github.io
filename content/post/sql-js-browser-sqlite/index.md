@@ -321,9 +321,9 @@ sql.js 是瀏覽器環境的解法。如果你在 Node.js 跑，用 [better-sqli
 
 ## 延伸閱讀
 
-如果你想把 sql.js 搭配 IndexedDB 做成真正能離線使用的應用，讓資料在頁面重新整理後還能保留，可以看 [用 sql.js + IndexedDB 打造離線可用的 Web App](/post/sql-js-offline-web-app/)。
+如果你想把 sql.js 搭配 IndexedDB 做成真正能離線使用的應用，讓資料在頁面重新整理後還能保留，可以看 [用 sql.js + IndexedDB 打造離線可用的 Web App]({{< ref "/post/sql-js-offline-web-app" >}})。
 
-要比較 sql.js 和 localStorage、IndexedDB、Cache API 在不同使用場景的優劣，可以參考 [瀏覽器儲存方案比較：localStorage、IndexedDB、sql.js 怎麼選](/post/browser-storage-comparison/)。
+要比較 sql.js 和 localStorage、IndexedDB、Cache API 在不同使用場景的優劣，可以參考 [瀏覽器儲存方案比較：localStorage、IndexedDB、sql.js 怎麼選]({{< ref "/post/browser-storage-comparison" >}})。
 
 ## 參考資源
 

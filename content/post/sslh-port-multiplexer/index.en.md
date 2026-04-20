@@ -186,11 +186,11 @@ Set your OpenVPN client's remote to `yourserver.com 443`. sslh identifies the Op
 | Approach | Pros | Cons |
 |---|---|---|
 | sslh | Lightweight, multi-protocol, transparent to clients | Needs root, backend loses real client IP (needs transparent mode) |
-| [reverse_ssh](/en/p/reverse-ssh/) | Target machine doesn't need a public IP | Requires a relay server |
+| [reverse_ssh]({{< ref "/post/reverse-ssh" >}}) | Target machine doesn't need a public IP | Requires a relay server |
 | HAProxy | More powerful, PROXY protocol support | More complex config |
 | Nginx stream | Simple, native TLS SNI routing | Can't demux SSH from TLS |
 
-If the goal is "SSH through a firewall," sslh is the most direct solution. If the target machine has no public IP at all, [reverse_ssh](/en/p/reverse-ssh/) is a different approach worth knowing.
+If the goal is "SSH through a firewall," sslh is the most direct solution. If the target machine has no public IP at all, [reverse_ssh]({{< ref "/post/reverse-ssh" >}}) is a different approach worth knowing.
 
 ## Things to Know
 

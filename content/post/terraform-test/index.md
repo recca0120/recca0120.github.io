@@ -437,7 +437,7 @@ Success! 6 passed, 0 failed.
 
 ## terraform test vs Terratest
 
-| | terraform test | [Terratest](/p/terratest-infrastructure-testing/) |
+| | terraform test | [Terratest]({{< ref "/post/terratest-infrastructure-testing" >}}) |
 |--|--|--|
 | 語言 | HCL | Go |
 | 版本要求 | Terraform 1.6+ | Go 1.21+ |

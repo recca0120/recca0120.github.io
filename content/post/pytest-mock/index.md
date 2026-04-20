@@ -114,7 +114,7 @@ mocker.patch('myapp.email.send_email')
 mocker.patch('myapp.notifications.send_email')
 ```
 
-這個問題很常見。詳細說明可以參考 [Python mock：patch 要在哪裡 patch](/p/python-mock-imported-function/)。
+這個問題很常見。詳細說明可以參考 [Python mock：patch 要在哪裡 patch]({{< ref "/post/python-mock-imported-function" >}})。
 
 ## spy：保留原始行為，同時追蹤呼叫
 
@@ -247,7 +247,7 @@ pytest-mock 不是新功能，而是讓 `unittest.mock` 的使用體驗配合 py
 - `mocker.spy` → 保留原始行為 + 追蹤呼叫
 - `mocker.stub` → 最輕量的假回調
 
-搭配 [pytest](/p/pytest-getting-started/) 的 fixture 和 [polyfactory](/p/polyfactory-test-data/) 的假資料，測試的準備工作基本上可以壓到最低。
+搭配 [pytest]({{< ref "/post/pytest-getting-started" >}}) 的 fixture 和 [polyfactory]({{< ref "/post/polyfactory-test-data" >}}) 的假資料，測試的準備工作基本上可以壓到最低。
 
 ## 參考資源
 

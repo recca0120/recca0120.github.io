@@ -270,7 +270,7 @@ interface User {
 const user = await api.get<User>('users/1').json();
 // user 的型別是 User
 
-// 搭配 [Zod](/p/zod-typescript-validation/) 做執行期驗證
+// 搭配 [Zod]({{< ref "/post/zod-typescript-validation" >}}) 做執行期驗證
 import { z } from 'zod';
 const UserSchema = z.object({
   id: z.number(),

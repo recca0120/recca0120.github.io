@@ -224,7 +224,7 @@ useEffect(() => {
 | Error messages | Parse manually | ✓ beforeError hook |
 | Bundle size | fetch is native | +4KB |
 
-If you only need concurrency control, [fetch + p-limit](/en/p/fetch-concurrent-requests/) is enough.
+If you only need concurrency control, [fetch + p-limit]({{< ref "/post/fetch-concurrent-requests" >}}) is enough.
 If you also need retry and auth handling, ky removes a lot of boilerplate.
 
 ## Summary

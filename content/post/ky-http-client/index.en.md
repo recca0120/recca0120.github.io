@@ -270,7 +270,7 @@ interface User {
 const user = await api.get<User>('users/1').json();
 // user is typed as User
 
-// Combine with [Zod](/en/p/zod-typescript-validation/) for runtime validation
+// Combine with [Zod]({{< ref "/post/zod-typescript-validation" >}}) for runtime validation
 import { z } from 'zod';
 const UserSchema = z.object({
   id: z.number(),

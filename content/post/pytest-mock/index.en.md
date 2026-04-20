@@ -114,7 +114,7 @@ mocker.patch('myapp.email.send_email')
 mocker.patch('myapp.notifications.send_email')
 ```
 
-This is one of the most common mock mistakes. See [Python mock: where to patch](/en/p/python-mock-imported-function/) for a detailed explanation.
+This is one of the most common mock mistakes. See [Python mock: where to patch]({{< ref "/post/python-mock-imported-function" >}}) for a detailed explanation.
 
 ## spy: Track Calls Without Replacing the Real Behavior
 
@@ -245,7 +245,7 @@ pytest-mock doesn't add new capabilities — it makes `unittest.mock` fit natura
 - `mocker.spy` → real behavior preserved + call tracking
 - `mocker.stub` → lightest-weight fake callback
 
-Combined with [pytest](/en/p/pytest-getting-started/) fixtures and [polyfactory](/en/p/polyfactory-test-data/) for test data, test setup overhead gets very low.
+Combined with [pytest]({{< ref "/post/pytest-getting-started" >}}) fixtures and [polyfactory]({{< ref "/post/polyfactory-test-data" >}}) for test data, test setup overhead gets very low.
 
 ## References
 

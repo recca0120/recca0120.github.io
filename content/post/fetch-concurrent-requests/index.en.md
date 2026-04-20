@@ -235,7 +235,7 @@ Same logic as p-limit, managing the queue manually. More code, one fewer depende
 
 Firing hundreds of simultaneous requests with `Promise.all` is a common mistake. p-limit caps the concurrency in three lines without changing how `Promise.all` collects results.
 
-If you also need retry and timeout, see [ky with concurrency control](/en/p/ky-concurrent-requests/).
+If you also need retry and timeout, see [ky with concurrency control]({{< ref "/post/ky-concurrent-requests" >}}).
 
 ## References
 

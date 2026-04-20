@@ -13,7 +13,7 @@ image: featured.jpg
 draft: false
 ---
 
-延續[上一篇 Laravel Container](/post/how-to-use-laravel-container-to-register-third-party-package/)，這篇來看 Container 和 Facade 之間到底是什麼關係。
+延續[上一篇 Laravel Container]({{< ref "/post/how-to-use-laravel-container-to-register-third-party-package" >}})，這篇來看 Container 和 Facade 之間到底是什麼關係。
 
 ## bind vs singleton
 

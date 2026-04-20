@@ -206,7 +206,7 @@ Test logic usually doesn't care if an email looks real — it just needs to be a
 
 polyfactory's core idea is one thing: **types are the specification, factories generate data according to types**.
 
-Combined with [pytest](/en/p/pytest-getting-started/) fixtures, getting test data down to one or two lines is straightforward — you can focus on what the test is actually checking.
+Combined with [pytest]({{< ref "/post/pytest-getting-started" >}}) fixtures, getting test data down to one or two lines is straightforward — you can focus on what the test is actually checking.
 
 ## References
 

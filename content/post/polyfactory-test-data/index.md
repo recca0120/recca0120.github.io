@@ -206,7 +206,7 @@ user = UserFactory.build()
 
 polyfactory 的核心概念就一個：**型別就是規格，factory 照著型別生資料**。
 
-配合 [pytest](/p/pytest-getting-started/) 的 fixture 用，測試準備資料這件事基本上可以降到一兩行，把注意力放在測試邏輯本身。
+配合 [pytest]({{< ref "/post/pytest-getting-started" >}}) 的 fixture 用，測試準備資料這件事基本上可以降到一兩行，把注意力放在測試邏輯本身。
 
 ## 參考資源
 

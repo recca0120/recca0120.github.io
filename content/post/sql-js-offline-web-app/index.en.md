@@ -295,7 +295,7 @@ This approach works well as long as the database stays reasonably small, but the
 
 ---
 
-If you have not covered the basics of sql.js yet, [Getting Started with sql.js: Running SQLite in the Browser](/post/sql-js-browser-sqlite/) is the place to start. If you want a broader look at how IndexedDB compares to other browser storage options—localStorage, sessionStorage, Cache API—see [Browser Storage Compared](/post/browser-storage-comparison/).
+If you have not covered the basics of sql.js yet, [Getting Started with sql.js: Running SQLite in the Browser]({{< ref "/post/sql-js-browser-sqlite" >}}) is the place to start. If you want a broader look at how IndexedDB compares to other browser storage options—localStorage, sessionStorage, Cache API—see [Browser Storage Compared]({{< ref "/post/browser-storage-comparison" >}}).
 
 ## References
 

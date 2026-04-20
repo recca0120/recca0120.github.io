@@ -13,7 +13,7 @@ image: featured.jpg
 draft: false
 ---
 
-Continuing from [the previous post on Laravel Container](/post/how-to-use-laravel-container-to-register-third-party-package/), this post looks at the relationship between Container and Facade.
+Continuing from [the previous post on Laravel Container]({{< ref "/post/how-to-use-laravel-container-to-register-third-party-package" >}}), this post looks at the relationship between Container and Facade.
 
 ## bind vs singleton
 

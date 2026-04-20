@@ -235,7 +235,7 @@ const users = await Promise.all(
 
 `Promise.all` 同時打幾百個請求是很常見的意外。`p-limit` 三行設定就能控制同時執行的數量，不需要自己寫 semaphore，也不影響 `Promise.all` 收集結果的方式。
 
-如果需要 retry 和 timeout，可以搭配 [ky 的並發控制](/p/ky-concurrent-requests/) 一起用。
+如果需要 retry 和 timeout，可以搭配 [ky 的並發控制]({{< ref "/post/ky-concurrent-requests" >}}) 一起用。
 
 ## 參考資源
 

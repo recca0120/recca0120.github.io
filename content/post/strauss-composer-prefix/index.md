@@ -14,7 +14,7 @@ tags:
   - namespace
 ---
 
-如果你看過 [Mozart](/p/mozart-composer-prefix/) 的介紹，知道它在解決什麼問題：WordPress 外掛共用同一個 PHP process，不同外掛用同一個 library 的不同版本會炸，Mozart 把你的 vendor 依賴加上 namespace 前綴來隔離。
+如果你看過 [Mozart]({{< ref "/post/mozart-composer-prefix" >}}) 的介紹，知道它在解決什麼問題：WordPress 外掛共用同一個 PHP process，不同外掛用同一個 library 的不同版本會炸，Mozart 把你的 vendor 依賴加上 namespace 前綴來隔離。
 
 [Strauss](https://github.com/BrianHenryIE/strauss) 從 Mozart fork 出來，解決了幾個 Mozart 的已知限制，現在是社群更推薦的選擇。
 

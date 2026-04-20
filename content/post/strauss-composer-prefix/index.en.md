@@ -14,7 +14,7 @@ tags:
   - namespace
 ---
 
-If you've read the [Mozart](/en/p/mozart-composer-prefix/) overview, you know what problem it solves: WordPress plugins share a PHP process, two plugins using different versions of the same library causes fatal errors, and Mozart prefixes your vendor namespaces to isolate them.
+If you've read the [Mozart]({{< ref "/post/mozart-composer-prefix" >}}) overview, you know what problem it solves: WordPress plugins share a PHP process, two plugins using different versions of the same library causes fatal errors, and Mozart prefixes your vendor namespaces to isolate them.
 
 [Strauss](https://github.com/BrianHenryIE/strauss) was forked from Mozart to address several of its known limitations. It's what the community generally recommends now.
 

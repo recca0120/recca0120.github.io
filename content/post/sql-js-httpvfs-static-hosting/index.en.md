@@ -242,7 +242,7 @@ It is **experimental**. The author describes this as demo-level code in the READ
 
 ---
 
-If you're new to sql.js, [Getting Started with sql.js: SQLite in the Browser](/post/sql-js-browser-sqlite/) covers the fundamentals. For use cases that need offline writes, [Offline Web Apps with sql.js and IndexedDB](/post/sql-js-offline-web-app/) walks through a complete implementation. If you want a broader comparison of browser storage options, [Browser Storage Solutions Compared](/post/browser-storage-comparison/) covers the landscape.
+If you're new to sql.js, [Getting Started with sql.js: SQLite in the Browser]({{< ref "/post/sql-js-browser-sqlite" >}}) covers the fundamentals. For use cases that need offline writes, [Offline Web Apps with sql.js and IndexedDB]({{< ref "/post/sql-js-offline-web-app" >}}) walks through a complete implementation. If you want a broader comparison of browser storage options, [Browser Storage Solutions Compared]({{< ref "/post/browser-storage-comparison" >}}) covers the landscape.
 
 ## References
 

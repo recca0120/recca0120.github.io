@@ -222,7 +222,7 @@ After:
 
 ## Using with Lefthook
 
-If you use [Lefthook for Git hooks](/en/p/lefthook-git-hooks/), replace Husky + lint-staged + ESLint + Prettier with:
+If you use [Lefthook for Git hooks]({{< ref "/post/lefthook-git-hooks" >}}), replace Husky + lint-staged + ESLint + Prettier with:
 
 ```yaml
 # lefthook.yml

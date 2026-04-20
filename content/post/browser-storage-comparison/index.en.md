@@ -226,8 +226,8 @@ const db = new SQL.Database(saved ?? [])
 
 This is the third article in the series. The other two:
 
-- [sql.js: Run SQLite in the Browser](/post/sql-js-browser-sqlite/) — a complete walkthrough from installation to your first query
-- [Building an Offline Web App with sql.js and IndexedDB](/post/sql-js-offline-web-app/) — a real application demonstrating the persistence integration end to end
+- [sql.js: Run SQLite in the Browser]({{< ref "/post/sql-js-browser-sqlite" >}}) — a complete walkthrough from installation to your first query
+- [Building an Offline Web App with sql.js and IndexedDB]({{< ref "/post/sql-js-offline-web-app" >}}) — a real application demonstrating the persistence integration end to end
 
 The three together cover the full picture of browser-side databases.
 

@@ -198,7 +198,7 @@ pytest --tb=short  # 縮短 traceback
 
 pytest 跟 unittest 的差距不在功能，而在寫起來的舒適度。`assert` 直接寫、fixture 按需組合、`parametrize` 測多組輸入，這三個習慣建立起來之後，測試就變成很自然的事，不再是每次都要打開文件查 API 的負擔。
 
-如果你的測試還需要大量假資料，可以搭配 [polyfactory](/p/polyfactory-test-data/) 根據 type hint 自動生成，不用手刻每一筆 fixture data。
+如果你的測試還需要大量假資料，可以搭配 [polyfactory]({{< ref "/post/polyfactory-test-data" >}}) 根據 type hint 自動生成，不用手刻每一筆 fixture data。
 
 ## 參考資源
 
