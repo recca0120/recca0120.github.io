@@ -63,14 +63,7 @@ grep -rl "關鍵字" content/post/
 
 ## 步驟四：寫文章
 
-觸發 `tech-blog-writing` skill，按照完整寫作流程執行：
-
-1. 建立目錄 `content/post/{slug}/`
-2. 寫繁體中文 `index.md`（目標 1,500–2,500 字）
-3. 寫英文 `index.en.md`（完整翻譯）
-4. 產封面圖（Cloudflare Workers AI）
-5. `hugo --gc --minify` 確認建置無錯誤
-6. commit + push 到 `main`
+交棒給 `tech-blog-writing` skill 跑完整流程（建目錄 → 中/英稿 → 封面 → build → push）。這份 skill 只補充 URL 場景特有的**寫作角度原則**與**相關文章連結**規則，其餘全部以 `tech-blog-writing` 為準。
 
 ### 寫作角度原則
 

@@ -1,9 +1,11 @@
 ---
 name: humanizer-zh
 description: >-
-  Detects and removes AI-generated writing patterns from Chinese text, making it sound natural and human-written.
-  Use when editing or reviewing text to eliminate AI writing traces like exaggerated symbolism,
-  promotional language, filler phrases, and formulaic structures.
+  Detects and removes AI-generated writing patterns from Chinese text (both 繁體 and 简体), making it sound natural and human-written.
+  Use this skill whenever editing, reviewing, translating, or drafting any Chinese prose longer than a short sentence — including blog posts,
+  article sections pasted by the user, AI-drafted translations, or any text that smells "AI-ish" (exaggerated symbolism, promotional tone,
+  formulaic三段式 structure, filler phrases like "此外/然而/總而言之"). Preserve the original script variant (繁體 → 繁體, 简体 → 简体) —
+  never silently convert between them.
 allowed-tools: Read, Write, Edit, AskUserQuestion
 ---
 
