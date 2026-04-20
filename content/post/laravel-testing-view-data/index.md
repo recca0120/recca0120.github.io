@@ -94,3 +94,5 @@ self::assertEquals($user->toArray(), $response->viewData('user')->toArray());
 - [Laravel 官方文件：HTTP Tests - assertViewHas / viewData](https://laravel.com/docs/testing#assert-view-has)
 - [Laravel 官方文件：Database Testing - Model Factories](https://laravel.com/docs/database-testing#defining-model-factories)
 - [Laravel 官方文件：Testing - RefreshDatabase trait](https://laravel.com/docs/database-testing#resetting-the-database-after-each-test)
+- [Laravel 測試跟隨 Redirect：用 followingRedirects() 驗證最終頁面]({{< ref "/post/laravel-testing-follow-redirects" >}})
+- [Laravel Feature 測試中偽造 $_SERVER 變數的 2 種方法]({{< ref "/post/laravel-testing-mock-server-variables" >}})

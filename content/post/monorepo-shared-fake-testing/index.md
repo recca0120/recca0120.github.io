@@ -357,3 +357,4 @@ describe('FakeUserService', () => {
 - [Vitest 官方文件](https://vitest.dev/)
 - [DI + Fake + in-memory 測試基礎]({{< ref "/post/di-fake-in-memory-testing" >}})
 - [monorepo 跨層共用 HTTP mock]({{< ref "/post/monorepo-shared-http-mock" >}})
+- [AI agent 時代為什麼更需要好測試]({{< ref "/post/agent-friendly-testing" >}})

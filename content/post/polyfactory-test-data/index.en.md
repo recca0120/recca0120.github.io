@@ -215,3 +215,4 @@ Combined with [pytest]({{< ref "/post/pytest-getting-started" >}}) fixtures, get
 - [Pydantic v2 official documentation](https://docs.pydantic.dev/latest/)
 - [Faker official documentation](https://faker.readthedocs.io/)
 - [pytest fixture documentation](https://docs.pytest.org/en/stable/how-to/fixtures.html)
+- [pytest-mock: Cleaner Mocking With the mocker Fixture]({{< ref "/post/pytest-mock" >}})

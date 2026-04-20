@@ -357,3 +357,4 @@ When the dependency is an external HTTP API (Stripe, GitHub, etc.), Fakes aren't
 - [Vitest Documentation](https://vitest.dev/)
 - [DI + Fake + in-memory testing foundations]({{< ref "/post/di-fake-in-memory-testing" >}})
 - [Shared HTTP mocks across a monorepo]({{< ref "/post/monorepo-shared-http-mock" >}})
+- [Why AI agents need good tests even more]({{< ref "/post/agent-friendly-testing" >}})

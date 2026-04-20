@@ -61,3 +61,5 @@ $this->followRedirects()->post('user', ['name' => 'foo']);
 - [Laravel 官方文件：HTTP Tests](https://laravel.com/docs/http-tests)
 - [Laravel 原始碼：MakesHttpRequests::followingRedirects](https://github.com/laravel/framework/blob/master/src/Illuminate/Testing/Concerns/MakesHttpRequests.php)
 - [Laravel 官方文件：HTTP Responses — Redirects](https://laravel.com/docs/responses#redirects)
+- [Laravel Feature 測試中偽造 $_SERVER 變數的 2 種方法]({{< ref "/post/laravel-testing-mock-server-variables" >}})
+- [Laravel 測試只驗 View Data，不碰 HTML]({{< ref "/post/laravel-testing-view-data" >}})

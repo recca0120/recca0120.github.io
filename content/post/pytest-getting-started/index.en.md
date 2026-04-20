@@ -206,3 +206,5 @@ If your tests need a lot of fake data, [polyfactory]({{< ref "/post/polyfactory-
 - [pytest fixtures — how-to guide](https://docs.pytest.org/en/stable/how-to/fixtures.html)
 - [pytest parametrize documentation](https://docs.pytest.org/en/stable/how-to/parametrize.html)
 - [pytest GitHub repository](https://github.com/pytest-dev/pytest)
+- [pytest-mock: Cleaner Mocking With the mocker Fixture]({{< ref "/post/pytest-mock" >}})
+- [Python Mock Pitfall: Patch Where It Is Used, Not Where It Is Defined]({{< ref "/post/python-mock-imported-function" >}})

@@ -287,3 +287,4 @@ msw-fetch-mock 的甜蜜點在：你想要 MSW 的攔截品質，但又想要 un
 - [nock GitHub 儲存庫](https://github.com/nock/nock) — Node.js HTTP mocking 工具
 - [undici MockAgent 文件](https://undici.nodejs.org/#/docs/api/MockAgent) — Node.js 原生 fetch mock 方案
 - [Cloudflare Workers 測試文件](https://developers.cloudflare.com/workers/testing/vitest-integration/) — Cloudflare Workers 測試環境說明
+- [monorepo 跨層共用 HTTP mock]({{< ref "/post/monorepo-shared-http-mock" >}}) — 把 handler 抽到共用層，前後端共用一份 mock

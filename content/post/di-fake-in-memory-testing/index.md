@@ -262,6 +262,12 @@ Fake 不是萬能的。有些情況用 Stub（純回傳值）反而更合適：
 
 下一篇會講**在 monorepo 裡怎麼讓同一個 Fake 從前端測到後端共用**，這是這個 pattern 真正發光的地方。
 
+## 系列後續
+
+- [monorepo 跨層共用 Fake]({{< ref "/post/monorepo-shared-fake-testing" >}})——同一份 Fake 從前端測到後端
+- [monorepo 跨層共用 HTTP mock]({{< ref "/post/monorepo-shared-http-mock" >}})——外部 API 用 MSW 補齊
+- [AI agent 時代為什麼更需要好測試]({{< ref "/post/agent-friendly-testing" >}})——這套 pattern 對 Claude Code 的幫助
+
 ## 參考資源
 
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)

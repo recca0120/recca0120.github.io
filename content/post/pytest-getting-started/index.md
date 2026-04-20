@@ -206,3 +206,5 @@ pytest 跟 unittest 的差距不在功能，而在寫起來的舒適度。`asser
 - [pytest fixture 完整說明](https://docs.pytest.org/en/stable/how-to/fixtures.html)
 - [pytest parametrize 用法](https://docs.pytest.org/en/stable/how-to/parametrize.html)
 - [pytest GitHub 倉庫](https://github.com/pytest-dev/pytest)
+- [pytest-mock：用 mocker fixture 讓 mock 更乾淨]({{< ref "/post/pytest-mock" >}})
+- [Python mock：patch 要在哪裡 patch]({{< ref "/post/python-mock-imported-function" >}})

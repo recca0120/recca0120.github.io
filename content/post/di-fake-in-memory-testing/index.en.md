@@ -262,6 +262,12 @@ This combo gives tests three long-term wins: not coupled to implementation detai
 
 The next post covers **how a single Fake can power tests from the frontend down through the backend in a monorepo** — where this pattern really shines.
 
+## Series continuation
+
+- [Shared Fakes across a monorepo]({{< ref "/post/monorepo-shared-fake-testing" >}}) — one Fake from frontend to backend
+- [Shared HTTP mocks across a monorepo]({{< ref "/post/monorepo-shared-http-mock" >}}) — MSW for external APIs
+- [Why AI agents need good tests even more]({{< ref "/post/agent-friendly-testing" >}}) — how this pattern helps Claude Code
+
 ## References
 
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)

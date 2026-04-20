@@ -66,3 +66,5 @@ All subsequent requests within the same test method will use these values.
 - [Laravel Docs: HTTP Tests](https://laravel.com/docs/http-tests)
 - [Laravel Source: MakesHttpRequests::withServerVariables](https://github.com/laravel/framework/blob/master/src/Illuminate/Testing/Concerns/MakesHttpRequests.php)
 - [PHP Docs: $_SERVER superglobal](https://www.php.net/manual/en/reserved.variables.server.php)
+- [Laravel Testing: Assert Final Page Content After a Redirect]({{< ref "/post/laravel-testing-follow-redirects" >}})
+- [Laravel Testing: Assert View Data Without Parsing HTML]({{< ref "/post/laravel-testing-view-data" >}})

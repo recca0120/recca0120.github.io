@@ -94,3 +94,5 @@ self::assertEquals($user->toArray(), $response->viewData('user')->toArray());
 - [Laravel Docs: HTTP Tests - assertViewHas / viewData](https://laravel.com/docs/testing#assert-view-has)
 - [Laravel Docs: Database Testing - Model Factories](https://laravel.com/docs/database-testing#defining-model-factories)
 - [Laravel Docs: Database Testing - RefreshDatabase trait](https://laravel.com/docs/database-testing#resetting-the-database-after-each-test)
+- [Laravel Testing: Assert Final Page Content After a Redirect]({{< ref "/post/laravel-testing-follow-redirects" >}})
+- [2 Ways to Fake $_SERVER Variables in Laravel Feature Tests]({{< ref "/post/laravel-testing-mock-server-variables" >}})

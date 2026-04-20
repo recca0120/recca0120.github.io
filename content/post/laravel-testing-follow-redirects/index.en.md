@@ -61,3 +61,5 @@ $this->followRedirects()->post('user', ['name' => 'foo']);
 - [Laravel Docs: HTTP Tests](https://laravel.com/docs/http-tests)
 - [Laravel Source: MakesHttpRequests::followingRedirects](https://github.com/laravel/framework/blob/master/src/Illuminate/Testing/Concerns/MakesHttpRequests.php)
 - [Laravel Docs: HTTP Responses — Redirects](https://laravel.com/docs/responses#redirects)
+- [2 Ways to Fake $_SERVER Variables in Laravel Feature Tests]({{< ref "/post/laravel-testing-mock-server-variables" >}})
+- [Laravel Testing: Assert View Data Without Parsing HTML]({{< ref "/post/laravel-testing-view-data" >}})

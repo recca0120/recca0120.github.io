@@ -293,5 +293,6 @@ The central claim of this three-post series: **test doubles should be shared inf
 - [DI + Fake + in-memory testing foundations]({{< ref "/post/di-fake-in-memory-testing" >}})
 - [Sharing Fakes across a monorepo]({{< ref "/post/monorepo-shared-fake-testing" >}})
 - [msw-fetch-mock overview and comparison]({{< ref "/post/msw-fetch-mock" >}})
+- [Why AI agents need good tests even more]({{< ref "/post/agent-friendly-testing" >}})
 - [MSW Documentation](https://mswjs.io/)
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)

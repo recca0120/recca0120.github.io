@@ -66,3 +66,5 @@ $this->withServerVariables(['REMOTE_ADDR' => '10.1.0.1']);
 - [Laravel 官方文件：HTTP Tests](https://laravel.com/docs/http-tests)
 - [Laravel 原始碼：MakesHttpRequests::withServerVariables](https://github.com/laravel/framework/blob/master/src/Illuminate/Testing/Concerns/MakesHttpRequests.php)
 - [PHP 官方文件：$_SERVER 超全域變數](https://www.php.net/manual/en/reserved.variables.server.php)
+- [Laravel 測試跟隨 Redirect：用 followingRedirects() 驗證最終頁面]({{< ref "/post/laravel-testing-follow-redirects" >}})
+- [Laravel 測試只驗 View Data，不碰 HTML]({{< ref "/post/laravel-testing-view-data" >}})

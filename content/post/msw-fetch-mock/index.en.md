@@ -286,3 +286,4 @@ msw-fetch-mock's sweet spot: you want MSW's interception quality with undici/Clo
 - [nock GitHub Repository](https://github.com/nock/nock) — HTTP mocking for Node.js
 - [undici MockAgent Documentation](https://undici.nodejs.org/#/docs/api/MockAgent) — Node.js native fetch mock solution
 - [Cloudflare Workers Testing Documentation](https://developers.cloudflare.com/workers/testing/vitest-integration/) — Testing environment for Cloudflare Workers
+- [Shared HTTP mocks across a monorepo]({{< ref "/post/monorepo-shared-http-mock" >}}) — lift handlers to a shared layer so frontend and backend share one set of mocks

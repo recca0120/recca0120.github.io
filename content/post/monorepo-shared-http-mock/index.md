@@ -293,5 +293,6 @@ test('creates user and customer', async () => {
 - [DI + Fake + in-memory 測試基礎]({{< ref "/post/di-fake-in-memory-testing" >}})
 - [monorepo 跨層共用 Fake]({{< ref "/post/monorepo-shared-fake-testing" >}})
 - [msw-fetch-mock 完整介紹與方案比較]({{< ref "/post/msw-fetch-mock" >}})
+- [AI agent 時代為什麼更需要好測試]({{< ref "/post/agent-friendly-testing" >}})
 - [MSW 官方文件](https://mswjs.io/)
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)

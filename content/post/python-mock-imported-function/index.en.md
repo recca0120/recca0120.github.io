@@ -161,3 +161,4 @@ The patch target is always **where the call happens**, not where the function is
 - [Python docs: unittest.mock — where to patch](https://docs.python.org/3/library/unittest.mock.html#patch-builtins)
 - [Python docs: unittest.mock full reference](https://docs.python.org/3/library/unittest.mock.html)
 - [Python import system documentation](https://docs.python.org/3/reference/import.html)
+- [pytest-mock: Cleaner Mocking With the mocker Fixture]({{< ref "/post/pytest-mock" >}})
