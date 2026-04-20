@@ -85,6 +85,7 @@ def test_main():
 
 This rule is easy to remember:
 
+> [!IMPORTANT]
 > Patch **where the name is used**, not **where it's defined**.
 
 | Import style | Patch target |

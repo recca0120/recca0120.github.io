@@ -85,6 +85,7 @@ def test_main():
 
 這個規則很好記：
 
+> [!IMPORTANT]
 > patch 要寫**使用這個名稱的地方**，不是**定義這個名稱的地方**
 
 | import 方式 | patch 目標 |

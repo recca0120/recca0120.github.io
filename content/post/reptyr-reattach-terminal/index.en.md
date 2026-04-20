@@ -113,6 +113,7 @@ kernel.yama.ptrace_scope = 0
 
 Or just run `sudo reptyr <PID>`.
 
+> [!NOTE]
 > `ptrace_scope` values: 0 = allow all, 1 = parent-only (default), 2 = root only, 3 = disabled. Setting it to 1 is enough for reptyr to work if you own the process.
 
 ## Advanced: reptyr -l
