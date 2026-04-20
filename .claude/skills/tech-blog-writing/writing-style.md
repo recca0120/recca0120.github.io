@@ -38,6 +38,36 @@
 
 禁止：「In today's digital landscape…」「最近在工作中遇到了一個有趣的問題」
 
+### Callout / 提示框
+
+需要強調「補充說明、小技巧、警告、關鍵重點」時，**優先用 GitHub Alerts**（Stack theme 原生支援，會渲染成彩色框）：
+
+```markdown
+> [!NOTE]
+> 中性補充說明、範圍定義、背景資訊
+
+> [!TIP]
+> 小技巧、最佳實踐建議
+
+> [!IMPORTANT]
+> 讀者必須記住的核心結論
+
+> [!WARNING]
+> 可能出錯的地方、常見地雷
+
+> [!CAUTION]
+> 危險操作、不可逆動作、資料遺失風險
+```
+
+使用時機：
+- 文章開頭定義「這篇的範圍」→ `NOTE`
+- 逐步操作中的小撇步 → `TIP`
+- 一句話可以總結的核心教訓 → `IMPORTANT`
+- 容易踩雷的陷阱 → `WARNING`
+- 會刪資料、改 production 的操作 → `CAUTION`
+
+**不要**用普通 blockquote（`> ...`）寫提示類內容——Stack theme 對 GitHub Alerts 有專屬樣式，視覺分層更好。
+
 ### 內部連結
 
 - 相關文章之間互相連結，用描述性錨點文字
