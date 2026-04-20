@@ -66,7 +66,7 @@
 - 容易踩雷的陷阱 → `WARNING`
 - 會刪資料、改 production 的操作 → `CAUTION`
 
-**不要**用普通 blockquote（`> ...`）寫提示類內容——Stack theme 對 GitHub Alerts 有專屬樣式，視覺分層更好。
+提示類內容**一律用 GitHub Alerts**——Stack theme 有專屬樣式，視覺分層比普通 blockquote 好。
 
 ### 內部連結
 
@@ -74,8 +74,8 @@
 - 同主題的文章形成 cluster，指向一篇支柱文章
 - 主題群集比獨立文章多 30% 流量
 - **連結格式**：一律用 Hugo ref shortcode `[標題]({{< ref "/post/slug" >}})`
-  - 本站 permalink 是 `/:year/:month/:day/:slug/`，不要寫死 `/p/slug/` 或 `/en/p/slug/`，那些路徑不存在
-  - ref 會自動解析為當前語系的正確 URL，中英文版共用同一份寫法
+  - 本站 permalink 是 `/:year/:month/:day/:slug/`，用 ref 讓 Hugo 於 build 時解析為正確 URL
+  - 同一份 ref 語法在中英文版都會自動解析到對應語系，寫一次即可
 
 ## 語氣規範
 
