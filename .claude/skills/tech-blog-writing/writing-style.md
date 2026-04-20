@@ -43,6 +43,9 @@
 - 相關文章之間互相連結，用描述性錨點文字
 - 同主題的文章形成 cluster，指向一篇支柱文章
 - 主題群集比獨立文章多 30% 流量
+- **連結格式**：一律用 Hugo ref shortcode `[標題]({{< ref "/post/slug" >}})`
+  - 本站 permalink 是 `/:year/:month/:day/:slug/`，不要寫死 `/p/slug/` 或 `/en/p/slug/`，那些路徑不存在
+  - ref 會自動解析為當前語系的正確 URL，中英文版共用同一份寫法
 
 ## 語氣規範
 

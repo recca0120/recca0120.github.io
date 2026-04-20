@@ -14,9 +14,9 @@ tags:
 draft: false
 ---
 
-The previous post covered [DI + Fake + in-memory basics](/en/p/di-fake-in-memory-testing/). This one takes it further, into a scenario most testing tutorials ignore: **how frontend, backend, and shared logic can use the same Fake in a monorepo**.
+The previous post covered [DI + Fake + in-memory basics]({{< ref "/post/di-fake-in-memory-testing" >}}). This one takes it further, into a scenario most testing tutorials ignore: **how frontend, backend, and shared logic can use the same Fake in a monorepo**.
 
-> **Scope of this post**: **internal services** — classes you wrote, with interfaces you can swap. If the dependency is an **external HTTP API** (Stripe, GitHub, third-party SaaS), Fake isn't the right tool. See part three on [shared HTTP mocks](/en/p/monorepo-shared-http-mock/) for that case.
+> **Scope of this post**: **internal services** — classes you wrote, with interfaces you can swap. If the dependency is an **external HTTP API** (Stripe, GitHub, third-party SaaS), Fake isn't the right tool. See part three on [shared HTTP mocks]({{< ref "/post/monorepo-shared-http-mock" >}}) for that case.
 
 The common approach is for the frontend to have its mocks, the backend its fixtures, and each package does its own thing. The result: the same service is mocked twice or three times, often with inconsistent behavior — the frontend test assumes `null`, the backend mock returns an empty array, and the bug only shows up at integration time.
 
@@ -348,12 +348,12 @@ The full workflow:
 
 Testing starts to feel like building with Lego — interfaces are connectors, Fakes are reusable blocks, and frontend and backend tests follow the same principle.
 
-When the dependency is an external HTTP API (Stripe, GitHub, etc.), Fakes aren't the right tool — you need network-level interception instead. That's the subject of the next post: [sharing HTTP mocks across a monorepo](/en/p/monorepo-shared-http-mock/).
+When the dependency is an external HTTP API (Stripe, GitHub, etc.), Fakes aren't the right tool — you need network-level interception instead. That's the subject of the next post: [sharing HTTP mocks across a monorepo]({{< ref "/post/monorepo-shared-http-mock" >}}).
 
 ## References
 
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)
 - [Monorepo Tools — pnpm workspaces](https://pnpm.io/workspaces)
 - [Vitest Documentation](https://vitest.dev/)
-- [DI + Fake + in-memory testing foundations](/en/p/di-fake-in-memory-testing/)
-- [Shared HTTP mocks across a monorepo](/en/p/monorepo-shared-http-mock/)
+- [DI + Fake + in-memory testing foundations]({{< ref "/post/di-fake-in-memory-testing" >}})
+- [Shared HTTP mocks across a monorepo]({{< ref "/post/monorepo-shared-http-mock" >}})

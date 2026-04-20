@@ -18,7 +18,7 @@ draft: false
 
 ## The Core Difference: Parallel Branches
 
-The standard Git workflow is: switch to a branch, do your work, switch to another. For two simultaneous tasks you context-switch constantly, or open [multiple worktrees](/en/p/git-worktree-parallel-work/) and manage them manually.
+The standard Git workflow is: switch to a branch, do your work, switch to another. For two simultaneous tasks you context-switch constantly, or open [multiple worktrees]({{< ref "/post/git-worktree-parallel-work" >}}) and manage them manually.
 
 GitButler's **Parallel Branches** let you work on multiple branches at once without switching. Drag a file's changes to whichever branch it belongs to — that's it.
 
@@ -102,7 +102,7 @@ but --help
 
 ## How It Compares to git worktree
 
-I've written before about [using git worktree to work on multiple branches in parallel](/en/p/git-worktree-parallel-work/). Both solve the "parallel work" problem, but from different angles:
+I've written before about [using git worktree to work on multiple branches in parallel]({{< ref "/post/git-worktree-parallel-work" >}}). Both solve the "parallel work" problem, but from different angles:
 
 | | git worktree | GitButler |
 |---|---|---|

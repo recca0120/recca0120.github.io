@@ -15,7 +15,7 @@ tags:
 draft: false
 ---
 
-The previous posts covered [DI + Fake + in-memory](/en/p/di-fake-in-memory-testing/) and [sharing Fakes across a monorepo](/en/p/monorepo-shared-fake-testing/). That approach has one scope limit: **services you own**.
+The previous posts covered [DI + Fake + in-memory]({{< ref "/post/di-fake-in-memory-testing" >}}) and [sharing Fakes across a monorepo]({{< ref "/post/monorepo-shared-fake-testing" >}}). That approach has one scope limit: **services you own**.
 
 When the dependency is an **external HTTP API** (Stripe, GitHub, third-party SaaS), Fake isn't the right tool. This post covers how to apply the same "share across layers" philosophy to HTTP mocks instead.
 
@@ -39,7 +39,7 @@ Forcing a Fake becomes a maintenance nightmare: Stripe changes its response shap
 
 For external HTTP, substitution happens at **the HTTP call itself**, not at some service interface. Intercept `fetch` / `http.request` and return fake responses.
 
-That's what [MSW](https://mswjs.io) / [msw-fetch-mock](/en/p/msw-fetch-mock/) do:
+That's what [MSW](https://mswjs.io) / [msw-fetch-mock]({{< ref "/post/msw-fetch-mock" >}}) do:
 
 - Production code is unchanged (still calls `fetch(...)`)
 - Tests intercept network requests and return the fake response you define
@@ -178,7 +178,7 @@ test('handles Stripe API error', async () => {
 
 ## MSW's API Too Verbose? Try msw-fetch-mock
 
-MSW's native API writes one handler per endpoint, which can be verbose in tests. If you want features like `times(n)`, `persist()`, `assertNoPendingInterceptors()`, use [msw-fetch-mock](/en/p/msw-fetch-mock/) — it sits on top of MSW with an API aligned to undici `MockAgent` and Cloudflare Workers `fetchMock`:
+MSW's native API writes one handler per endpoint, which can be verbose in tests. If you want features like `times(n)`, `persist()`, `assertNoPendingInterceptors()`, use [msw-fetch-mock]({{< ref "/post/msw-fetch-mock" >}}) — it sits on top of MSW with an API aligned to undici `MockAgent` and Cloudflare Workers `fetchMock`:
 
 ```typescript
 import { fetchMock } from 'msw-fetch-mock';
@@ -202,7 +202,7 @@ test('creates customer', async () => {
 });
 ```
 
-Full API reference and comparison with other mocking libraries in the earlier [msw-fetch-mock overview](/en/p/msw-fetch-mock/).
+Full API reference and comparison with other mocking libraries in the earlier [msw-fetch-mock overview]({{< ref "/post/msw-fetch-mock" >}}).
 
 ## Why the Sharing Pattern Differs
 
@@ -290,8 +290,8 @@ The central claim of this three-post series: **test doubles should be shared inf
 
 ## References
 
-- [DI + Fake + in-memory testing foundations](/en/p/di-fake-in-memory-testing/)
-- [Sharing Fakes across a monorepo](/en/p/monorepo-shared-fake-testing/)
-- [msw-fetch-mock overview and comparison](/en/p/msw-fetch-mock/)
+- [DI + Fake + in-memory testing foundations]({{< ref "/post/di-fake-in-memory-testing" >}})
+- [Sharing Fakes across a monorepo]({{< ref "/post/monorepo-shared-fake-testing" >}})
+- [msw-fetch-mock overview and comparison]({{< ref "/post/msw-fetch-mock" >}})
 - [MSW Documentation](https://mswjs.io/)
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)

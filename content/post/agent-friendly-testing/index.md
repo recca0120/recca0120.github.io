@@ -13,7 +13,7 @@ tags:
 draft: false
 ---
 
-前三篇系列文整理了 [DI + Fake + in-memory](/p/di-fake-in-memory-testing/)、[monorepo 共用 Fake](/p/monorepo-shared-fake-testing/)、[共用 HTTP mock](/p/monorepo-shared-http-mock/)。這些測試 pattern 一直以來都是給人類看的——讀得懂、改得動、refactor 安全。
+前三篇系列文整理了 [DI + Fake + in-memory]({{< ref "/post/di-fake-in-memory-testing" >}})、[monorepo 共用 Fake]({{< ref "/post/monorepo-shared-fake-testing" >}})、[共用 HTTP mock]({{< ref "/post/monorepo-shared-http-mock" >}})。這些測試 pattern 一直以來都是給人類看的——讀得懂、改得動、refactor 安全。
 
 但自從開始用 Claude Code 做日常開發，發現這套 pattern 對 AI agent 的幫助比對人類更大。這篇整理五個具體原因。
 
@@ -129,8 +129,8 @@ agent 信任 Fake 的行為，Fake 的不變量要先寫測試驗證過。這個
 
 ## 參考資源
 
-- [DI + Fake + in-memory 測試基礎](/p/di-fake-in-memory-testing/)
-- [monorepo 跨層共用 Fake](/p/monorepo-shared-fake-testing/)
-- [monorepo 跨層共用 HTTP mock](/p/monorepo-shared-http-mock/)
+- [DI + Fake + in-memory 測試基礎]({{< ref "/post/di-fake-in-memory-testing" >}})
+- [monorepo 跨層共用 Fake]({{< ref "/post/monorepo-shared-fake-testing" >}})
+- [monorepo 跨層共用 HTTP mock]({{< ref "/post/monorepo-shared-http-mock" >}})
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)
 - [Claude Code 官方文件](https://docs.claude.com/en/docs/claude-code)

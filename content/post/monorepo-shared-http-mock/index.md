@@ -15,7 +15,7 @@ tags:
 draft: false
 ---
 
-前兩篇講了 [DI + Fake + in-memory](/p/di-fake-in-memory-testing/) 和[在 monorepo 裡跨層共用 Fake](/p/monorepo-shared-fake-testing/)。這套方法有一個適用範圍：**你自己寫的 service**。
+前兩篇講了 [DI + Fake + in-memory]({{< ref "/post/di-fake-in-memory-testing" >}}) 和[在 monorepo 裡跨層共用 Fake]({{< ref "/post/monorepo-shared-fake-testing" >}})。這套方法有一個適用範圍：**你自己寫的 service**。
 
 如果依賴是**外部 HTTP API**（Stripe、GitHub、第三方 SaaS），Fake 不是對的工具。這篇講這種情境怎麼用同樣的「跨層共用」精神做 HTTP mock。
 
@@ -39,7 +39,7 @@ draft: false
 
 外部 HTTP 的抽換點不在「service 介面」，而在 **HTTP 呼叫本身**。攔截 `fetch` / `http.request`，回假 response。
 
-這就是 [MSW](https://mswjs.io) / [msw-fetch-mock](/p/msw-fetch-mock/) 這類工具在做的事：
+這就是 [MSW](https://mswjs.io) / [msw-fetch-mock]({{< ref "/post/msw-fetch-mock" >}}) 這類工具在做的事：
 
 - Production code 不動（還是照樣 `fetch(...)`）
 - 測試環境攔截網路請求，回你設定的假 response
@@ -178,7 +178,7 @@ test('handles Stripe API error', async () => {
 
 ## MSW 的 API 太囉嗦？用 msw-fetch-mock
 
-MSW 的原生 API 每個 endpoint 要寫一個 handler，測試比較冗。如果你想要 `times(n)`、`persist()`、`assertNoPendingInterceptors()` 這些測試生命週期功能，可以用 [msw-fetch-mock](/p/msw-fetch-mock/)——底層還是 MSW，API 風格對齊 undici `MockAgent` 和 Cloudflare Workers `fetchMock`：
+MSW 的原生 API 每個 endpoint 要寫一個 handler，測試比較冗。如果你想要 `times(n)`、`persist()`、`assertNoPendingInterceptors()` 這些測試生命週期功能，可以用 [msw-fetch-mock]({{< ref "/post/msw-fetch-mock" >}})——底層還是 MSW，API 風格對齊 undici `MockAgent` 和 Cloudflare Workers `fetchMock`：
 
 ```typescript
 import { fetchMock } from 'msw-fetch-mock';
@@ -202,7 +202,7 @@ test('creates customer', async () => {
 });
 ```
 
-詳細的 API 和跟其他方案的比較，之前寫過一篇[msw-fetch-mock 完整介紹](/p/msw-fetch-mock/)。
+詳細的 API 和跟其他方案的比較，之前寫過一篇[msw-fetch-mock 完整介紹]({{< ref "/post/msw-fetch-mock" >}})。
 
 ## 為什麼一樣是共用，但 pattern 不同
 
@@ -290,8 +290,8 @@ test('creates user and customer', async () => {
 
 ## 參考資源
 
-- [DI + Fake + in-memory 測試基礎](/p/di-fake-in-memory-testing/)
-- [monorepo 跨層共用 Fake](/p/monorepo-shared-fake-testing/)
-- [msw-fetch-mock 完整介紹與方案比較](/p/msw-fetch-mock/)
+- [DI + Fake + in-memory 測試基礎]({{< ref "/post/di-fake-in-memory-testing" >}})
+- [monorepo 跨層共用 Fake]({{< ref "/post/monorepo-shared-fake-testing" >}})
+- [msw-fetch-mock 完整介紹與方案比較]({{< ref "/post/msw-fetch-mock" >}})
 - [MSW 官方文件](https://mswjs.io/)
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)

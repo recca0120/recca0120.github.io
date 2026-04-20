@@ -14,9 +14,9 @@ tags:
 draft: false
 ---
 
-前一篇文章[介紹了 DI + Fake + in-memory 的基本寫法](/p/di-fake-in-memory-testing/)。這篇進一步，講一個大部分測試教學不會提的情境：**monorepo 裡前端、後端、共用邏輯怎麼共用同一份 Fake**。
+前一篇文章[介紹了 DI + Fake + in-memory 的基本寫法]({{< ref "/post/di-fake-in-memory-testing" >}})。這篇進一步，講一個大部分測試教學不會提的情境：**monorepo 裡前端、後端、共用邏輯怎麼共用同一份 Fake**。
 
-> **這篇的範圍**：**內部 service**（你自己寫的 class、有 interface 可以抽換）。如果依賴是**外部 HTTP API**（Stripe、GitHub、第三方 SaaS），Fake 不是對的工具，請看第三篇[跨層共用 HTTP mock](/p/monorepo-shared-http-mock/)。
+> **這篇的範圍**：**內部 service**（你自己寫的 class、有 interface 可以抽換）。如果依賴是**外部 HTTP API**（Stripe、GitHub、第三方 SaaS），Fake 不是對的工具，請看第三篇[跨層共用 HTTP mock]({{< ref "/post/monorepo-shared-http-mock" >}})。
 
 常見的做法是前端有前端的 mock，後端有後端的 fixture，各做各的。結果就是同一個服務被 mock 兩次、三次，行為還不一定一致——前端測試以為回 null，後端 mock 卻回空陣列，bug 只在整合時才跑出來。
 
@@ -348,12 +348,12 @@ describe('FakeUserService', () => {
 
 測試寫起來像組樂高——interface 是接口，Fake 是可重用的積木，前後端的測試都是同一套原則。
 
-如果你的依賴是外部 HTTP API（Stripe、GitHub 這類），Fake 就不是對的工具，需要的是網路層攔截——下一篇講[跨層共用 HTTP mock](/p/monorepo-shared-http-mock/)。
+如果你的依賴是外部 HTTP API（Stripe、GitHub 這類），Fake 就不是對的工具，需要的是網路層攔截——下一篇講[跨層共用 HTTP mock]({{< ref "/post/monorepo-shared-http-mock" >}})。
 
 ## 參考資源
 
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)
 - [Monorepo Tools — pnpm workspaces](https://pnpm.io/workspaces)
 - [Vitest 官方文件](https://vitest.dev/)
-- [DI + Fake + in-memory 測試基礎](/p/di-fake-in-memory-testing/)
-- [monorepo 跨層共用 HTTP mock](/p/monorepo-shared-http-mock/)
+- [DI + Fake + in-memory 測試基礎]({{< ref "/post/di-fake-in-memory-testing" >}})
+- [monorepo 跨層共用 HTTP mock]({{< ref "/post/monorepo-shared-http-mock" >}})

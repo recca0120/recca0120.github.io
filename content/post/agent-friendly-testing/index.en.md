@@ -13,7 +13,7 @@ tags:
 draft: false
 ---
 
-The previous three-post series covered [DI + Fake + in-memory](/en/p/di-fake-in-memory-testing/), [monorepo shared Fakes](/en/p/monorepo-shared-fake-testing/), and [shared HTTP mocks](/en/p/monorepo-shared-http-mock/). These patterns were meant for humans — readable, editable, refactor-safe.
+The previous three-post series covered [DI + Fake + in-memory]({{< ref "/post/di-fake-in-memory-testing" >}}), [monorepo shared Fakes]({{< ref "/post/monorepo-shared-fake-testing" >}}), and [shared HTTP mocks]({{< ref "/post/monorepo-shared-http-mock" >}}). These patterns were meant for humans — readable, editable, refactor-safe.
 
 But after months of daily development with Claude Code, it became clear these patterns help AI agents even more than they help humans. Here's why, in five concrete points.
 
@@ -129,8 +129,8 @@ The patterns in this three-part series weren't designed for AI agents, but they 
 
 ## References
 
-- [DI + Fake + in-memory testing foundations](/en/p/di-fake-in-memory-testing/)
-- [Sharing Fakes across a monorepo](/en/p/monorepo-shared-fake-testing/)
-- [Sharing HTTP mocks across a monorepo](/en/p/monorepo-shared-http-mock/)
+- [DI + Fake + in-memory testing foundations]({{< ref "/post/di-fake-in-memory-testing" >}})
+- [Sharing Fakes across a monorepo]({{< ref "/post/monorepo-shared-fake-testing" >}})
+- [Sharing HTTP mocks across a monorepo]({{< ref "/post/monorepo-shared-http-mock" >}})
 - [Test Doubles — Martin Fowler](https://martinfowler.com/bliki/TestDouble.html)
 - [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code)

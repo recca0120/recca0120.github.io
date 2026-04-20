@@ -18,7 +18,7 @@ draft: false
 
 ## 最核心的差異：平行分支
 
-一般用 Git 的方式是：切到某個 branch 做事，做完再切到另一個。兩件事要同時進行就要切來切去，或者開[多個 worktree](/p/git-worktree-parallel-work/) 手動管理。
+一般用 Git 的方式是：切到某個 branch 做事，做完再切到另一個。兩件事要同時進行就要切來切去，或者開[多個 worktree]({{< ref "/post/git-worktree-parallel-work" >}}) 手動管理。
 
 GitButler 的**平行分支（Parallel Branches）**讓你不用切換，直接在同一個工作目錄同時處理多個分支。把某個檔案的變更拖到哪個分支，它就屬於那個分支。
 
@@ -105,7 +105,7 @@ but --help
 
 ## 跟 git worktree 的差別
 
-之前寫過[用 git worktree 同時處理多個分支](/p/git-worktree-parallel-work/)，兩者都是解決「平行工作」的問題，但角度不同：
+之前寫過[用 git worktree 同時處理多個分支]({{< ref "/post/git-worktree-parallel-work" >}})，兩者都是解決「平行工作」的問題，但角度不同：
 
 | | git worktree | GitButler |
 |---|---|---|

@@ -83,5 +83,6 @@ grep -rl "關鍵字" content/post/
 
 - 在文章內文的適當位置加內部連結（不只是文末）
 - 錨點文字用描述性文字，不要用「點這裡」
-- 中文版連結格式：`[文章標題](/p/slug/)`
-- 英文版連結格式：`[Article Title](/en/p/slug/)`
+- **必須**用 Hugo ref shortcode：`[文章標題]({{< ref "/post/slug" >}})`
+- 中英文版都用同一個 ref，Hugo 會自動解析到對應語系的 URL
+- **不要**寫死 `/p/slug/` 或 `/en/p/slug/` — 本站 permalink 是 `/:year/:month/:day/:slug/`，`/p/` 路徑不存在，會 404
