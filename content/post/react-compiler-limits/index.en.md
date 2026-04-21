@@ -351,35 +351,37 @@ When you're tempted to reach for `useMemo`, order of operations:
 
 ### How to verify: 30-second probe
 
-Don't rely on memory or docs — compile and look at the output:
+Don't rely on memory or docs — compile and look at the output. Two ways:
+
+**Option 1: zero-install, in the browser**
+
+Open the [React Compiler Playground](https://playground.react.dev/), paste source on the left, see the compiled result on the right. Great for quick one-snippet checks.
+
+**Option 2: local CLI against your own file**
 
 ```bash
-# two extra devDeps (babel-plugin-react-compiler is already installed)
-pnpm add -D @babel/core @babel/preset-typescript
+# install babel CLI and TS preset (babel-plugin-react-compiler is already installed)
+pnpm add -D @babel/cli @babel/core @babel/preset-typescript
+
+# compile a single file and print the output
+npx babel \
+  --presets @babel/preset-typescript \
+  --plugins babel-plugin-react-compiler \
+  --no-babelrc \
+  src/components/YourProvider.tsx | less
 ```
 
-```js
-// probe.mjs — place at package root
-import { transformAsync } from '@babel/core';
-import { readFileSync } from 'node:fs';
+If you do this often, add it to `package.json`:
 
-const file = process.argv[2];
-const source = readFileSync(file, 'utf8');
-const result = await transformAsync(source, {
-  filename: file,
-  presets: [['@babel/preset-typescript', { isTSX: true, allExtensions: true }]],
-  plugins: [['babel-plugin-react-compiler', {}]],
-  babelrc: false,
-  configFile: false,
-});
-console.log(result.code);
+```json
+{
+  "scripts": {
+    "probe": "babel --presets @babel/preset-typescript --plugins babel-plugin-react-compiler --no-babelrc"
+  }
+}
 ```
 
-Usage:
-
-```bash
-node probe.mjs src/components/YourProvider.tsx | less
-```
+Then `pnpm probe src/components/YourProvider.tsx | less`.
 
 Read the output:
 

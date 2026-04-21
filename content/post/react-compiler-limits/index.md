@@ -351,35 +351,37 @@ return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 
 ### 怎麼驗證：30 秒 probe
 
-不靠記憶、不靠文件，直接編譯看輸出：
+不靠記憶、不靠文件，直接編譯看輸出。有兩種做法：
+
+**方法 1：網頁零安裝**
+
+開 [React Compiler Playground](https://playground.react.dev/)，左邊貼 source、右邊直接出編譯結果。適合快速驗證單一 snippet。
+
+**方法 2：本地 CLI 跑自己的檔案**
 
 ```bash
-# 裝兩個 devDep（babel-plugin-react-compiler 本來就有了）
-pnpm add -D @babel/core @babel/preset-typescript
+# 安裝 babel CLI 和 TS preset（babel-plugin-react-compiler 本來就有了）
+pnpm add -D @babel/cli @babel/core @babel/preset-typescript
+
+# 編譯單一檔案印出結果
+npx babel \
+  --presets @babel/preset-typescript \
+  --plugins babel-plugin-react-compiler \
+  --no-babelrc \
+  src/components/YourProvider.tsx | less
 ```
 
-```js
-// probe.mjs — 放在 package 根目錄
-import { transformAsync } from '@babel/core';
-import { readFileSync } from 'node:fs';
+若常常要看，加進 `package.json` 的 scripts：
 
-const file = process.argv[2];
-const source = readFileSync(file, 'utf8');
-const result = await transformAsync(source, {
-  filename: file,
-  presets: [['@babel/preset-typescript', { isTSX: true, allExtensions: true }]],
-  plugins: [['babel-plugin-react-compiler', {}]],
-  babelrc: false,
-  configFile: false,
-});
-console.log(result.code);
+```json
+{
+  "scripts": {
+    "probe": "babel --presets @babel/preset-typescript --plugins babel-plugin-react-compiler --no-babelrc"
+  }
+}
 ```
 
-使用：
-
-```bash
-node probe.mjs src/components/YourProvider.tsx | less
-```
+然後 `pnpm probe src/components/YourProvider.tsx | less`。
 
 看輸出：
 
