@@ -1,6 +1,6 @@
 ---
 title: "3 Things React Compiler Won't Auto-Memo: From 512ms Down to 6ms"
-description: "I thought React Compiler meant no more manual memo. Then tab-switch took 512ms. Three compiler blind spots — hook spreads, child component boundaries, setInterval animations — with extra everyday examples."
+description: "I thought React Compiler meant no more manual memo. Then tab-switch took 512ms. Three compiler blind spots — child component boundaries, prop identity intent, and setInterval animation state — with extra everyday examples."
 slug: react-compiler-limits
 date: '2026-04-21T22:30:00+08:00'
 image: featured.png
@@ -20,6 +20,9 @@ draft: false
 The project runs React 19 + React Compiler 1.0. In theory, `useMemo`, `useCallback`, and `React.memo` are all automatic. In practice, profile showed compiler missed every hot path.
 
 This is my walk through three fixes that took the app from 512ms to 6ms, and why compiler couldn't help for each. Each section ends with extra examples you're likely to hit in your own codebase — not just the one I was debugging.
+
+> [!IMPORTANT]
+> Compiler does more than you think. While writing this post I used `babel-plugin-react-compiler` to compile actual code and verify which patterns *really* need manual memoization. Many cases where "adding `useMemo` seems useful" are already handled by the compiler — hook returns like `{ ...state, ...actions }`, `.filter()` results, or `{...DEFAULT, ...overrides}` merges are all auto-memoized. **The three boundaries below are where you actually need to step in** — don't sprinkle `useMemo` everywhere else.
 
 ## The pain: 512ms tab switch
 
@@ -42,103 +45,91 @@ All three tabs stay mounted (toggled via CSS so we don't rebuild state), so one 
 
 React Compiler is enabled. It isn't helping. Why?
 
-## Boundary 1: hook return values are new references every call
+## Boundary 1: compiler can't express "don't include this prop in identity"
 
-First thing I spotted after adding debug logs:
+The first thing I caught was that TabProvider's `actions` got a new identity on every render.
 
-```tsx
-export function useWorkspace(): WorkspaceValue {
-  const state = useContext(WorkspaceStateContext);
-  const actions = useContext(WorkspaceActionsContext);
-  if (!state || !actions) throw new Error('...');
-  return { ...state, ...actions };  // ← new object every call
-}
-```
-
-`state` and `actions` come from separate Contexts, each with stable identity. But `{ ...state, ...actions }` is a **fresh object literal** — recreated every time the hook runs.
-
-I logged `workspaceChanged` in WorkspacePanel. Every render: `true`. Even when state itself didn't change, the spread produced a new reference, causing every downstream `useEffect([workspace])` and `React.memo` comparison to see "changed."
-
-**Why didn't compiler fix this?** Compiler does intra-component memoization but treats hooks as black boxes. From the caller's perspective, `useWorkspace()`'s output is dynamic. Compiler can't reason across the hook boundary to decide the spread should be memoized.
-
-Fix: `useMemo` inside the hook.
+Original code:
 
 ```tsx
-export function useWorkspace(): WorkspaceValue {
-  const state = useContext(WorkspaceStateContext);
-  const actions = useContext(WorkspaceActionsContext);
-  const merged = useMemo(
-    () => (state && actions ? { ...state, ...actions } : null),
-    [state, actions],
-  );
-  if (!merged) throw new Error('...');
-  return merged;
-}
-```
+export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNode }) {
+  const [state, setState] = useState<TabState>({ tabs: {}, activeTabId: null });
 
-After this, `workspaceChanged` went to `false` everywhere.
-
-### Other everyday "new reference from hook" traps
-
-Beyond spreads, these patterns fall into the same trap:
-
-**Array filter / map:**
-
-```tsx
-// ❌ new array every call
-export function useVisibleItems() {
-  const { items, filter } = useContext(ListContext);
-  return items.filter((item) => item.status === filter);
-}
-
-// ✅ memoize
-export function useVisibleItems() {
-  const { items, filter } = useContext(ListContext);
-  return useMemo(
-    () => items.filter((item) => item.status === filter),
-    [items, filter],
-  );
-}
-```
-
-**Config objects returned to callers:**
-
-```tsx
-// ❌ options is a fresh object every call
-export function useQueryOptions(id: string) {
-  return {
-    queryKey: ['item', id],
-    enabled: Boolean(id),
-    staleTime: 30_000,
+  const addTab = (id: string) => {
+    setState((prev) => ({ ...prev, tabs: { ...prev.tabs, [id]: DEFAULT_META } }));
   };
+
+  const createNewTab = () => {
+    const channelId = crypto.randomUUID();
+    setState((prev) => ({
+      tabs: { ...prev.tabs, [channelId]: { ...DEFAULT_META, cwd } }, // ← uses prop
+      activeTabId: channelId,
+    }));
+    return { channelId };
+  };
+
+  // ... 6 more actions
+
+  const actions = { addTab, createNewTab /* ... */ };
+
+  return <TabActionsContext.Provider value={actions}>{children}</TabActionsContext.Provider>;
 }
 ```
 
-`queryKey` is itself a new array, and the surrounding options object is new too. Libraries like React Query or SWR use reference equality for cache keys — even if the compiler memoizes the call site, the hook's own unstable return value breaks things downstream.
+The compiler memoizes, but it sees `createNewTab`'s closure capture `cwd` and **conservatively adds `cwd` to the dependency set of `actions`**. When `cwd` changes (switching projects), `actions` gets a new identity → `<TabContent actions={actions}>` re-renders across the whole tree even if wrapped in `React.memo`.
 
-**Merging defaults with overrides:**
+The issue is one of intent: **`cwd`'s value only matters at the moment `createNewTab` is *called*, not when defined**. `addTab` doesn't use `cwd` at all, but it gets dragged along because it's in the same `actions` object.
+
+This is the compiler's blind spot: **"I want `cwd` to be read at call time, not included in the identity" is an intent-level piece of information that can't be expressed in code**, so the compiler falls back to the conservative answer.
+
+Fix: pin `actions` once with a `useState` initializer, and route the prop through a ref so it's read fresh at call time.
 
 ```tsx
-// ❌ returns a new object even when overrides hasn't changed
-export function useConfig(overrides?: Partial<Config>) {
-  return { ...DEFAULT_CONFIG, ...overrides };
-}
+export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNode }) {
+  const [state, setState] = useState<TabState>({ tabs: {}, activeTabId: null });
 
-// ✅
-export function useConfig(overrides?: Partial<Config>) {
-  return useMemo(
-    () => ({ ...DEFAULT_CONFIG, ...overrides }),
-    [overrides],
-  );
+  const cwdRef = useRef(cwd);
+  cwdRef.current = cwd; // sync on every render
+
+  const [actions] = useState(() => ({
+    addTab: (id: string) => {
+      setState((prev) => ({ ...prev, tabs: { ...prev.tabs, [id]: DEFAULT_META } }));
+    },
+    createNewTab: () => {
+      const channelId = crypto.randomUUID();
+      setState((prev) => ({
+        tabs: { ...prev.tabs, [channelId]: { ...DEFAULT_META, cwd: cwdRef.current } },
+        activeTabId: channelId,
+      }));
+      return { channelId };
+    },
+    // ... 6 more actions
+  }));
+
+  return <TabActionsContext.Provider value={actions}>{children}</TabActionsContext.Provider>;
 }
 ```
 
-> [!IMPORTANT]
-> Compiler only memoizes computation inside one component. Spreads, object merges, and `.filter()` results that cross hook / function boundaries need manual `useMemo`.
+The `useState(() => ({...}))` initializer runs once — `actions` keeps the same reference for the entire lifetime. `cwdRef.current` is synced every render, so whenever an action runs it reads the current value.
+
+Now `memo(TabContent)` can finally do its job — when switching projects, `TabProvider` itself re-renders, but `actions` is stable → TabContent's props are stable → memo short-circuits → the whole subtree skips re-render.
+
+### When this pattern is warranted
+
+Not every prop needs this workaround. The ref-capture pattern fits when:
+
+- **An action needs to read the prop's current value at call time**, but you don't want the action's identity to change when the prop does
+- **Prop change frequency ≫ call frequency** (like `cwd` changing on every project switch, but `createNewTab` getting called once per session)
+- **Something downstream relies on identity for short-circuiting** (`React.memo` prop compare, `useEffect` deps)
+
+Conversely, if nobody compares the action's identity, or the prop barely ever changes, don't bother. Over-using refs makes the timing relationship between prop and action harder to follow.
+
+> [!NOTE]
+> The compiler's dependency inference is conservative — if a closure reads a variable, it's treated as a dependency. "Keep this variable out of the deps" can only be expressed via runtime indirection (like refs), because it isn't something code itself can convey.
 
 ## Boundary 2: child components are not auto-wrapped in `React.memo`
 
-After fixing `useWorkspace`, I re-ran the profile. All context-changed flags were false — but WorkspacePanel still re-rendered twice per tab switch.
+After fixing TabProvider's `actions` identity, re-ran the profile. TabProvider's own render kept `actions` stable — but WorkspacePanel still re-rendered twice per tab switch.
 
 The reason: WorkspacePanel's own context subscriptions didn't change, but its **parent re-rendered**. React's default is parent render → child re-run, unless the child is `React.memo`.
 
@@ -186,7 +177,7 @@ const SettingsPanel = memo(function SettingsPanel({ userId }: { userId: string }
 
 If you know a component sits above a huge subtree or chain of Providers, and its props / context rarely change, memo-ing it is a cheap short-circuit gate for that entire subtree.
 
-Conversely, components whose props always change (e.g. receiving `onClick`, `style`, or `children` fresh each render) get no benefit — the shallow compare fails every time. Fix prop identity first.
+Conversely, components whose props always change (e.g. receiving `onClick`, `style`, or `children` fresh each render) get no benefit — the shallow compare fails every time. Fix prop identity first (see Boundary 1).
 
 ## Boundary 3: high-frequency setInterval + setState animations
 
@@ -302,6 +293,62 @@ After all three fixes landed, re-profile:
 
 Tab switch went from noticeably laggy to essentially instant. Other interactions (submit, open panel) also improved — they share the provider tree with tab switching, so killing the background noise lifted everything.
 
+## What the compiler actually does (don't duplicate useMemo)
+
+While writing this post I did one thing: fed various patterns to `babel-plugin-react-compiler` and inspected the output to verify which patterns truly need manual memoization. The answer is that many cases where you'd reach for `useMemo` are already handled.
+
+### Spread / filter / merge inside hooks — no need to add
+
+```tsx
+export function useSession() {
+  const state = useContext(StateCtx);
+  const actions = useContext(ActionsCtx);
+  if (!state || !actions) throw new Error('...');
+  return { ...state, ...actions }; // compiler memoizes on [state, actions]
+}
+```
+
+Here's what the compiler actually produces:
+
+```js
+// after compile
+let t0;
+if ($[0] !== actions || $[1] !== state) {
+  t0 = { ...state, ...actions };
+  $[0] = actions;
+  $[1] = state;
+  $[2] = t0;
+} else {
+  t0 = $[2]; // reuse cache
+}
+return t0;
+```
+
+Same treatment applies to `items.filter(...)` and `{ ...DEFAULT, ...overrides }` — all auto-memoized. The `useMemo` I'd originally added around `useSession` was pure redundancy — the compiler output confirmed it already does the same thing.
+
+### Inline objects in Provider values — no need to add
+
+```tsx
+// these two compile to identical code
+return <Ctx.Provider value={{ socket }}>{children}</Ctx.Provider>;
+
+// vs
+const value = useMemo(() => ({ socket }), [socket]);
+return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
+```
+
+I compiled both sources and the resulting `_c(5)` cache slot allocation and `if ($[0] !== socket)` dependency check were identical. Adding `useMemo` yourself only looks different in the source — post-compile it's identical.
+
+### Takeaway
+
+When you're tempted to reach for `useMemo`, order of operations:
+
+1. Profile first — is there actually a render issue?
+2. If so, identify which of the 3 boundaries above (prop captured into identity, missing memo boundary, high-frequency commits)
+3. **If it's none of the 3**, the compiler usually already handles it — don't add memo on guess
+
+If you want to be sure, install `babel-plugin-react-compiler` and run it against a small probe file — reading the output is the most reliable way to confirm.
+
 ## Other compiler blind spots worth knowing
 
 Beyond the three above, the community and official docs have surfaced these situations where compiler also can't help:
@@ -309,7 +356,6 @@ Beyond the three above, the community and official docs have surfaced these situ
 - **Mutating props or objects during render**: compiler detects mutation and skips optimizing that code — safety can't be guaranteed.
 - **Reading refs during render**: `ref.current` isn't tracked by the compiler and can't participate in memo dependencies.
 - **Sharing expensive computation across components**: compiler memoization is per-component. Three different components computing the same result from the same input will each run it once. Cache outside with `useMemo` + a shared map, or lift the computation higher.
-- **External-store subscriptions**: `useSyncExternalStore` selectors aren't memoized by the compiler — ensure the selector is stable or wrap its result in `useMemo` yourself.
 - **List virtualization**: compiler won't virtualize a 10,000-item list for you. That's an architectural choice.
 
 ## The actual edges of React Compiler
@@ -319,10 +365,10 @@ From this debugging session:
 | Compiler does auto | Compiler does NOT auto |
 |---|---|
 | `useMemo` equivalent inside a component | Wrap child components in `React.memo` |
-| `useCallback` equivalent inside a component | Memoize hook return values across function boundaries |
+| `useCallback` equivalent inside a component | Express "this prop should not be in identity" intent |
 | Memoize JSX elements | Decide which animations belong in DOM vs React state |
-| Stabilize inline object literals | Analyze re-render cost across a provider chain |
-| Skip redundant work inside one component | Cache expensive computation shared across components |
+| Stabilize inline object literals / spread / merge | Analyze re-render cost across a provider chain |
+| Memoize hook return values | Cache expensive computation shared across components |
 
 One sentence: **Compiler eliminates ~90% of intra-component memo boilerplate, but component-boundary and architectural optimizations remain your job**.
 
@@ -332,7 +378,7 @@ My wrong mental model was "compiler enabled = free performance." Reality is clos
 
 - **Don't guess. Profile first.** I wasted time assuming the list needed virtualization — spent hours on it before realizing the real culprit was LoadingSpinner's interval. Ten minutes with Profiler saves a day of guesswork.
 - **React DevTools Profiler's "What caused this update?"** is the most direct clue. Trace the trigger, walk up to the root cause.
-- **`console.log` the hook return reference** is more productive than throwing `useMemo` at things. Confirm it's an identity drift problem before "fixing" anything.
+- **When unsure whether a pattern needs `useMemo`, compile it and look.** Install `babel-plugin-react-compiler`, a 30-line node script running babel transform tells you whether the compiler already handles it. Much more reliable than guessing.
 - **Manually `React.memo` the hotspots**: leaf components called by high-frequency parents, expensive-to-render items (Markdown, syntax highlighting), and boundaries between deep provider trees.
 - **High-frequency animations go through refs + DOM**: mousemove, scroll, interval icons, countdown displays — any visual-only state should bypass React.
 
