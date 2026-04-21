@@ -347,7 +347,57 @@ return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 2. 如果有，確認是上面 3 個邊界哪一個（prop identity 被納入、沒 memo boundary、高頻 commit）
 3. **如果不是那 3 個**，通常 compiler 已經處理 — 別亂加
 
-真的想確認，裝 `babel-plugin-react-compiler`，寫小 probe 檔案手動 compile 看輸出是最可靠的方法。
+### 怎麼驗證：30 秒 probe
+
+不靠記憶、不靠文件，直接編譯看輸出：
+
+```bash
+# 裝兩個 devDep（babel-plugin-react-compiler 本來就有了）
+pnpm add -D @babel/core @babel/preset-typescript
+```
+
+```js
+// probe.mjs — 放在 package 根目錄
+import { transformAsync } from '@babel/core';
+import { readFileSync } from 'node:fs';
+
+const file = process.argv[2];
+const source = readFileSync(file, 'utf8');
+const result = await transformAsync(source, {
+  filename: file,
+  presets: [['@babel/preset-typescript', { isTSX: true, allExtensions: true }]],
+  plugins: [['babel-plugin-react-compiler', {}]],
+  babelrc: false,
+  configFile: false,
+});
+console.log(result.code);
+```
+
+使用：
+
+```bash
+node probe.mjs src/contexts/SessionContext.tsx | less
+```
+
+看輸出：
+
+- 開頭有 `import { c as _c } from "react/compiler-runtime"` + `const $ = _c(N)` → Compiler 編譯成功
+- 看到 `if ($[0] !== dep) { t0 = ...; } else { t0 = $[2]; }` → 這段有 memo，**不要自己加 useMemo**
+- 完全沒看到 cache check → Compiler 決定 bail out（可能偵測到 mutation、ref 讀取、或非 component/hook）
+
+我自己就是這樣發現：`SessionContext` provider 的 `<SessionStateContext.Provider value={{ initOptions, auth, sessions, capabilities }}>` 在編譯輸出裡長這樣：
+
+```js
+if ($[16] !== auth || $[17] !== capabilities || $[18] !== initOptions || $[19] !== sessions) {
+  t13 = { initOptions, auth, sessions, capabilities };
+  $[16] = auth; $[17] = capabilities; $[18] = initOptions; $[19] = sessions;
+  $[20] = t13;
+} else {
+  t13 = $[20];
+}
+```
+
+四個欄位各自當 dep，任一沒變就重用 cached value。這比我自己寫 `useMemo(() => ({...}), [auth, capabilities, initOptions, sessions])` 更不會漏 dep — compiler 分析比人類可靠。
 
 ## 其他 compiler 也救不了的盲區
 
