@@ -52,7 +52,7 @@ The first thing I caught was that TabProvider's `actions` got a new identity on 
 Original code:
 
 ```tsx
-export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNode }) {
+export function TabProvider({ projectId, children }: { projectId?: string; children: ReactNode }) {
   const [state, setState] = useState<TabState>({ tabs: {}, activeTabId: null });
 
   const addTab = (id: string) => {
@@ -60,12 +60,12 @@ export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNo
   };
 
   const createNewTab = () => {
-    const channelId = crypto.randomUUID();
+    const tabId = crypto.randomUUID();
     setState((prev) => ({
-      tabs: { ...prev.tabs, [channelId]: { ...DEFAULT_META, cwd } }, // ← uses prop
-      activeTabId: channelId,
+      tabs: { ...prev.tabs, [tabId]: { ...DEFAULT_META, projectId } }, // ← uses prop
+      activeTabId: tabId,
     }));
-    return { channelId };
+    return { tabId };
   };
 
   // ... 6 more actions
@@ -76,32 +76,32 @@ export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNo
 }
 ```
 
-The compiler memoizes, but it sees `createNewTab`'s closure capture `cwd` and **conservatively adds `cwd` to the dependency set of `actions`**. When `cwd` changes (switching projects), `actions` gets a new identity → `<TabContent actions={actions}>` re-renders across the whole tree even if wrapped in `React.memo`.
+The compiler memoizes, but it sees `createNewTab`'s closure capture `projectId` and **conservatively adds `projectId` to the dependency set of `actions`**. When `projectId` changes (switching projects), `actions` gets a new identity → `<TabContent actions={actions}>` re-renders across the whole tree even if wrapped in `React.memo`.
 
-The issue is one of intent: **`cwd`'s value only matters at the moment `createNewTab` is *called*, not when defined**. `addTab` doesn't use `cwd` at all, but it gets dragged along because it's in the same `actions` object.
+The issue is one of intent: **`projectId`'s value only matters at the moment `createNewTab` is *called*, not when defined**. `addTab` doesn't use `projectId` at all, but it gets dragged along because it's in the same `actions` object.
 
-This is the compiler's blind spot: **"I want `cwd` to be read at call time, not included in the identity" is an intent-level piece of information that can't be expressed in code**, so the compiler falls back to the conservative answer.
+This is the compiler's blind spot: **"I want `projectId` to be read at call time, not included in the identity" is an intent-level piece of information that can't be expressed in code**, so the compiler falls back to the conservative answer.
 
 Fix: pin `actions` once with a `useState` initializer, and route the prop through a ref so it's read fresh at call time.
 
 ```tsx
-export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNode }) {
+export function TabProvider({ projectId, children }: { projectId?: string; children: ReactNode }) {
   const [state, setState] = useState<TabState>({ tabs: {}, activeTabId: null });
 
-  const cwdRef = useRef(cwd);
-  cwdRef.current = cwd; // sync on every render
+  const projectIdRef = useRef(projectId);
+  projectIdRef.current = projectId; // sync on every render
 
   const [actions] = useState(() => ({
     addTab: (id: string) => {
       setState((prev) => ({ ...prev, tabs: { ...prev.tabs, [id]: DEFAULT_META } }));
     },
     createNewTab: () => {
-      const channelId = crypto.randomUUID();
+      const tabId = crypto.randomUUID();
       setState((prev) => ({
-        tabs: { ...prev.tabs, [channelId]: { ...DEFAULT_META, cwd: cwdRef.current } },
-        activeTabId: channelId,
+        tabs: { ...prev.tabs, [tabId]: { ...DEFAULT_META, projectId: projectIdRef.current } },
+        activeTabId: tabId,
       }));
-      return { channelId };
+      return { tabId };
     },
     // ... 6 more actions
   }));
@@ -110,7 +110,7 @@ export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNo
 }
 ```
 
-The `useState(() => ({...}))` initializer runs once — `actions` keeps the same reference for the entire lifetime. `cwdRef.current` is synced every render, so whenever an action runs it reads the current value.
+The `useState(() => ({...}))` initializer runs once — `actions` keeps the same reference for the entire lifetime. `projectIdRef.current` is synced every render, so whenever an action runs it reads the current value.
 
 Now `memo(TabContent)` can finally do its job — when switching projects, `TabProvider` itself re-renders, but `actions` is stable → TabContent's props are stable → memo short-circuits → the whole subtree skips re-render.
 
@@ -119,7 +119,7 @@ Now `memo(TabContent)` can finally do its job — when switching projects, `TabP
 Not every prop needs this workaround. The ref-capture pattern fits when:
 
 - **An action needs to read the prop's current value at call time**, but you don't want the action's identity to change when the prop does
-- **Prop change frequency ≫ call frequency** (like `cwd` changing on every project switch, but `createNewTab` getting called once per session)
+- **Prop change frequency ≫ call frequency** (like `projectId` changing on every project switch, but `createNewTab` getting called once per session)
 - **Something downstream relies on identity for short-circuiting** (`React.memo` prop compare, `useEffect` deps)
 
 Conversely, if nobody compares the action's identity, or the prop barely ever changes, don't bother. Over-using refs makes the timing relationship between prop and action harder to follow.

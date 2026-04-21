@@ -52,7 +52,7 @@ React Compiler 這裡沒作用 — 事實擺在眼前。為什麼？
 原本的寫法：
 
 ```tsx
-export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNode }) {
+export function TabProvider({ projectId, children }: { projectId?: string; children: ReactNode }) {
   const [state, setState] = useState<TabState>({ tabs: {}, activeTabId: null });
 
   const addTab = (id: string) => {
@@ -60,12 +60,12 @@ export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNo
   };
 
   const createNewTab = () => {
-    const channelId = crypto.randomUUID();
+    const tabId = crypto.randomUUID();
     setState((prev) => ({
-      tabs: { ...prev.tabs, [channelId]: { ...DEFAULT_META, cwd } }, // ← 用到 prop
-      activeTabId: channelId,
+      tabs: { ...prev.tabs, [tabId]: { ...DEFAULT_META, projectId } }, // ← 用到 prop
+      activeTabId: tabId,
     }));
-    return { channelId };
+    return { tabId };
   };
 
   // ... 另外 6 個 action
@@ -76,32 +76,32 @@ export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNo
 }
 ```
 
-Compiler 會幫忙 memo，但它看到 `createNewTab` 的 closure 用到 `cwd`，會**保守地把 `cwd` 納入 actions 的 dep**。切 project 時 `cwd` 變 → actions 換新 identity → `<TabContent actions={actions}>` 即使有 `React.memo` 也會整片 re-render。
+Compiler 會幫忙 memo，但它看到 `createNewTab` 的 closure 用到 `projectId`，會**保守地把 `projectId` 納入 actions 的 dep**。切 project 時 `projectId` 變 → actions 換新 identity → `<TabContent actions={actions}>` 即使有 `React.memo` 也會整片 re-render。
 
-問題在意圖：**`cwd` 的值只有在 `createNewTab` 被「呼叫」的那一刻才重要**，不是定義時。`addTab` 根本沒用到 `cwd`，但因為它跟 `createNewTab` 一起組成 actions object，也被拖下水。
+問題在意圖：**`projectId` 的值只有在 `createNewTab` 被「呼叫」的那一刻才重要**，不是定義時。`addTab` 根本沒用到 `projectId`，但因為它跟 `createNewTab` 一起組成 actions object，也被拖下水。
 
-這是 compiler 的 blind spot：**「我希望 `cwd` 只在 call time 讀，不要納入 identity」是意圖層面的資訊，code 本身寫不出來**，compiler 只能保守推論。
+這是 compiler 的 blind spot：**「我希望 `projectId` 只在 call time 讀，不要納入 identity」是意圖層面的資訊，code 本身寫不出來**，compiler 只能保守推論。
 
 修法：用 `useState` initializer 一次鎖定 actions，prop 改走 ref 在 call time 讀最新值。
 
 ```tsx
-export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNode }) {
+export function TabProvider({ projectId, children }: { projectId?: string; children: ReactNode }) {
   const [state, setState] = useState<TabState>({ tabs: {}, activeTabId: null });
 
-  const cwdRef = useRef(cwd);
-  cwdRef.current = cwd; // 每次 render 同步
+  const projectIdRef = useRef(projectId);
+  projectIdRef.current = projectId; // 每次 render 同步
 
   const [actions] = useState(() => ({
     addTab: (id: string) => {
       setState((prev) => ({ ...prev, tabs: { ...prev.tabs, [id]: DEFAULT_META } }));
     },
     createNewTab: () => {
-      const channelId = crypto.randomUUID();
+      const tabId = crypto.randomUUID();
       setState((prev) => ({
-        tabs: { ...prev.tabs, [channelId]: { ...DEFAULT_META, cwd: cwdRef.current } },
-        activeTabId: channelId,
+        tabs: { ...prev.tabs, [tabId]: { ...DEFAULT_META, projectId: projectIdRef.current } },
+        activeTabId: tabId,
       }));
-      return { channelId };
+      return { tabId };
     },
     // ... 另外 6 個 action
   }));
@@ -110,7 +110,7 @@ export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNo
 }
 ```
 
-`useState(() => ({...}))` 的 initializer 只跑一次，actions 從頭到尾同一個 reference。`cwdRef.current` 在任一 render 都會同步最新 `cwd`，action 被呼叫時讀到的永遠是當前值。
+`useState(() => ({...}))` 的 initializer 只跑一次，actions 從頭到尾同一個 reference。`projectIdRef.current` 在任一 render 都會同步最新 `projectId`，action 被呼叫時讀到的永遠是當前值。
 
 下游的 `memo(TabContent)` 終於能發揮作用 — 切 project 時 `TabProvider` 本體 render，但 actions 不變 → TabContent props 不變 → memo short-circuit → 整片 subtree 不重 render。
 
@@ -119,7 +119,7 @@ export function TabProvider({ cwd, children }: { cwd?: string; children: ReactNo
 不是所有 prop 都要這樣繞。用 ref 捕捉的適用情境：
 
 - **Action function 內部要讀 prop 的當前值**，但不希望 action identity 隨 prop 變動
-- **prop 變動頻率 ≫ 呼叫頻率**（像 `cwd` 每次切 project 就變，但 `createNewTab` 一個 session 才呼叫一次）
+- **prop 變動頻率 ≫ 呼叫頻率**（像 `projectId` 每次切 project 就變，但 `createNewTab` 一個 session 才呼叫一次）
 - **downstream 用 identity 做 short-circuit**（`React.memo` 的 props 比較、`useEffect` deps）
 
 反過來，如果 action identity 本來就沒人在比較，或 prop 本身很穩定，就不需要這個 pattern。濫用 ref 會讓 prop 和 action 的時序關係更難追。
