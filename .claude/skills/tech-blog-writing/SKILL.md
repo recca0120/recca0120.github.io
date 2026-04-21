@@ -3,7 +3,7 @@ name: tech-blog-writing
 description: >-
   Guides writing and editing technical blog posts for recca0120.github.io (Hugo + Stack theme, bilingual zh-hant-tw + en).
   Covers article structure, SEO, frontmatter conventions, cover image generation, internal links via Hugo ref shortcode,
-  GitHub Alerts for callouts, and humanized zh-hant writing style.
+  plain blockquote callouts (for cross-post compatibility), and humanized zh-hant writing style.
   Use this skill whenever the user writes, drafts, edits, translates, or restructures any article on this blog —
   even if they don't explicitly say "blog post" (e.g. "幫我整理成一篇", "改寫這段", "翻成英文版").
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
@@ -30,7 +30,7 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 7. 套用 humanizer-zh 規則檢查 AI 痕跡
 8. 確認程式碼可讀、有註解、可複製貼上
 9. 加入相關文章的內部連結（格式：`[標題]({{< ref "/post/slug" >}})`，詳見 `writing-style.md`）
-10. 需要補充、提示、警告時用 GitHub Alerts（`> [!NOTE] / [!TIP] / [!WARNING] / [!IMPORTANT] / [!CAUTION]`，Stack theme 原生支援）
+10. 需要補充、提示、警告時用純 blockquote（`> text`）— 避免 GitHub Alerts，因為 dev.to / Hashnode 不渲染
 11. 文章末尾加入 `## 參考資源` 區塊（見參考資源規範）
 12. 確認 frontmatter 格式正確（見 `frontmatter-reference.md`）
 13. 寫英文版 `index.en.md`（完整翻譯，不是摘要）

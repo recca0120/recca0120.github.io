@@ -16,7 +16,6 @@ draft: false
 
 The previous post covered [DI + Fake + in-memory basics]({{< ref "/post/di-fake-in-memory-testing" >}}). This one takes it further, into a scenario most testing tutorials ignore: **how frontend, backend, and shared logic can use the same Fake in a monorepo**.
 
-> [!NOTE]
 > **Scope of this post**: **internal services** — classes you wrote, with interfaces you can swap. If the dependency is an **external HTTP API** (Stripe, GitHub, third-party SaaS), Fake isn't the right tool. See part three on [shared HTTP mocks]({{< ref "/post/monorepo-shared-http-mock" >}}) for that case.
 
 The common approach is for the frontend to have its mocks, the backend its fixtures, and each package does its own thing. The result: the same service is mocked twice or three times, often with inconsistent behavior — the frontend test assumes `null`, the backend mock returns an empty array, and the bug only shows up at integration time.

@@ -216,7 +216,6 @@ Stack 內建覆寫：
 - 圖片：lazy loading + PhotoSwipe lightbox
 - 連結：外部連結自動 `target="_blank"`
 - 標題：`headingAnchor = true` 時加錨點
-- Blockquote：支援 GitHub alert（`> [!NOTE]`、`> [!TIP]`、`> [!WARNING]`）
 - Code block：` ```mermaid ` 自動渲染
 
 ## 多語系

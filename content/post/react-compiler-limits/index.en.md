@@ -21,7 +21,6 @@ The project runs React 19 + React Compiler 1.0. In theory, `useMemo`, `useCallba
 
 This is my walk through three fixes that took the app from 512ms to 6ms, and why compiler couldn't help for each. Each section ends with extra examples you're likely to hit in your own codebase — not just the one I was debugging.
 
-> [!IMPORTANT]
 > Compiler does more than you think. While writing this post I used `babel-plugin-react-compiler` to compile actual code and verify which patterns *really* need manual memoization. Many cases where "adding `useMemo` seems useful" are already handled by the compiler — hook returns like `{ ...state, ...actions }`, `.filter()` results, or `{...DEFAULT, ...overrides}` merges are all auto-memoized. **The three boundaries below are where you actually need to step in** — don't sprinkle `useMemo` everywhere else.
 
 ## The pain: 512ms tab switch
@@ -124,7 +123,6 @@ Not every prop needs this workaround. The ref-capture pattern fits when:
 
 Conversely, if nobody compares the action's identity, or the prop barely ever changes, don't bother. Over-using refs makes the timing relationship between prop and action harder to follow.
 
-> [!NOTE]
 > The compiler's dependency inference is conservative — if a closure reads a variable, it's treated as a dependency. "Keep this variable out of the deps" can only be expressed via runtime indirection (like refs), because it isn't something code itself can convey.
 
 ## Boundary 2: child components are not auto-wrapped in `React.memo`
@@ -135,7 +133,6 @@ The reason: WorkspacePanel's own context subscriptions didn't change, but its **
 
 React Compiler 1.0 memoizes JSX elements, object literals, and callbacks inside a component. But it **does not automatically wrap child components in `React.memo`**. This is an intentional design boundary — auto-wrapping every component could break code relying on reference equality or intentional re-renders.
 
-> [!NOTE]
 > The official docs say the compiler "effectively memoizes the whole tree" — that refers to JSX and values *inside* each component. Bail-out at component boundaries still requires `React.memo`'s shallow prop comparison.
 
 Fix: manually `React.memo` the hot-path components.
@@ -278,7 +275,6 @@ useEffect(() => {
 
 If the countdown is purely visual — no other component branches on the current second — ref + `textContent` is much cheaper. If logic depends on time (auto-submit at zero), then state makes sense.
 
-> [!TIP]
 > Rule of thumb: does this value affect **React's render logic**? If it's only visual and no component branches on it, bypass React and touch the DOM directly.
 
 ## Result: 512ms → 6ms

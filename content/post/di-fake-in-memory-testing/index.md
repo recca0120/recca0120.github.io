@@ -200,7 +200,6 @@ beforeEach(() => {
 
 或是每個測試重新建立 instance。後者更乾淨、不會忘記 reset。
 
-> [!TIP]
 > 如果你的測試框架支援 `beforeEach` 重建 instance，優先用這個做法——忘記呼叫 `reset()` 是隱形 bug，重建 instance 則不會漏。
 
 ## Fake 自己也要測

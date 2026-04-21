@@ -200,7 +200,6 @@ beforeEach(() => {
 
 Or create a fresh instance per test. The latter is cleaner — you can't forget to reset something that doesn't exist.
 
-> [!TIP]
 > If your test framework rebuilds the instance in `beforeEach`, prefer that — forgetting to call `reset()` is an invisible bug, rebuilding the instance makes that class of bug impossible.
 
 ## The Fake Itself Needs Tests

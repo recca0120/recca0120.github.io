@@ -118,7 +118,6 @@ kernel.yama.ptrace_scope = 0
 
 或者用 `sudo reptyr <PID>` 直接以 root 執行。
 
-> [!NOTE]
 > `ptrace_scope` 的值：0 = 允許、1 = 僅限父 process（預設）、2 = 僅限 root、3 = 完全禁止。降到 1 就夠用了，不一定要到 0。
 
 ## 進階：reptyr -l

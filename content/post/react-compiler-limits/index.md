@@ -21,7 +21,6 @@ draft: false
 
 這篇記錄我從 512ms 壓到 6ms 的 3 個修正，以及每個背後 compiler 為什麼管不到。每個 boundary 都會多給幾個日常會遇到的範例，不只綁我的那個專案。
 
-> [!IMPORTANT]
 > Compiler 其實做得比你以為的多。寫這篇時我用 `babel-plugin-react-compiler` 實際編譯程式碼做驗證，才發現很多「加 `useMemo` 看起來有用」的情境其實 compiler 本來就幫你處理了 — 例如 hook 裡回傳 `{ ...state, ...actions }` 的 spread、`.filter()` 的結果、`{...DEFAULT, ...overrides}` 的合併，compiler 都會自動 memo。**真正需要你出手的是下面這 3 個邊界**，其他的別亂加 `useMemo`。
 
 ## 痛點：切 tab 512ms
@@ -124,7 +123,6 @@ export function TabProvider({ projectId, children }: { projectId?: string; child
 
 反過來，如果 action identity 本來就沒人在比較，或 prop 本身很穩定，就不需要這個 pattern。濫用 ref 會讓 prop 和 action 的時序關係更難追。
 
-> [!NOTE]
 > Compiler 的 dep 推論是保守的 — 看到 closure 使用變數就納入 dep。想「讓某個變數不進 dep」只能靠 ref 這類 runtime indirection，因為這是 code 層面表達不出的意圖。
 
 ## 邊界 2：子 component 不會自動變成 `React.memo`
@@ -135,7 +133,6 @@ export function TabProvider({ projectId, children }: { projectId?: string; child
 
 React Compiler 1.0 在 component 內部會 memo 各種 JSX 元素、物件字面值、callback；但它**不會自動把 child component 變成 `React.memo`**。這是 compiler 刻意的設計邊界 — 自動 memo 所有 component 會讓某些依賴 reference equality 或刻意 force re-render 的行為出錯，風險太高。
 
-> [!NOTE]
 > React 官方文件會提到 compiler「相當於幫你 memo 整棵 tree」— 那指的是 component 內部的 JSX 和 value。跨 component 邊界的 bail-out 還是得靠 `React.memo` 的 props 淺比較。
 
 修法：對熱點 component 手動加 `React.memo`。
@@ -278,7 +275,6 @@ useEffect(() => {
 
 如果倒數只是單純顯示給使用者看、其他 component 不需要知道當前秒數，用 ref + `textContent` 更便宜。真的有邏輯要依賴時間（例如時間到要自動 submit），再走 state。
 
-> [!TIP]
 > 判斷標準：這個值有沒有影響 **React 的 render 邏輯**？如果只是視覺呈現、沒有任何 component 分支要根據它決定畫什麼，那就適合繞過 React 直接操作 DOM。
 
 ## 結果：512ms → 6ms
