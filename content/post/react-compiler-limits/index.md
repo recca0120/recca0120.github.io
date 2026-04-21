@@ -88,7 +88,9 @@ export function TabProvider({ projectId, children }: { projectId?: string; child
   const [state, setState] = useState<TabState>({ tabs: {}, activeTabId: null });
 
   const projectIdRef = useRef(projectId);
-  projectIdRef.current = projectId; // 每次 render 同步
+  useLayoutEffect(() => {
+    projectIdRef.current = projectId; // 在 commit 前同步
+  });
 
   const [actions] = useState(() => ({
     addTab: (id: string) => {
@@ -109,7 +111,9 @@ export function TabProvider({ projectId, children }: { projectId?: string; child
 }
 ```
 
-`useState(() => ({...}))` 的 initializer 只跑一次，actions 從頭到尾同一個 reference。`projectIdRef.current` 在任一 render 都會同步最新 `projectId`，action 被呼叫時讀到的永遠是當前值。
+`useState(() => ({...}))` 的 initializer 只跑一次，actions 從頭到尾同一個 reference。`useLayoutEffect` 在每次 commit 前同步 `projectIdRef.current`，action 被呼叫時讀到的永遠是最新值。
+
+> 也可以直接把 `projectIdRef.current = projectId` 寫在 render body 裡（React 官方允許的 escape hatch），但 concurrent rendering 下 render 可能被重複執行、丟棄，用 `useLayoutEffect` 更穩。
 
 下游的 `memo(TabContent)` 終於能發揮作用 — 切 project 時 `TabProvider` 本體 render，但 actions 不變 → TabContent props 不變 → memo short-circuit → 整片 subtree 不重 render。
 
@@ -193,6 +197,8 @@ useEffect(() => {
   }, 120);
   return () => clearInterval(id);
 }, []);
+
+return <span>{ICON_CYCLE[iconIndex]}</span>;
 ```
 
 每 120ms `setState` 一次 = 每秒 8 次 commit。每次 commit React 都要走一遍 fiber tree、檢查 memo、fire effects。**即使所有 parent 都 bail out，單純 tree walk 也有成本**。loading 期間，這個成本乘以 8 持續燒 CPU。
@@ -333,7 +339,7 @@ const value = useMemo(() => ({ socket }), [socket]);
 return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 ```
 
-我實測過兩種 source 分別編譯，出來的 `_c(5)` cache slot 配置、`if ($[0] !== socket)` 的 dep 檢查完全相同。自己加 `useMemo` 只是 compile 前看起來有差，compile 後零差異。
+我實測過兩種 source 分別編譯，出來的 `_c(N)` cache slot 配置（`N` 是 compiler 根據該 component 有多少個值要 memo 決定的總數）、`if ($[0] !== socket)` 的 dep 檢查完全相同。自己加 `useMemo` 只是 compile 前看起來有差，compile 後零差異。
 
 ### 結論
 
@@ -372,7 +378,7 @@ console.log(result.code);
 使用：
 
 ```bash
-node probe.mjs src/contexts/SessionContext.tsx | less
+node probe.mjs src/components/YourProvider.tsx | less
 ```
 
 看輸出：
@@ -381,19 +387,20 @@ node probe.mjs src/contexts/SessionContext.tsx | less
 - 看到 `if ($[0] !== dep) { t0 = ...; } else { t0 = $[2]; }` → 這段有 memo，**不要自己加 useMemo**
 - 完全沒看到 cache check → Compiler 決定 bail out（可能偵測到 mutation、ref 讀取、或非 component/hook）
 
-我自己就是這樣發現：`SessionContext` provider 的 `<SessionStateContext.Provider value={{ initOptions, auth, sessions, capabilities }}>` 在編譯輸出裡長這樣：
+我自己就是這樣發現：某個 provider 的 `<AppStateContext.Provider value={{ user, theme, prefs, socket }}>` 在編譯輸出裡長這樣：
 
 ```js
-if ($[16] !== auth || $[17] !== capabilities || $[18] !== initOptions || $[19] !== sessions) {
-  t13 = { initOptions, auth, sessions, capabilities };
-  $[16] = auth; $[17] = capabilities; $[18] = initOptions; $[19] = sessions;
+// 索引 $[16]..$[20] 依該 component 的 cache slot 配置而定，不是固定值
+if ($[16] !== prefs || $[17] !== socket || $[18] !== theme || $[19] !== user) {
+  t13 = { user, theme, prefs, socket };
+  $[16] = prefs; $[17] = socket; $[18] = theme; $[19] = user;
   $[20] = t13;
 } else {
   t13 = $[20];
 }
 ```
 
-四個欄位各自當 dep，任一沒變就重用 cached value。這比我自己寫 `useMemo(() => ({...}), [auth, capabilities, initOptions, sessions])` 更不會漏 dep — compiler 分析比人類可靠。
+四個欄位各自當 dep，任一沒變就重用 cached value。這比我自己寫 `useMemo(() => ({...}), [prefs, socket, theme, user])` 更不會漏 dep — compiler 分析比人類可靠。
 
 ## 其他 compiler 也救不了的盲區
 

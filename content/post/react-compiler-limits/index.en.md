@@ -88,7 +88,9 @@ export function TabProvider({ projectId, children }: { projectId?: string; child
   const [state, setState] = useState<TabState>({ tabs: {}, activeTabId: null });
 
   const projectIdRef = useRef(projectId);
-  projectIdRef.current = projectId; // sync on every render
+  useLayoutEffect(() => {
+    projectIdRef.current = projectId; // sync before commit
+  });
 
   const [actions] = useState(() => ({
     addTab: (id: string) => {
@@ -109,7 +111,9 @@ export function TabProvider({ projectId, children }: { projectId?: string; child
 }
 ```
 
-The `useState(() => ({...}))` initializer runs once — `actions` keeps the same reference for the entire lifetime. `projectIdRef.current` is synced every render, so whenever an action runs it reads the current value.
+The `useState(() => ({...}))` initializer runs once — `actions` keeps the same reference for the entire lifetime. `useLayoutEffect` syncs `projectIdRef.current` before each commit, so whenever an action runs it reads the current value.
+
+> You can also write `projectIdRef.current = projectId` directly in the render body (React officially allows this escape hatch), but under concurrent rendering the render body may re-run or be thrown away. `useLayoutEffect` is the safer choice.
 
 Now `memo(TabContent)` can finally do its job — when switching projects, `TabProvider` itself re-renders, but `actions` is stable → TabContent's props are stable → memo short-circuits → the whole subtree skips re-render.
 
@@ -193,6 +197,8 @@ useEffect(() => {
   }, 120);
   return () => clearInterval(id);
 }, []);
+
+return <span>{ICON_CYCLE[iconIndex]}</span>;
 ```
 
 `setState` every 120ms = 8 commits per second. Each commit walks the fiber tree, checks memos, schedules effects. **Even when every parent bails out, the tree walk itself costs CPU**. Over the loading window, 8× per second compounds into sustained background load.
@@ -333,7 +339,7 @@ const value = useMemo(() => ({ socket }), [socket]);
 return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 ```
 
-I compiled both sources and the resulting `_c(5)` cache slot allocation and `if ($[0] !== socket)` dependency check were identical. Adding `useMemo` yourself only looks different in the source — post-compile it's identical.
+I compiled both sources and the resulting `_c(N)` cache slot allocation (where `N` is the total number of values the compiler decides to memoize in that component) and `if ($[0] !== socket)` dependency check were identical. Adding `useMemo` yourself only looks different in the source — post-compile it's identical.
 
 ### Takeaway
 
@@ -343,7 +349,58 @@ When you're tempted to reach for `useMemo`, order of operations:
 2. If so, identify which of the 3 boundaries above (prop captured into identity, missing memo boundary, high-frequency commits)
 3. **If it's none of the 3**, the compiler usually already handles it — don't add memo on guess
 
-If you want to be sure, install `babel-plugin-react-compiler` and run it against a small probe file — reading the output is the most reliable way to confirm.
+### How to verify: 30-second probe
+
+Don't rely on memory or docs — compile and look at the output:
+
+```bash
+# two extra devDeps (babel-plugin-react-compiler is already installed)
+pnpm add -D @babel/core @babel/preset-typescript
+```
+
+```js
+// probe.mjs — place at package root
+import { transformAsync } from '@babel/core';
+import { readFileSync } from 'node:fs';
+
+const file = process.argv[2];
+const source = readFileSync(file, 'utf8');
+const result = await transformAsync(source, {
+  filename: file,
+  presets: [['@babel/preset-typescript', { isTSX: true, allExtensions: true }]],
+  plugins: [['babel-plugin-react-compiler', {}]],
+  babelrc: false,
+  configFile: false,
+});
+console.log(result.code);
+```
+
+Usage:
+
+```bash
+node probe.mjs src/components/YourProvider.tsx | less
+```
+
+Read the output:
+
+- Top of file has `import { c as _c } from "react/compiler-runtime"` + `const $ = _c(N)` → compiler ran successfully
+- `if ($[0] !== dep) { t0 = ...; } else { t0 = $[2]; }` → this piece is memoized. **Don't add your own `useMemo`.**
+- No cache checks at all → compiler bailed out (possibly detected mutation, ref reads during render, or this isn't a component/hook)
+
+I found a real example this way. A provider had `<AppStateContext.Provider value={{ user, theme, prefs, socket }}>` and the compiled output looked like:
+
+```js
+// indices $[16]..$[20] depend on this component's cache slot layout — not fixed values
+if ($[16] !== prefs || $[17] !== socket || $[18] !== theme || $[19] !== user) {
+  t13 = { user, theme, prefs, socket };
+  $[16] = prefs; $[17] = socket; $[18] = theme; $[19] = user;
+  $[20] = t13;
+} else {
+  t13 = $[20];
+}
+```
+
+Each of the four fields becomes its own dep — any unchanged field reuses the cached value. Better than writing `useMemo(() => ({...}), [prefs, socket, theme, user])` yourself, because the compiler's dep analysis is more reliable than human memory.
 
 ## Other compiler blind spots worth knowing
 
