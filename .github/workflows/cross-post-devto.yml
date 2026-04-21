@@ -57,8 +57,9 @@ jobs:
               current_key = None
               list_values = []
               for line in fm_text.strip().split("\n"):
-                  if line.startswith("- ") and current_key:
-                      list_values.append(line[2:].strip().strip("'\""))
+                  stripped = line.lstrip()
+                  if stripped.startswith("- ") and current_key:
+                      list_values.append(stripped[2:].strip().strip("'\""))
                   else:
                       if current_key and list_values:
                           fm[current_key] = list_values
