@@ -97,6 +97,18 @@ ofekron 在 [#50213](https://github.com/anthropics/claude-code/issues/50213) 4/1
 - **Jarred Sumner** 之前在 The Register 辯護「sub-agent 5m 是 one-shot 優化」——**沒回應 4/9 那波 100% 5m 的數據**
 - 過去一週 Anthropic 沒在這兩個 issue 發言
 
+## Update（2026-04-26）：官方立場 vs 我的數據
+
+文章發出後再查了一輪，發現 Boris Cherny（Claude Code 作者）透過 The Register 的公開說法：
+
+> "**One-hour cache has been implemented in some places for subscribers**, while a **five-minute cache is the true default.**"
+
+也就是 Anthropic 的官方姿態是「5m 才是真正的預設值，1h 只在某些場景對訂閱用戶開放」——這跟本文「這是新預設值，不是 regression」的結論其實**一致**。
+
+但官方說法**無法解釋一件事**：[第一篇 audit]({{< ref "/post/claude-code-cache-ttl-audit" >}}) 的時間序列證據顯示，2026-02-07 到 03-05 連續 28 天，sub-agent 拿到的是 100% 1h（不是 mixed、不是 50%）。這 28 天的「1h 待遇」如果是「特例」，那也是穩定發放的特例，而不是偶爾發生的恩賜。
+
+本文 17 天 100% 5m 的真正意義因此可以重新定位：**訂閱用戶過去拿到的 sub-agent 1h 待遇，正在被穩定收回**。Anthropic 沒「改 default」，但「曾經發放給 sub-agent 的 1h 特例」實質上消失了。這個事實官方說法擋不住。
+
 ## 媒體報導與另一條更大的線
 
 這波不是只有 GitHub 在炸：

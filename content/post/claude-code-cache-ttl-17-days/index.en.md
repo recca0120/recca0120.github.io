@@ -97,6 +97,18 @@ Together the two issues say the same thing: **Anthropic's posture toward sub-age
 - **Jarred Sumner**'s earlier defense in The Register that "sub-agent 5m is a one-shot optimization" — **no response to the 4/9 100% 5m data**
 - Anthropic posted nothing on these issues in the past week
 
+## Update (2026-04-26): Official Position vs My Data
+
+After publishing, I dug into Anthropic's public posture. Boris Cherny (creator of Claude Code), via The Register:
+
+> "**One-hour cache has been implemented in some places for subscribers**, while a **five-minute cache is the true default.**"
+
+So Anthropic's official line is "5m is the true default; 1h is opt-in for some subscriber scenarios" — which actually **agrees** with this post's framing of "this is the new default, not a regression."
+
+But the official stance **can't explain one thing**: time-series data from [the first audit]({{< ref "/post/claude-code-cache-ttl-audit" >}}) shows that from 2026-02-07 to 03-05, 28 consecutive days, sub-agents received 100% 1h (not mixed, not 50%). If those 28 days of "1h treatment" were a "special case," it was a stably-allocated special case, not an occasional gift.
+
+This post's 17 days of 100% 5m can be re-positioned: **the sub-agent 1h treatment subscribers used to receive is being stably revoked.** Anthropic didn't "change the default," but the "1h special case formerly granted to sub-agents" effectively disappeared. That's a fact the official statement can't paper over.
+
 ## Media Coverage and a Bigger Thread
 
 This isn't just blowing up on GitHub:
