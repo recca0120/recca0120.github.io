@@ -136,6 +136,8 @@ draft: false
 
 CP 值反而是 4.6 高 1.9 倍。每次新 model release 該主動看 [cnighswonger 的 advisory](https://github.com/cnighswonger/claude-code-cache-fix) 跟自己跑一陣子量數據再決定要不要升。
 
+> **關於 adaptive thinking**：4.7 燒得兇主要是因為 adaptive thinking 把 reasoning chain 計入 output token。Opus 4.6 / Sonnet 4.6 可以用 `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1` 關掉，但 **Opus 4.7 強制開、不能關**——這是「鎖 4.6」比「想辦法救 4.7」更可行的根本原因。Auto mode 跟 adaptive thinking 是兩件獨立的事，鎖回 4.6 不影響 auto mode 使用。
+
 ### 2. 把 review / fix / test 切到 Sonnet
 
 \$/turn 差 16 倍是真的（Opus \$0.71 vs Sonnet \$0.045）。我 4 月 14K turn 用 Sonnet 完成只花 \$643，同樣 turn 用 Opus 4.6 會是 \$10K。

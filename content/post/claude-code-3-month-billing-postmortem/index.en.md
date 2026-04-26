@@ -136,6 +136,8 @@ This way when opus-4.8 / 4.9 ships, you don't auto-follow. New versions **aren't
 
 Net CP value is 1.9× higher on 4.6. Every model release, check [cnighswonger's advisory](https://github.com/cnighswonger/claude-code-cache-fix) and run your own data for a while before deciding to upgrade.
 
+> **On adaptive thinking**: 4.7 burns hard mainly because adaptive thinking counts the reasoning chain as output tokens. Opus 4.6 / Sonnet 4.6 let you disable it via `CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1`, but **Opus 4.7 forces it on with no toggle** — that's why "lock 4.6" is the practical fix instead of trying to mitigate 4.7. Auto mode and adaptive thinking are independent features; pinning 4.6 doesn't affect auto mode.
+
 ### 2. Route Review / Fix / Test to Sonnet
 
 The \$/turn gap is real (Opus \$0.71 vs Sonnet \$0.045 — 16×). My April: 14K turns on Sonnet for \$643, same turns on Opus 4.6 would have been \$10K.
