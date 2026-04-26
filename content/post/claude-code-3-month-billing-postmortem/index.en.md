@@ -1,6 +1,6 @@
 ---
-title: 'I Audited 3 Months of Claude Code Billing — Every Cost-Saving Tip I Believed Was Wrong'
-description: '$127K equivalent cost, 127K turns, four models, three months. After turning myself into a dataset, "long sessions are the culprit" and "too many skills" were debunked by my own data. Only two levers actually worked.'
+title: 'I Audited 3 Months of Claude Code Billing — Most Community Cost-Saving Tips Don''t Work'
+description: '$127K equivalent cost, 127K turns, four models, three months. After turning myself into a dataset, "long sessions are the culprit" and "too many skills" were debunked by data. Only two levers actually worked.'
 slug: claude-code-3-month-billing-postmortem
 date: '2026-04-26T07:55:00+08:00'
 image: featured.png
@@ -14,11 +14,11 @@ tags:
 draft: false
 ---
 
-This past week, chasing a vague "quota burns faster lately" feeling, I scanned three months of my own Claude Code logs. ~\$127K equivalent cost, 127K turns, four models, hundreds of sessions. The uncomfortable finding: **at least half the cost-saving tips I'd been giving — including to myself — were wrong.**
+This past week, chasing a vague "quota burns faster lately" feeling, I scanned three months of my own Claude Code logs. ~\$127K equivalent cost, 127K turns, four models, hundreds of sessions.
 
-"Sessions are too long, run `/clear`," "too many skills, prune them," "MCP servers should be lean" — these all sound right. But against three months of real data, **none survives scrutiny.** Only two things actually shrink the bill, and neither is about "optimizing your habits."
+The uncomfortable finding: **the cost-saving tips floating around on Reddit / HN / Twitter mostly don't survive real data.** "Sessions are too long, run `/clear`," "too many skills, prune them," "MCP servers should be lean" — these all sound right. But against three months of actual data, **almost none holds up.** Only two things actually shrink the bill, and neither is about "optimizing your habits."
 
-> Earlier I wrote [Scanned 95 days of Claude Code logs, found a second cache TTL silent regression]({{< ref "/post/claude-code-cache-ttl-audit" >}}) and [17-day follow-up]({{< ref "/post/claude-code-cache-ttl-17-days" >}}) covering server-side behavior. This post is the extension: with server behavior confirmed unfixable, what's left for the user side to do.
+> Earlier I wrote [Scanned 95 days of Claude Code logs, found a second cache TTL silent regression]({{< ref "/post/claude-code-cache-ttl-audit" >}}) and [17-day follow-up]({{< ref "/post/claude-code-cache-ttl-17-days" >}}) covering server-side behavior. This post is the extension: with server behavior confirmed unfixable, what's left for the user side.
 
 ## Three Months of Bills
 
@@ -74,7 +74,7 @@ Cross-column observations:
 
 ## Five Common "Cost-Saving Tips" Debunked
 
-This is my own post-mortem. Tips I'd given (to others, to myself), scored against the data.
+Community lore (Reddit / HN / Discord) graded against real data.
 
 ### ❌ "Long sessions are the culprit"
 
@@ -84,15 +84,13 @@ The data: March vs April Opus 4.6 usage is nearly identical (69,980 vs 72,510 tu
 
 More precisely: cache_read accounts for 77–88% of cost on both Opus versions. The number is huge, but the ratio **has been that way since heavy Claude Code usage started** — it's the inherent cost of "talking to an LLM," not the price of "not splitting sessions." `/clear` doesn't recover much.
 
-> Note: this is the part where I'd been giving myself wrong advice. The intuition "shorter session = cheaper" is too strong. Seeing an 11K-turn 69-hour session, my first reaction was "split it" — but that's just a symptom of "you have a lot to do," not evidence of "you're wasting."
-
 ### ❌ "Run `/clear` after 5+ min idle"
 
 The intuition: 5-minute cache TTL means a brief idle expires the cache, so the next turn pays for a rewrite.
 
 The data: my [second audit]({{< ref "/post/claude-code-cache-ttl-17-days" >}}) shows the main agent has been writing 100% to 1h TTL for 17 straight days since 4/9, with **zero 5m writes**. Idle a while and come back, cache is still there. No extra write cost.
 
-The forced 5m downgrade only hits sub-agents (the topic of that post). But sub-agents only contributed a small slice of April's cost (~\$1,500 estimated), two orders of magnitude less than the \$25K from 4.7.
+The forced 5m downgrade only hits sub-agents (same post). But sub-agents only contributed a small slice of April's cost (~\$1,500 estimated), two orders of magnitude less than the \$25K from 4.7.
 
 ### ❌ "Too many skills"
 
@@ -104,13 +102,15 @@ The data: I actually measured. 40 skill descriptions add up to ~5–10K tokens. 
 
 The intuition: MCP tool definitions land in the prefix every turn.
 
-The data: my setup is 3–4 MCPs (pixel-mcp, the Google Workspace trio), several of which fail to connect and don't load. Already lean, nothing to trim.
+The data: setup is 3–4 MCPs (pixel-mcp, the Google Workspace trio), several of which fail to connect and don't load. Already lean, nothing to trim.
 
 ### ❌ "CLAUDE.md is too long"
 
 The intuition: CLAUDE.md gets re-read every turn.
 
-The data: my project root CLAUDE.md is **1 byte** (essentially empty), the global one is 0 bytes. Zero impact.
+The data: the project root CLAUDE.md is **1 byte** (essentially empty), the global one is 0 bytes. Zero impact.
+
+> These five aren't wrong in every scenario. For someone with a 50K-token CLAUDE.md or 20 loaded MCP servers, they apply. But as **generic advice spread to everyone**, data shows they barely help a heavy single-project workflow.
 
 ## ✅ The Two Things That Actually Work
 
@@ -169,19 +169,19 @@ If both levers are in place, expected April-baseline change (against \$77K):
 
 The remaining 50% is the inherent cost of "heavy Opus 4.6 usage on a primary project" — not optimizable, and shouldn't be. That's the work itself.
 
-## Meta Lessons
+## Lessons
 
-The biggest takeaway from turning myself into a dataset isn't the savings — it's seeing **how unreliable intuition is**.
+The biggest takeaway from turning myself into a dataset isn't the savings — it's seeing **how unreliable community intuition is**.
 
-"Shorter session = cheaper," "fewer skills = cleaner" might hold in some scenarios, but **for my use case they're flat wrong**. Without breaking cost down to model × session × turn, I'd never have spotted that "the Opus 4.7 alias upgrade" is the single biggest reason April got expensive.
+"Shorter session = cheaper," "fewer skills = cleaner" might hold in some scenarios, but **for single-project heavy-use workflows they're flat wrong**. Without breaking cost down to model × session × turn, I'd never have spotted that "the Opus 4.7 alias upgrade" is the single biggest reason April got expensive.
 
 Broader lessons:
 
-1. **Intuition-driven optimization is noise** — without data, "cost-saving tips" often optimize the wrong thing
+1. **Floating optimization tips are noise** — without data, "cost-saving advice" often optimizes the wrong thing
 2. **Aliases hand cost control to the vendor** — the mechanism isn't bad, but it's a real risk for subscription users with quota planning
 3. **Multi-model strategy beats single-model tuning** — same dollar, Sonnet does 16× the turn volume
 
-If you want to scan your own, the 60-line Python from [the first post]({{< ref "/post/claude-code-cache-ttl-audit" >}}) is reusable — adjust the cost calc and you'll get this analysis for your data. Make yourself a dataset and re-check what you think you know.
+If you want to scan your own, the 60-line Python from [the first post]({{< ref "/post/claude-code-cache-ttl-audit" >}}) is reusable — adjust the cost calc and you'll get this analysis for your data. Make yourself a dataset and re-check what the community thinks it knows.
 
 [Background: Claude Code session cost & cache misconception]({{< ref "/post/claude-code-session-cost-cache-misconception" >}})
 
