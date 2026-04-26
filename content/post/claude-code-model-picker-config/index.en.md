@@ -136,33 +136,9 @@ The issues cluster around two themes: **stale alias mappings** and **no mechanis
 
 ## Recommended Configuration
 
-Given all the above, the most practical setup today:
+After testing everything, `availableModels` is unreliable due to same-family deduplication — list 4 models and you might only see 3. The most practical approach: **don't touch `availableModels`, keep the default picker, lock your version with `model`, and add one extra option with `ANTHROPIC_CUSTOM_MODEL_OPTION`.**
 
 **`~/.claude/settings.json`** (global):
-
-```json
-{
-  "model": "claude-opus-4-6[1m]",
-  "availableModels": [
-    "claude-opus-4-6[1m]",
-    "claude-opus-4-7",
-    "claude-sonnet-4-6",
-    "claude-haiku-4-5"
-  ]
-}
-```
-
-**`~/.zshrc`** (add one more via `ANTHROPIC_CUSTOM_MODEL_OPTION`):
-
-```bash
-export ANTHROPIC_CUSTOM_MODEL_OPTION="claude-sonnet-4-6[1m]"
-export ANTHROPIC_CUSTOM_MODEL_OPTION_NAME="Sonnet 4.6 (1M)"
-export ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION="Sonnet 4.6 with 1M context window"
-```
-
-This gives 5 options in `/model`: 4 from `availableModels`, 1 from the env var.
-
-If you just want to lock a version and don't care about the picker, the simplest approach is one line:
 
 ```json
 {
@@ -170,15 +146,32 @@ If you just want to lock a version and don't care about the picker, the simplest
 }
 ```
 
-The default picker stays intact, but every session starts on Opus 4.6. Switch temporarily with `/model claude-opus-4-7` using the full ID.
+One line. The default picker stays intact (opus / sonnet / haiku all present), but every session starts on Opus 4.6 1M. The `opus` alias in the picker points to the latest version (currently 4.7), so you can switch to it anytime.
+
+**`~/.zshrc`** (add a 4th option via `ANTHROPIC_CUSTOM_MODEL_OPTION`):
+
+```bash
+export ANTHROPIC_CUSTOM_MODEL_OPTION="claude-sonnet-4-6[1m]"
+export ANTHROPIC_CUSTOM_MODEL_OPTION_NAME="Sonnet 4.6 (1M)"
+export ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION="Sonnet 4.6 with 1M context window"
+```
+
+This gives 4 options in `/model`: the default opus / sonnet / haiku, plus Sonnet 4.6 1M. Covers all daily scenarios:
+
+- **Opus 4.6 1M**: locked via `model` field, used on startup
+- **Opus 4.7**: the `opus` alias in the picker, switch when needed
+- **Sonnet 4.6**: the `sonnet` alias, for review / fix / test tasks
+- **Sonnet 4.6 1M**: the 4th option via env var, for large context scenarios
+
+> Why not use `availableModels`? It's a full replacement, and same-family dedup silently eats entries. Leaving it unset gives you the most stable default picker.
 
 ## Conclusion
 
-Claude Code's model picker assumes everyone wants the latest version. There's no clean way to keep the default picker and add custom entries. `availableModels` is a full replacement; `ANTHROPIC_CUSTOM_MODEL_OPTION` only supports one.
+Claude Code's model picker assumes everyone wants the latest version. `availableModels` is a full replacement with dedup issues; `ANTHROPIC_CUSTOM_MODEL_OPTION` only supports one entry.
 
-Plenty of GitHub issues have been filed, but most get marked duplicate or stale-closed. No official commitment to improve this.
+In practice, `model` + `ANTHROPIC_CUSTOM_MODEL_OPTION` covers most needs: lock your version with `model`, add one extra option via env var, and leave the default picker alone.
 
-If you're struggling with quota burn, locking the `model` field is the most direct fix. The picker UX? We wait.
+Plenty of GitHub issues have been filed, but most get marked duplicate or stale-closed. If you need more than one custom model in the picker, there's no official solution yet.
 
 ## References
 

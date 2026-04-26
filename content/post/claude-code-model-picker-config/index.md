@@ -136,33 +136,9 @@ export ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION="Opus 4.6 with 1M context windo
 
 ## 推薦設定
 
-綜合以上，目前最務實的做法：
+試了一輪下來，`availableModels` 因為同系列 dedup 的問題，放了 4 個也不一定都能顯示。最務實的做法反而是：**不動 `availableModels`，保留預設 picker，用 `model` 鎖版本，用 `ANTHROPIC_CUSTOM_MODEL_OPTION` 加一個額外選項。**
 
 **`~/.claude/settings.json`**（全域）：
-
-```json
-{
-  "model": "claude-opus-4-6[1m]",
-  "availableModels": [
-    "claude-opus-4-6[1m]",
-    "claude-opus-4-7",
-    "claude-sonnet-4-6",
-    "claude-haiku-4-5"
-  ]
-}
-```
-
-**`~/.zshrc`**（用 `ANTHROPIC_CUSTOM_MODEL_OPTION` 多加一個 Sonnet 1M）：
-
-```bash
-export ANTHROPIC_CUSTOM_MODEL_OPTION="claude-sonnet-4-6[1m]"
-export ANTHROPIC_CUSTOM_MODEL_OPTION_NAME="Sonnet 4.6 (1M)"
-export ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION="Sonnet 4.6 with 1M context window"
-```
-
-這樣 `/model` 選單會有 5 個選項：4 個來自 `availableModels`，1 個來自環境變數。
-
-如果你只是想鎖版本不管選單，最簡單的方式是只加一行：
 
 ```json
 {
@@ -170,15 +146,32 @@ export ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION="Sonnet 4.6 with 1M context win
 }
 ```
 
-預設選單不動，但每次啟動都用 Opus 4.6。需要臨時切換時用 `/model claude-opus-4-7` 手打完整 ID。
+只加一行。預設 picker 不動（opus / sonnet / haiku 三個都在），但每次啟動固定用 Opus 4.6 1M。這裡的 `opus` alias 實際指向最新版（目前是 4.7），所以如果臨時想切新版，選單裡直接選就好。
+
+**`~/.zshrc`**（用 `ANTHROPIC_CUSTOM_MODEL_OPTION` 加第 4 個選項）：
+
+```bash
+export ANTHROPIC_CUSTOM_MODEL_OPTION="claude-sonnet-4-6[1m]"
+export ANTHROPIC_CUSTOM_MODEL_OPTION_NAME="Sonnet 4.6 (1M)"
+export ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION="Sonnet 4.6 with 1M context window"
+```
+
+這樣 `/model` 選單會有 4 個選項：預設的 opus / sonnet / haiku，加上一個 Sonnet 4.6 1M。涵蓋了日常需要的所有場景：
+
+- **Opus 4.6 1M**：透過 `model` 欄位鎖定，啟動即用
+- **Opus 4.7**：選單裡的 `opus` alias，需要時切過去
+- **Sonnet 4.6**：選單裡的 `sonnet` alias，review / fix / test 用
+- **Sonnet 4.6 1M**：透過環境變數加的第 4 個，大 context 場景用
+
+> 為什麼不用 `availableModels`？因為它是取代式的，而且同系列 dedup 會吃掉你列的 model。不設它，預設 picker 反而最穩定。
 
 ## 結論
 
-Claude Code 的 model picker 設計假設是「大家都想用最新版」，沒有考慮到版本鎖定和回退的需求。目前沒有「保留預設選單 + 額外加自訂」的乾淨方案，`availableModels` 是取代式、`ANTHROPIC_CUSTOM_MODEL_OPTION` 只能一個。
+Claude Code 的 model picker 設計假設是「大家都想用最新版」，沒有考慮到版本鎖定和回退的需求。`availableModels` 是取代式且有 dedup 問題、`ANTHROPIC_CUSTOM_MODEL_OPTION` 只能加一個。
 
-GitHub 上相關 issue 開了不少，但大部分被 bot 標 duplicate 或 stale 關掉，官方沒有明確表示要改善。
+但實際上，`model` + `ANTHROPIC_CUSTOM_MODEL_OPTION` 這個組合已經能解決大部分需求：鎖版本靠 `model`，加一個額外選項靠環境變數，預設 picker 保持原樣不動。
 
-如果你也在掙扎 quota，先把 `model` 鎖住是最直接的。選單的事，等官方吧。
+GitHub 上相關 issue 開了不少，但大部分被 bot 標 duplicate 或 stale 關掉。如果你需要在 picker 裡放超過一個自訂 model，目前沒有官方方案。
 
 ## 參考資源
 
