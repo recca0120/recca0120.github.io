@@ -53,6 +53,17 @@ vi.mock('node:fs/promises', async () => (await import('memfs')).fs.promises);
 
 `vi.mock` 的 factory function 裡用 dynamic import 是 Vitest 的限制，但實際使用 `vol` 和 `memfs` 時都是 top-level import。
 
+### 為什麼 vi.mock 和 constructor injection 都要
+
+你可能會問：`vi.mock` 已經把 `node:fs` 全域換成 memfs 了，constructor 的 `fsImpl` 參數是不是多餘的？
+
+不是。這兩層各攔截不同的東西：
+
+- **`vi.mock`**：攔截 service 自己 `import` 的 `readFile`、`stat`、`readdir` 等。這些是 service 原始碼裡直接從 `node:fs/promises` 引入的，vi.mock 能確實替換
+- **`fsImpl` 注入**：餵給 glob 這類第三方套件。glob 跑在 `node_modules` 裡，vi.mock 不一定能穿透到它內部的 `fs` 呼叫（取決於 Vitest 的 `server.deps.inline` 設定和模組解析方式）。glob 自己提供了 `fs` option，透過 constructor 注入就能明確指定用 memfs
+
+少了任一層都可能出問題。沒有 `vi.mock`，service 自己的 fs 操作會讀真實磁碟；沒有 `fsImpl`，glob 掃描時可能繞過 mock 去讀真實檔案系統。兩層一起用是防禦性設計，不依賴測試框架的 mock 機制能穿透到所有第三方套件。
+
 每個測試開始前，用 `vol.fromJSON()` 宣告式地建立需要的檔案結構：
 
 ```typescript

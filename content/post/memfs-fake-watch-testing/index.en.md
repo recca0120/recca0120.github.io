@@ -53,6 +53,17 @@ vi.mock('node:fs/promises', async () => (await import('memfs')).fs.promises);
 
 The dynamic import inside `vi.mock` factory functions is a Vitest requirement, but actual usage of `vol` and `memfs` is through top-level imports.
 
+### Why Both vi.mock and Constructor Injection
+
+You might wonder: if `vi.mock` already replaces `node:fs` globally with memfs, isn't the `fsImpl` constructor parameter redundant?
+
+No. Each layer intercepts different things:
+
+- **`vi.mock`**: intercepts `readFile`, `stat`, `readdir`, etc. that the service imports directly from `node:fs/promises`. These are top-level imports in the service source code, and vi.mock reliably replaces them
+- **`fsImpl` injection**: feeds memfs to third-party packages like glob. Glob runs inside `node_modules`, and vi.mock may not penetrate its internal `fs` calls (depending on Vitest's `server.deps.inline` setting and module resolution). Glob provides its own `fs` option, so constructor injection explicitly specifies memfs
+
+Missing either layer can cause problems. Without `vi.mock`, the service's own fs operations hit real disk. Without `fsImpl`, glob may bypass the mock and scan the real filesystem. Using both is a defensive design — it doesn't rely on the test framework's mock mechanism reaching all third-party packages.
+
 Before each test, `vol.fromJSON()` declaratively creates the needed file structure:
 
 ```typescript

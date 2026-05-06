@@ -118,14 +118,44 @@ Knip has a [VSCode extension](https://marketplace.visualstudio.com/items?itemNam
 
 There's also `@knip/mcp`, which lets AI assistants call Knip when analyzing a project, helping them understand which code is actually in use.
 
+## Block Dead Code at pre-push with Lefthook
+
+Wiring Knip into CI is the last line of defence, but finding dead code after a PR is pushed means another round-trip: fix it, push again. A better approach is catching it before `git push` ever completes.
+
+[Lefthook](https://github.com/evilmartians/lefthook) is a Git hooks manager — simpler to configure than husky and faster to run. Install it first:
+
+```bash
+npm install -D lefthook
+```
+
+Then create `lefthook.yml` at the project root:
+
+```yaml
+pre-push:
+  commands:
+    knip:
+      run: npx knip
+```
+
+Initialize the hooks:
+
+```bash
+npx lefthook install
+```
+
+Now every `git push` runs `knip` first. If there are any unused dependencies, exports, or files, the push is blocked until you clean them up.
+
+> If your project is large and `knip` runs slowly, consider running it only in CI and using `--reporter compact` locally to reduce output noise, or `--cache` to speed up subsequent runs.
+
 ## Dead Code Is Technical Debt
 
 Removing unused code isn't just about making the project smaller. Every unused export is a cognitive burden — a new developer doesn't know if that function matters and has to spend time tracing it. Every unused dependency is a potential security risk and an update to manage.
 
-Knip turns "find dead code" from a manual chore into an automated step. Run it once to clean house, then wire it into CI so dead code can't quietly accumulate again.
+Knip turns "find dead code" from a manual chore into an automated step. Pair it with Lefthook at pre-push and dead code gets blocked before it ever enters the repo — no waiting for CI to tell you.
 
 ## References
 
 - [Knip official documentation](https://knip.dev/)
 - [GitHub — webpro-nl/knip](https://github.com/webpro-nl/knip)
+- [GitHub — evilmartians/lefthook](https://github.com/evilmartians/lefthook)
 - [Effective TypeScript — Recommendation: Use knip to detect dead code](https://effectivetypescript.com/2023/07/29/knip/)

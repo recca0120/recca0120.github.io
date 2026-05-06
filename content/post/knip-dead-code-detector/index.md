@@ -118,14 +118,44 @@ Knip 有 [VSCode extension](https://marketplace.visualstudio.com/items?itemName=
 
 另外也有 `@knip/mcp`，可以讓 AI assistant 在分析專案時直接呼叫 Knip，幫助 AI 了解哪些程式碼是真的有在用的。
 
+## 用 Lefthook 掛 pre-push 在本地端攔截
+
+加進 CI 是最後一道防線，但等 PR 推上去才發現有死碼，還是要回來修再推一次。更好的做法是在 `git push` 之前就攔截。
+
+[Lefthook](https://github.com/evilmartians/lefthook) 是一個 Git hooks 管理工具，設定比 husky 簡單，速度也更快。先安裝：
+
+```bash
+npm install -D lefthook
+```
+
+然後在專案根目錄建 `lefthook.yml`：
+
+```yaml
+pre-push:
+  commands:
+    knip:
+      run: npx knip
+```
+
+初始化 hooks：
+
+```bash
+npx lefthook install
+```
+
+之後每次 `git push`，Lefthook 會先跑 `knip`，有任何未使用的依賴、export 或檔案就直接中斷 push，讓你先清乾淨再推。
+
+> 如果專案大、`knip` 跑很慢，可以考慮只在 CI 跑，本地端只掛 `--reporter compact` 減少輸出量，或用 `--cache` 加速後續執行。
+
 ## 死碼是技術債的來源
 
 刪掉沒用的東西不只是讓專案變小。每一個沒在用的 export 都是潛在的認知負擔——新進開發者不知道這個函式是不是還重要，要花時間去追。每一個沒在用的依賴都是潛在的安全風險和更新負擔。
 
-Knip 把「找死碼」這件事從手動變成自動。跑一次，清一批，可以加進 CI 讓每次 PR 都檢查一遍，防止死碼繼續堆積。
+Knip 把「找死碼」這件事從手動變成自動。搭配 Lefthook 掛 pre-push，死碼在進 repo 之前就被擋下來，不用等 CI 才知道。
 
 ## 參考資源
 
 - [Knip 官網](https://knip.dev/)
 - [GitHub — webpro-nl/knip](https://github.com/webpro-nl/knip)
+- [GitHub — evilmartians/lefthook](https://github.com/evilmartians/lefthook)
 - [Effective TypeScript — 推薦使用 Knip 偵測死碼](https://effectivetypescript.com/2023/07/29/knip/)
