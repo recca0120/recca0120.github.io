@@ -1,6 +1,6 @@
 ---
-title: 'Sharing Composer vendor Across git worktrees: Why a Plain Symlink Gives False-Green Tests'
-description: 'Symlinking the whole vendor into a git worktree makes PHP load project classes from the main checkout, so tests pass on stale code. A linked vendor with a post-checkout hook and Composer guard skips composer install safely.'
+title: 'Share Composer vendor Across git worktrees: Skip composer install, Save Space and Time'
+description: 'Skip composer install in every git worktree: symlink third-party packages to the main checkout via a post-checkout hook to save disk space and install time.'
 slug: git-worktree-composer-linked-vendor
 date: '2026-11-26T22:10:00+08:00'
 image: featured.jpg

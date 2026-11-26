@@ -1,6 +1,6 @@
 ---
-title: 'git worktree 共用 Composer vendor：直接 symlink 會讓測試假綠，正確做法在這'
-description: 'git worktree 直接 symlink 整個 vendor 會讓 PHP 從主 checkout 載入專案類別，改了程式測試照綠。用連結版 vendor 搭配 post-checkout hook 與 Composer 防呆，免跑 composer install。'
+title: 'git worktree 共用 Composer vendor：省掉每次 composer install 的空間和時間'
+description: '每開一個 git worktree 就要重跑 composer install？把第三方套件 symlink 到主 checkout，用 post-checkout hook 自動建立，省空間又省時間。'
 slug: git-worktree-composer-linked-vendor
 date: '2026-11-26T22:10:00+08:00'
 image: featured.jpg
