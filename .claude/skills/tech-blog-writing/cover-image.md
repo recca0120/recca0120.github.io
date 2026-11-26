@@ -33,7 +33,7 @@ with open('content/post/{slug}/featured.jpg','wb') as f: f.write(img)
 
 注意：
 - 回傳的是 JPEG，檔名一律用 `featured.jpg`，frontmatter 寫 `image: featured.jpg`
-- 免費方案每天 10,000 neurons，用完會回 `4006 you have used up your daily free allocation`，隔天（UTC 00:00）重置。一天產好幾張或拿多個模型比較時很容易用完，`flux-2-dev` 特別耗
+- 免費方案每天 10,000 neurons，用完會回 `4006 you have used up your daily free allocation`，隔天（UTC 00:00，台灣早上 8 點）重置。`flux-2-klein-9b` 一張 1024x576 約 1,364 neurons（不足 1 MP 也算第一個 MP），一天大約 **7 張**；prompt 先寫清楚再產，不要連發。一天產好幾張或拿多個模型比較時很容易用完，`flux-2-dev` 特別耗
 - 不要用 `flux-1-schnell`：它只接受 `prompt` 和 `steps`，傳 `width`／`height` 會回 `5006 Bad input`，只能出 1024x1024 再裁切，主體容易被切掉
 
 ### 備選模型（2026-11 實測，都能直接出 1024x576）
