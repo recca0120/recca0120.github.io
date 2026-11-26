@@ -7,16 +7,20 @@
 
 ## 產圖指令
 
-```bash
-# flux-1-schnell 只接受 prompt 和 steps（1-8）；傳 width/height 會回 5006 Bad input
-# 回傳 JSON，result.image 是 base64 的 JPEG，固定 1024x1024
-response=$(curl -sS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/@cf/black-forest-labs/flux-1-schnell" \
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"prompt": "你的英文描述", "steps": 8}' \
-  --max-time 90)
+模型用 `@cf/black-forest-labs/flux-2-klein-9b`：可以直接指定 16:9 尺寸，prompt 貼合度在帳號可用的文字生圖模型裡最好，一張約 8 秒。
 
-# 先解碼成功再寫檔；失敗時印出 API 回應，不會留下空檔
+```bash
+# FLUX.2 用 multipart/form-data 傳參數（不是 JSON）
+# 用 --form-string 傳 prompt，避免 prompt 開頭是 @ 或 < 時被 curl 當成檔案
+response=$(curl -sS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/@cf/black-forest-labs/flux-2-klein-9b" \
+  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  --form-string "prompt=你的英文描述" \
+  -F width=1024 \
+  -F height=576 \
+  --max-time 120)
+
+# 回傳 JSON，result.image 是 base64 的 JPEG
+# 先確認成功再寫檔；失敗時印出 API 錯誤，不會留下空檔
 echo "$response" | python3 -c "
 import json,sys,base64
 d=json.load(sys.stdin)
@@ -25,14 +29,30 @@ if not d.get('success'):
 img=base64.b64decode(d['result']['image'])
 with open('content/post/{slug}/featured.jpg','wb') as f: f.write(img)
 "
-
-# 從中間裁成 16:9（1024x576），跟其他封面一致
-sips --cropToHeightWidth 576 1024 content/post/{slug}/featured.jpg
 ```
 
 注意：
-- 回傳的是 JPEG，檔名一律用 `featured.jpg`，frontmatter 寫 `image: featured.jpg`。存成 `.png` 只是副檔名錯，內容還是 JPEG
-- 裁切是取中間區塊，prompt 的主體要放在畫面中央，上下各約 22% 會被切掉
+- 回傳的是 JPEG，檔名一律用 `featured.jpg`，frontmatter 寫 `image: featured.jpg`
+- 免費方案每天 10,000 neurons，用完會回 `4006 you have used up your daily free allocation`，隔天（UTC 00:00）重置。一天產好幾張或拿多個模型比較時很容易用完，`flux-2-dev` 特別耗
+- 不要用 `flux-1-schnell`：它只接受 `prompt` 和 `steps`，傳 `width`／`height` 會回 `5006 Bad input`，只能出 1024x1024 再裁切，主體容易被切掉
+
+### 備選模型（2026-11 實測，都能直接出 1024x576）
+
+| 模型 | 傳參方式 | 特色 |
+|---|---|---|
+| `@cf/black-forest-labs/flux-2-klein-4b` | multipart，同上 | 9b 的小型版 |
+| `@cf/black-forest-labs/flux-2-dev` | multipart，同上 | 約 17 秒，畫面偏糊、光效過重 |
+| `@cf/leonardo/lucid-origin` | JSON `{"prompt","width","height"}`，回 JSON base64 | 乾淨的扁平等角風，但會漏掉 prompt 裡的部分元素 |
+| `@cf/leonardo/phoenix-1.0` | JSON `{"prompt","width","height"}`，**直接回傳 JPEG binary**，用 `-o featured.jpg` 存 | 最快（約 4 秒），構圖較隨意 |
+
+要查帳號目前有哪些文字生圖模型、各自吃什麼參數：
+
+```bash
+curl -sS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/models/search?task=Text-to-Image" \
+  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+curl -sS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/models/schema?model=@cf/leonardo/lucid-origin" \
+  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+```
 
 ## Prompt 撰寫原則
 
