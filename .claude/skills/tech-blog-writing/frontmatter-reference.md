@@ -8,7 +8,7 @@
 content/post/{slug}/
 ├── index.md        # 中文文章（預設語言）
 ├── index.en.md     # 英文翻譯
-└── featured.png    # 封面圖（共用）
+└── featured.jpg    # 封面圖（共用）
 ```
 
 多語系規則：
@@ -16,7 +16,7 @@ content/post/{slug}/
 - 英文版檔名用 `index.en.md`
 - 兩個版本的 `slug` 必須相同
 - 英文版的 `title` 和 `description` 翻譯成英文，其餘 frontmatter 不變
-- 封面圖 `featured.png` 共用，不需要複製
+- 封面圖 `featured.jpg` 共用，不需要複製
 
 ## 檔名規則
 
@@ -33,7 +33,7 @@ title: 文章標題（中英文皆可）
 description: '一句話摘要，160 字元以內，用於 meta description 和 SEO'
 slug: url-slug-kebab-case
 date: 'YYYY-MM-DDTHH:MM:SS+08:00'
-image: featured.png
+image: featured.jpg
 categories:
 - 分類名稱
 tags:
@@ -46,7 +46,7 @@ draft: false
 規則：
 - `slug` 用英文 kebab-case
 - `date` 一定要帶時區 `+08:00`，且**絕對不能是未來時間**。Hugo 預設會跳過未來日期的文章，首頁、RSS、sitemap 都不會出現，GitHub Actions 部署完也看不到。寫文章前**必須先用 `date` 指令**確認當前時間，date 欄位建議填「當前時間減 30 分鐘」保留 buffer，避開 deploy 期間時間還沒到的 race condition
-- `image` 封面圖檔名，通常是 `featured.png`
+- `image` 封面圖檔名，通常是 `featured.jpg`（Cloudflare 產的圖是 JPEG，見 `cover-image.md`）
 - `categories` 只放一個，`tags` 是陣列格式
 - 不要加 `author`、`comments`、`keywords`、`description`（空值）、`abbrlink`
 

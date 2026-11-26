@@ -8,20 +8,31 @@
 ## 產圖指令
 
 ```bash
-# flux-1-schnell 回傳 JSON（base64），需要解碼
+# flux-1-schnell 只接受 prompt 和 steps（1-8）；傳 width/height 會回 5006 Bad input
+# 回傳 JSON，result.image 是 base64 的 JPEG，固定 1024x1024
 response=$(curl -sS "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/@cf/black-forest-labs/flux-1-schnell" \
   -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"prompt": "你的英文描述", "width": 1024, "height": 576}' \
-  --max-time 60)
+  -d '{"prompt": "你的英文描述", "steps": 8}' \
+  --max-time 90)
 
+# 先解碼成功再寫檔；失敗時印出 API 回應，不會留下空檔
 echo "$response" | python3 -c "
 import json,sys,base64
 d=json.load(sys.stdin)
+if not d.get('success'):
+    sys.exit(json.dumps(d.get('errors'), ensure_ascii=False))
 img=base64.b64decode(d['result']['image'])
-with open('content/post/{slug}/featured.png','wb') as f: f.write(img)
+with open('content/post/{slug}/featured.jpg','wb') as f: f.write(img)
 "
+
+# 從中間裁成 16:9（1024x576），跟其他封面一致
+sips --cropToHeightWidth 576 1024 content/post/{slug}/featured.jpg
 ```
+
+注意：
+- 回傳的是 JPEG，檔名一律用 `featured.jpg`，frontmatter 寫 `image: featured.jpg`。存成 `.png` 只是副檔名錯，內容還是 JPEG
+- 裁切是取中間區塊，prompt 的主體要放在畫面中央，上下各約 22% 會被切掉
 
 ## Prompt 撰寫原則
 
